@@ -17,8 +17,11 @@
 <form action="LoginScreen.php" method="post">
   Gebruikersnaam:<br><input type="str" name="Username"><br>
   Wachtwoord:<br><input type="str" name="Password"><br><br>
-  <input type="submit" name="Login" value="Inloggen">
+  <input type="submit" class="btn btn-primary" name="Login" value="Inloggen">
 </form><br>
+
+<p>Als u uw wachtwoord vergeten bent moet u contact opnemen met Ton Koppers.</p>
+
 </div>
 </body>
 </html>
