@@ -1,5 +1,23 @@
 <?php 
   require("Function.php");
+  if (session_status() == PHP_SESSION_NONE) 
+  {
+    session_start();
+  }
+  try
+  {
+    IsLogged();
+  }
+  catch(exception $ex)
+  {
+    header("Location: LoginScreen.php");
+    exit;
+  }
+  if (!(IsAdmin()))
+  {
+    header("Location: MainMenu.php");
+    exit;
+  }
 ?>
 
 <!DOCTYPE html>
@@ -18,12 +36,14 @@
   Gebruikersnaam:<br><input type="str" name="Username"><br>
   Wachtwoord:<br><input type="str" name="Password"><br>
   Wachtwoord hertypen:<br><input type="str" name="Password2"><br><br>
-  <select name="Rights">
-    <option value="0">Lezer</option>
-    <option value="1">Administrator</option>
-  </select><br><br>
-  <input type="submit" name="CreateAcc" value="Aanmaken">
+  <input type="radio" name="Rights" value="0">
+  <label for="male">Lezer</label><br>
+  <input type="radio" name="Rights" value="1">
+  <label for="male">Administrator</label><br>
+  <input type="submit" class="btn btn-primary" name="CreateAcc" value="Aanmaken">
 </form><br>
+<button type="submit" onclick="window.location.href = 'MainMenu.php';" class="btn btn-primary" name="BackToMainMenu">Terug</button>
+
 </div>
 </body>
 </html>
