@@ -9,19 +9,22 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="LoginScreen.css">
 <style>
 
 </style>
 </head>
 <body>
-<form action="LoginScreen.php" method="post">
-  Gebruikersnaam:<br><input type="str" name="Username"><br>
-  Wachtwoord:<br><input type="str" name="Password"><br><br>
-  <input type="submit" class="btn btn-primary" name="Login" value="Inloggen">
+<div class="container">
+ <img src="usericon.png"/>
+<form action="LoginScreen.php" method="post" name="form">
+  <br><input type="str" name="Username" placeholder="Gebruikersnaam" ><br>
+  <br><input type="str" name="Password" placeholder="Wachtwoord"><br><br>
+  <input type="submit" name="Login" value="Inloggen" class="btn-login"><br><br>
+  Als u uw wachtwood bent vergeten <br>
+  kunt u contact opnemen met<br>
+  Ton Koppers. 
 </form><br>
-
-<p>Als u uw wachtwoord vergeten bent moet u contact opnemen met Ton Koppers.</p>
-
 </div>
 </body>
 </html>
