@@ -40,15 +40,15 @@
   foreach ($stmt->fetchAll() as $row) 
   {
       //zet de gegevens in een array.
-    $LicentieID = $row["LicentieID"]; 
-    $LicentieNaam = $row["LicentieNaam"];
-    $Beschrijving = $row["Beschrijving"];
-    $Opmerking = $row["Opmerking"];
-    $InstallatieOmschrijving = $row["InstallatieOmschrijving"];
-    $LaatstAangepast = $row["LaatstAangepast"];
-    $Verlopen = $row["Verlopen"];
-    $GebruikerID = $row["GebruikerID"];
-    $VerloopDatum = $row["VerloopDatum"];
+    $LicenseID = $row["LicentieID"]; 
+    $LicenseName = $row["LicentieNaam"];
+    $Description = $row["Beschrijving"];
+    $Comment = $row["Opmerking"];
+    $InstallationInstructions = $row["InstallatieOmschrijving"];
+    $LastEdited = $row["LaatstAangepast"];
+    $Expired = $row["Verlopen"];
+    $UserID = $row["GebruikerID"];
+    $ExpirationDate = $row["VerloopDatum"];
   }
 ?>
     <style>
@@ -96,7 +96,7 @@
                     <div class="overflow-auto">
                         <ul class="list-unstyled components">
                             <li>
-                                <a href=""><?php echo "<td>".$LicentieNaam."</td>"; ?></a>
+                                <a href=""><?php echo "<td>".$LicenseName."</td>"; ?></a>
                             </li>
                             <li>
                                 <a href="">Licentie 2</a>
@@ -139,19 +139,19 @@
                 <div class="row bg-light">
                     <div class="col-4">
                         <h2><b>Beschrijving</b></h2>
-                        <p><?php echo "<td>".$Beschrijving."</td>";?></p>
+                        <p><?php echo "<td>".$Description."</td>";?></p>
                         <br>
                         <h2><b>Opmerking</b></h2>
-                        <p><?php echo "<td>".$Opmerking."</td>";?></p>
+                        <p><?php echo "<td>".$Comment."</td>";?></p>
                         <br>
                         <h2><b>Installatie omschrijving</b></h2>
-                        <p><?php echo "<td>".$InstallatieOmschrijving."</td>";?></p>
+                        <p><?php echo "<td>".$InstallationInstructions."</td>";?></p>
                         <br> 
                         <h2><b>Verloop datum</b></h2>
-                        <p><?php echo "<td>".$VerloopDatum."</td>";?></p>
+                        <p><?php echo "<td>".$ExpirationDate."</td>";?></p>
                         <br> 
                         <h2><b>Laatst aangepast</b></h2>
-                        <p><?php echo "<td>".$LaatstAangepast."</td>";?></p>
+                        <p><?php echo "<td>".$LastEdited."</td>";?></p>
                         <br> 
                         
                     </div>
