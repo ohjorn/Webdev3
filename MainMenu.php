@@ -1,3 +1,19 @@
+<?php
+    require("Function.php");
+    if (session_status() == PHP_SESSION_NONE) 
+    {
+    session_start();
+    }
+    try
+    {
+        IsLogged();
+    }
+    catch(exception $ex)
+    {
+        header("Location: LoginScreen.php");
+    }
+?>
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -84,8 +100,15 @@
                     </ul>
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
-                            <button type="submit" class="btn btn-primary" name="toggle-account-management">Accounts beheren</button>
-                            <button type="submit" class="btn btn-primary" name="logout-submit">Uitloggen</button>
+                            <form action="" method="post">
+                                <?php
+                                    if (IsAdmin())
+                                    {
+                                        echo "<input type=\"submit\" class=\"btn btn-primary\" name=\"toggle-account-management\" value=\"Accounts beheren\">";
+                                    }
+                                ?>
+                                <input type="submit" class="btn btn-primary" name="logout-submit" value="Uitloggen">
+                            </form>
                         </li>
                     </ul>
                 </nav>
