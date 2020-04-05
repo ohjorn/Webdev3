@@ -125,6 +125,13 @@ if (!empty($_POST["logout-submit"]))
 }
 //// ^^^^
 
+
+if (!empty($_POST["toggle-account-management"]))
+{
+  header("Location: UserAdministration.php");
+  exit;
+}
+
 //MainMenu ^^^^
 
 //UserAdministration.php
