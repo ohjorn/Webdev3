@@ -83,12 +83,14 @@ function validateUser($Username, $Password)
 
 if ((!empty($_POST["Login"])) && ($_POST["Login"] == "Inloggen"))
 {
+  $Username = null;
   $Username = filter_var($_POST["Username"], FILTER_SANITIZE_STRING);
   $Username = validate($Username);
+  $Password = null;
   $Password = filter_var($_POST["Password"], FILTER_SANITIZE_STRING);
   $Password = validate($Password);
 
-  if (!empty($_POST["Username"]) && (!empty($_POST["Password"])) && validateUser($Username, $Password))
+  if (($Password != null) && ($Username != null) && validateUser($Username, $Password))
   {
     if (session_status() == PHP_SESSION_NONE) 
     {
@@ -96,10 +98,22 @@ if ((!empty($_POST["Login"])) && ($_POST["Login"] == "Inloggen"))
     }
     $_SESSION['Username'] = $Username;
     header("Location: MainMenu.php");
+    exit;
   }
   else 
   {
-    echo"De ingevoerde gegevens zijn incorrect.";
+    if (session_status() == PHP_SESSION_NONE) 
+    {
+      session_start();
+    }
+    $_SESSION['WrongInput'] = "
+      De ingevoerde gegevens zijn incorrect.<br>
+      Als u uw wachtwood vergeten bent <br>
+      kunt u contact opnemen met<br>
+      Ton Koppers.<br>
+    ";
+    header("Location: LoginScreen.php");
+    exit;
   }
 }
 //// ^^^^
