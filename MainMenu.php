@@ -27,6 +27,30 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <title>Main menu</title>
+
+<?php
+  $conn = ConnectDB(); 
+  $UniekeID = 1;
+  $sql = "SELECT LicentieID, LicentieNaam, Beschrijving, Opmerking, InstallatieOmschrijving, LaatstAangepast, Verlopen, GebruikerID, VerloopDatum FROM licentie WHERE LicentieID = :UniekeID ORDER BY LicentieNaam ASC";
+  $stmt = $conn->prepare($sql);
+  $stmt->bindValue("UniekeID", $UniekeID, PDO::PARAM_STR);
+  $stmt->execute();
+
+  // voor elke rij in de table gaat hij erlangs om de array te vullen
+  foreach ($stmt->fetchAll() as $row) 
+  {
+      //zet de gegevens in een array.
+    $LicentieID = $row["LicentieID"]; 
+    $LicentieNaam = $row["LicentieNaam"];
+    $Beschrijving = $row["Beschrijving"];
+    $Opmerking = $row["Opmerking"];
+    $InstallatieOmschrijving = $row["InstallatieOmschrijving"];
+    $LaatstAangepast = $row["LaatstAangepast"];
+    $Verlopen = $row["Verlopen"];
+    $GebruikerID = $row["GebruikerID"];
+    $VerloopDatum = $row["VerloopDatum"];
+  }
+?>
     <style>
         .wrapper {
             display: flex;
@@ -72,7 +96,7 @@
                     <div class="overflow-auto">
                         <ul class="list-unstyled components">
                             <li>
-                                <a href="">Licentie 1</a>
+                                <a href=""><?php echo "<td>".$LicentieNaam."</td>"; ?></a>
                             </li>
                             <li>
                                 <a href="">Licentie 2</a>
@@ -114,14 +138,22 @@
                 </nav>
                 <div class="row bg-light">
                     <div class="col-4">
-                        <h2><b>Informatie</b></h2>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. In, adipisci. Sapiente voluptatem numquam aliquam beatae, dolorum, nostrum dignissimos voluptatum, molestias harum ex ullam omnis reprehenderit debitis? Quam impedit eius velit.</p>
+                        <h2><b>Beschrijving</b></h2>
+                        <p><?php echo "<td>".$Beschrijving."</td>";?></p>
                         <br>
-                        <h2><b>Informatie</b></h2>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facere quas veniam omnis odio animi. Dolor nemo ipsum quo voluptatem quaerat laboriosam animi, alias culpa vitae, voluptatibus, nulla necessitatibus minima porro?</p>
+                        <h2><b>Opmerking</b></h2>
+                        <p><?php echo "<td>".$Opmerking."</td>";?></p>
                         <br>
-                        <h2><b>Informatie</b></h2>
-                        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Qui pariatur inventore minus quidem, quis deserunt non eligendi. Corrupti, recusandae at eaque illum quibusdam corporis exercitationem cum fuga, veritatis, earum voluptatibus!</p>
+                        <h2><b>Installatie omschrijving</b></h2>
+                        <p><?php echo "<td>".$InstallatieOmschrijving."</td>";?></p>
+                        <br> 
+                        <h2><b>Verloop datum</b></h2>
+                        <p><?php echo "<td>".$VerloopDatum."</td>";?></p>
+                        <br> 
+                        <h2><b>Laatst aangepast</b></h2>
+                        <p><?php echo "<td>".$LaatstAangepast."</td>";?></p>
+                        <br> 
+                        
                     </div>
                     <div class="col-6">
                         <br>
