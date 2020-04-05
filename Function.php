@@ -139,11 +139,215 @@ if (!empty($_POST["logout-submit"]))
 }
 //// ^^^^
 
-
 if (!empty($_POST["toggle-account-management"]))
 {
   header("Location: UserAdministration.php");
   exit;
+}
+
+function GetLicenties()
+{
+  $conn = connectDB();
+  try
+  {
+    $sql = "SELECT LicentieID, LicentieNaam FROM licentie ORDER BY LicentieNaam asc";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute();
+    foreach ($stmt->fetchAll() as $row) 
+    {
+      echo "
+        <li>
+          <form action=\"Function.php\" method=\"post\">
+            <input type=\"hidden\" name=\"LicenseID\" value=\"".$row["LicentieID"]."\">
+            <input type=\"submit\"name=\"LicenseName\"value=\"".$row["LicentieNaam"]."\">
+          </form>
+        </li>
+      ";
+    }
+  }
+  catch (PDOException $ex) 
+  {
+    echo "$ex";
+  } 
+}
+
+function LoadLicense()
+{
+  if (session_status() == PHP_SESSION_NONE) 
+  {
+    session_start();
+  }
+  if (isset($_SESSION["LicenseName"]))
+  {
+    echo "
+    <div class=\"col-4\">
+      <h2><b>Beschrijving</b></h2>
+      <p><td>".$_SESSION["Description"]."</td></p>
+      <br>
+      <h2><b>Opmerking</b></h2>
+      <p><td>".$_SESSION["Comment"]."</td></p>
+      <br>
+      <h2><b>Installatie omschrijving</b></h2>
+      <p><td>".$_SESSION["InstallDesc"]."</td></p>
+      <br> 
+      <h2><b>Verloop datum</b></h2>
+      <p><td>".$_SESSION["ExpirationDate"]."</td></p>
+      <br> 
+      <h2><b>Laatst aangepast</b></h2>
+      <p><td>".$_SESSION["LastChanged"]."</td></p>
+      <br> 
+    </div>
+    ";
+    unset($_SESSION["LicenseName"]);
+    unset($_SESSION["Description"]);
+    unset($_SESSION["Comment"]);
+    unset($_SESSION["InstallDesc"]);
+    unset($_SESSION["LastChanged"]);
+    unset($_SESSION["ExpirationDate"]);
+    exit;
+  }
+  else
+  {
+    exit;
+  }
+}
+
+function AddLicenseForm()
+{
+  echo "
+    <div class=\"col-4\">
+      <form action=\"Function.php\" method=\"post\">
+        <input type=\"text\" name=\"LicenseName\" placeholder=\"Licentie naam\">
+        <br><input type=\"text\" name=\"Description\" placeholder=\"Omschrijving van de licentie\">
+        <br><input type=\"text\" name=\"InstallDesc\" placeholder=\"Omschrijving van de installatie\">
+        <br>Dag dat de licentie verloopt: <input type=\"text\" name=\"ExpirationDate\" placeholder=\"dd/mm/yyyy\">
+        <br><input type=\"submit\" class=\"btn btn-primary\" name=\"AddLicense\" value=\"Licentie toevoegen\">
+      </form>
+    </div>
+  ";
+}
+
+function AddLicense($LicenseName, $Description, $InstallDesc, $ExpirationDate)
+{
+  date_default_timezone_set('Europe/Amsterdam');
+  $CurrentDate = date('Y/m/d');
+
+  $sql = "INSERT INTO `licentie` (`LicentieID`, `LicentieNaam`, `Beschrijving`, `Opmerking`, `InstallatieOmschrijving`, `VerloopDatum`, `GebruikerID`, `LaatstAangepast`) VALUES (NULL, :LicenseName, :Description, NULL, :InstallDesc, :ExpirationDate, :UserID, :CurrentDate);";
+  $conn = connectDB();
+  $stmt = $conn->prepare($sql);
+  $stmt->bindValue("LicenseName", $LicenseName, PDO::PARAM_STR);
+  $stmt->bindValue("Description", $Description, PDO::PARAM_STR);
+  $stmt->bindValue("InstallDesc", $InstallDesc, PDO::PARAM_STR);
+  $stmt->bindValue("ExpirationDate", $ExpirationDate, PDO::PARAM_STR);
+  $stmt->bindValue("UserID", 123, PDO::PARAM_STR);
+  $stmt->bindValue("CurrentDate", $CurrentDate, PDO::PARAM_STR);
+  if($stmt->execute())
+  {
+    header("Location: MainMenu.php");
+  }
+}
+
+if (isset($_POST["AddLicense"]))
+{
+  if (!(empty($_POST["LicenseName"])))
+  {
+    $LicenseName = $_POST["LicenseName"];
+
+    if (!(empty($_POST["Description"])))
+    {
+      $Description = $_POST["Description"];
+    }
+    else 
+    {
+      $Description = null;
+    }
+
+    if (!(empty($_POST["InstallDesc"])))
+    {
+      $InstallDesc = $_POST["InstallDesc"];
+    }
+    else
+    {
+      $InstallDesc = null;
+    }
+
+    if (!(empty($_POST["ExpirationDate"])))
+    {
+      $temp = $_POST["ExpirationDate"];
+      if (($temp[2] == "/") && ($temp[5] == "/") && (strlen($temp) == 10))
+      {
+        $DateDay = substr("$temp", 0, 2);
+        $DateMonth = substr("$temp", 3, 2);
+        $DateYear = substr("$temp", 6, 4);
+        if (checkdate($DateMonth, $DateDay, $DateYear))
+        {
+          $ExpirationDate = $DateYear . "-" . $DateMonth . "-" . $DateDay;
+          AddLicense($LicenseName, $Description, $InstallDesc, $ExpirationDate);
+        }
+        else 
+        {
+          echo "fout";
+        }
+      }
+      else
+      {
+        echo "fout";
+      }
+    }
+    else
+    {
+      $ExpirationDate = null;
+      AddLicense($LicenseName, $Description, $InstallDesc, $ExpirationDate);
+    }
+  }
+  else 
+  {
+    echo "fout";
+  }
+}
+
+if (isset($_POST["LicenseName"]))
+{
+  if ($_POST["LicenseName"] && $_POST["LicenseID"])
+  {
+    $LicenseID = $_POST["LicenseID"];
+    try 
+    {
+      $conn = connectDB();
+      $sql = "SELECT LicentieNaam, Beschrijving, Opmerking, InstallatieOmschrijving, VerloopDatum, GebruikerID, LaatstAangepast FROM licentie WHERE LicentieID = :LicenseID;";
+      $stmt = $conn->prepare($sql);
+      $stmt->bindValue("LicenseID", $LicenseID, PDO::PARAM_STR);
+      if ($stmt->execute())
+      {
+        if (session_status() == PHP_SESSION_NONE) 
+        {
+          session_start();
+        }
+        foreach ($stmt->fetchAll() as $row)
+        { 
+          $_SESSION["LicenseName"] = $row["LicentieNaam"];
+          $_SESSION["Description"] = $row["Beschrijving"];
+          $_SESSION["Comment"] = $row["Opmerking"];
+          $_SESSION["InstallDesc"] = $row["InstallatieOmschrijving"];
+          $_SESSION["LastChanged"] = $row["LaatstAangepast"];
+          if ($row["GebruikerID"] != null)
+          {
+            $_SESSION["UserID"] = $row["GebruikerID"];
+          }
+          else
+          {
+            $_SESSION["UserID"] = "-";
+          }
+          $_SESSION["ExpirationDate"] = $row["VerloopDatum"];
+          header("Location: MainMenu.php");
+        }
+      }
+    }
+    catch (PDOException $ex) 
+    {
+      echo "$ex";
+    }
+  }
 }
 
 //MainMenu ^^^^
