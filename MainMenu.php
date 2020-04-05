@@ -128,7 +128,7 @@
                                 <?php
                                     if (IsAdmin())
                                     {
-                                        echo "<button type=\"submit\" onclick=\"window.location.href = 'UserAdministration.php';\" class=\"btn btn-primary\" name=\"toggle-account-management\">Accounts beheren</button>";
+                                        echo "<input type=\"submit\" class=\"btn btn-primary\" name=\"toggle-account-management\" value=\"Accounts beheren\">";
                                     }
                                 ?>
                                 <input type="submit" class="btn btn-primary" name="logout-submit" value="Uitloggen">
