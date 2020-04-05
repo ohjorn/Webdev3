@@ -19,7 +19,7 @@
  <img src="usericon.png"/>
 <form action="LoginScreen.php" method="post" name="form">
   <br><input type="str" name="Username" placeholder="Gebruikersnaam" ><br>
-  <br><input type="str" name="Password" placeholder="Wachtwoord"><br><br>
+  <br><input type="password" name="Password" placeholder="Wachtwoord"><br><br>
   <input type="submit" name="Login" value="Inloggen" class="btn-login"><br><br>
   Als u uw wachtwood bent vergeten <br>
   kunt u contact opnemen met<br>
