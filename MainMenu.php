@@ -33,7 +33,6 @@
       width: 100%;
       align-items: stretch;
     }
-
     #sidebar {
       padding-left: 10px;
     }
