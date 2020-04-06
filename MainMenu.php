@@ -82,13 +82,13 @@
                   if (IsAdmin())
                   {
                     echo "
-                      <form action=\"Function.php\" method=\"post\">
+                      <form action=\"\" method=\"post\">
                         <input type=\"submit\" class=\"btn btn-primary\" name=\"Add-submit\" style= \"margin-bottom: 10px;\" value=\"Licentie toevoegen\">
                       </form>
                     ";
                   }
                 ?>
-              </div>
+              </div>             
             </div>
           </div>                    
         </nav>                
@@ -116,9 +116,16 @@
         </nav>
         <div class="row bg-light">
           <?php 
-            if (isset($_POST["Add-submit"]))
+            if(isset($_POST["Edit-submit"]))
+            {
+              EditLicenseForm();
+            }
+            else if (isset($_POST["Add-submit"]))
             {
               AddLicenseForm();
+            }
+            else if(isset($_POST["Delete-submit"])){
+              DeleteLicense();
             }
             else
             {
