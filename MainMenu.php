@@ -31,7 +31,7 @@
 <?php
   $conn = ConnectDB(); 
   $UniekeID = 1;
-  $sql = "SELECT LicentieID, LicentieNaam, Beschrijving, Opmerking, InstallatieOmschrijving, LaatstAangepast, Verlopen, GebruikerID, VerloopDatum FROM licentie WHERE LicentieID = :UniekeID ORDER BY LicentieNaam ASC";
+  $sql = "SELECT * FROM licentie WHERE LicentieID = :UniekeID ORDER BY LicentieNaam ASC";
   $stmt = $conn->prepare($sql);
   $stmt->bindValue("UniekeID", $UniekeID, PDO::PARAM_STR);
   $stmt->execute();
@@ -74,6 +74,7 @@
                     </div>
                     <div class="row">
                         <div class="col">
+                        <!--Sorteer menu-->
                             <a href="#sortingmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Sorteer op</a>
                             <ul class="collapse list-unstyled" id="sortingmenu">
                                 <li>
@@ -87,6 +88,7 @@
                                 </li>
                             </ul>
                         </div>
+                        <!--Sorteer knop-->
                         <div class="col">
                             <div class="form-group" id="submitbtns">                        
                                 <button type="submit" class="btn btn-primary" name="search-submit">Zoeken</button>
@@ -94,6 +96,7 @@
                         </div>
                     </div>
                     <div class="overflow-auto">
+                    <!--Licentie lijst-->
                         <ul class="list-unstyled components">
                             <li>
                                 <a href=""><?php echo "<td>".$LicentieNaam."</td>"; ?></a>
@@ -136,6 +139,7 @@
                         </li>
                     </ul>
                 </nav>
+                <!--Informatie van gekozen licentie-->
                 <div class="row bg-light">
                     <div class="col-4">
                         <h2><b>Beschrijving</b></h2>
@@ -172,8 +176,8 @@
                     <br>
                     <div class="col-8">
                         <div class="bg-secondary">
-                        <h3><b>Informatie</b></h3>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit ex delectus quod pariatur culpa soluta nostrum fugit quibusdam a asperiores saepe nesciunt mollitia dolor, necessitatibus et odio incidunt eum. Doloremque. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sequi, modi numquam in, harum fugiat culpa veniam asperiores aspernatur placeat quidem voluptate eveniet laudantium! Eius aliquid excepturi aperiam labore sit velit.</p>
+                            <h3><b>Informatie</b></h3>
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit ex delectus quod pariatur culpa soluta nostrum fugit quibusdam a asperiores saepe nesciunt mollitia dolor, necessitatibus et odio incidunt eum. Doloremque. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sequi, modi numquam in, harum fugiat culpa veniam asperiores aspernatur placeat quidem voluptate eveniet laudantium! Eius aliquid excepturi aperiam labore sit velit.</p>
                         </div>
                     </div>
                 </div>
