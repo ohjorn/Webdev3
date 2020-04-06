@@ -64,7 +64,7 @@
             </div>
             <div class="col">
               <div class="form-group" id="submitbtns">                        
-                <button type="submit" class="btn btn-primary" name="search-submit">Zoeken</button>
+                <button type="submit" class="btn btn-primary" id="find" name="search-submit">Zoeken</button>
               </div>
             </div>
           </div>
@@ -80,8 +80,9 @@
               <div class="col-2 text-center" id="submitbtns">    
                 <form action="" method="post">
                   <input type="submit" class="btn btn-primary" name="Add-submit" style= "margin-bottom: 10px;" value="Licentie toevoegen">
-                </form>
+                </form>             
               </div>
+             
             </div>
           </div>                    
         </nav>                
@@ -109,16 +110,20 @@
         </nav>
         <div class="row bg-light">
           <?php 
-            if (isset($_POST["Add-submit"]))
+            if (isset($_POST["Edit-submit"]))
+            {
+              EditLicenseForm();
+            }
+            else if (isset($_POST["Add-submit"]))
             {
               AddLicenseForm();
             }
             else
             {
               LoadLicense();
-            }
-          ?>
-        </div>
+            }          
+            ?>
+        </div>    
       </div>
     </div>
   </main>
