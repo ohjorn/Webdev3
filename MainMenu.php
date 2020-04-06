@@ -77,10 +77,17 @@
           </div>
           <div class="fixed-bottom">
             <div class="row">
-              <div class="col-2 text-center" id="submitbtns">    
-                <form action="" method="post">
-                  <input type="submit" class="btn btn-primary" name="Add-submit" style= "margin-bottom: 10px;" value="Licentie toevoegen">
-                </form>
+              <div class="col-2 text-center" id="submitbtns">   
+                <?php
+                  if (IsAdmin())
+                  {
+                    echo "
+                      <form action=\"Function.php\" method=\"post\">
+                        <input type=\"submit\" class=\"btn btn-primary\" name=\"Add-submit\" style= \"margin-bottom: 10px;\" value=\"Licentie toevoegen\">
+                      </form>
+                    ";
+                  }
+                ?>
               </div>
             </div>
           </div>                    
