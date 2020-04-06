@@ -196,15 +196,8 @@ function LoadLicense()
       <h2><b>Laatst aangepast</b></h2>
       <p><td>".$_SESSION["LastChanged"]."</td></p>
       <br> 
-      <div class='col-2 text-center' id='submitbtns'>    
-      <form action='' method='post'>
-        <input type='submit' class='btn btn-success' name='Edit-submit' style= 'margin-bottom: 10px;' value='Licentie bewerken'>
-      </form>             
     </div>
-      </div>
     ";
-    
-    $_SESSION["tempLicenseName"] = $_SESSION["LicenseName"];
     unset($_SESSION["LicenseName"]);
     unset($_SESSION["Description"]);
     unset($_SESSION["Comment"]);
@@ -233,62 +226,6 @@ function AddLicenseForm()
     </div>
   ";
 }
-
-function EditLicenseForm()
-{
- $sql = "SELECT LicentieID, LicentieNaam, Beschrijving, Opmerking, InstallatieOmschrijving, LaatstAangepast FROM licentie WHERE LicentieNaam = :LicenseName"; 
- $conn = connectDB();
- $stmt = $conn->prepare($sql);
- $stmt->bindParam("LicenseName", $_SESSION["tempLicenseName"], PDO::PARAM_STR);
- 
- $stmt->execute();
- $result = $stmt->fetch(PDO::FETCH_ASSOC);
- if (session_status() == PHP_SESSION_NONE) 
-    {
-      session_start();
-    }
- $_SESSION["tempID"] = $result["LicentieID"];
-  echo "
-  <div class=\"col-4\">
-  bewerken
-  <form action=\"Function.php\" method=\"post\">
-    <input type=\"text\" name=\"LicenseName2\" placeholder=\"Licentie naam\" value=" . $result['LicentieNaam']  .">
-    <br><input type=\"text\" name=\"Description2\" placeholder=\"Omschrijving van de licentie\" value=" . $result['Beschrijving']  .">
-    <br><input type=\"text\" name=\"InstallDesc2\" placeholder=\"Omschrijving van de installatie\" value=" . $result['InstallatieOmschrijving']  .">
-    <br><input type=\"submit\" class=\"btn btn-success\" name=\"EditLicense\" value=\"Licentie bewerken\">
-  </form>
-</div>
-  ";
-}
-
-function EditLicense($LicenseName, $Description, $InstallDesc, $ExpirationDate)
-{
-  date_default_timezone_set('Europe/Amsterdam');
-  $CurrentDate = date('Y/m/d');
-  if (session_status() == PHP_SESSION_NONE) 
-    {
-      session_start();
-    }
-
-  $sql ="UPDATE licentie SET LicentieNaam=:LicenseName, Beschrijving=:Description, InstallatieOmschrijving=:InstallDesc,LaatstAangepast=:CurrentDate WHERE LicentieID=:LicenseID";
-  $conn = connectDB();
-  $stmt = $conn->prepare($sql);
-  $stmt->bindParam(":LicenseID", $_SESSION["tempID"], PDO::PARAM_STR);
-  $stmt->bindParam(":LicenseName", $LicenseName, PDO::PARAM_STR);
-  $stmt->bindParam(":Description", $Description, PDO::PARAM_STR);
-  $stmt->bindParam(":InstallDesc", $InstallDesc, PDO::PARAM_STR);
-  $stmt->bindParam(":CurrentDate", $CurrentDate);
-  $res = $stmt->fetch(PDO::FETCH_ASSOC);
-  if($stmt->execute()){
-    unset($_SESSION["tempID"]);
-    unset( $_SESSION["tempLicenseName"]);
-    header("Location: MainMenu.php");    
-  }
- 
-
-
-}
-
 
 function AddLicense($LicenseName, $Description, $InstallDesc, $ExpirationDate)
 {
@@ -366,66 +303,6 @@ if (isset($_POST["AddLicense"]))
   else 
   {
     echo "fout";
-  }
-}
-
-if (isset($_POST["EditLicense"]))
-{
-  if (!(empty($_POST["LicenseName2"])))
-  {
-    $LicenseName = $_POST["LicenseName2"];
-    
-
-    if (!(empty($_POST["Description2"])))
-    {
-      $Description = $_POST["Description2"];
-    }
-    else 
-    {
-      $Description = null;
-    }
-
-    if (!(empty($_POST["InstallDesc2"])))
-    {
-      $InstallDesc = $_POST["InstallDesc2"];
-    }
-    else
-    {
-      $InstallDesc = null;
-    }
-
-    if (!(empty($_POST["ExpirationDate2"])))
-    {
-      $temp = $_POST["ExpirationDate2"];
-      if (($temp[2] == "/") && ($temp[5] == "/") && (strlen($temp) == 10))
-      {
-        $DateDay = substr("$temp", 0, 2);
-        $DateMonth = substr("$temp", 3, 2);
-        $DateYear = substr("$temp", 6, 4);
-        if (checkdate($DateMonth, $DateDay, $DateYear))
-        {
-          $ExpirationDate = $temp;
-          EditLicense($LicenseName, $Description, $InstallDesc, $ExpirationDate);
-        }
-        else 
-        {
-          echo "fout";
-        }
-      }
-      else
-      {
-        echo "fout2";
-      }
-    }
-    else
-    {
-      $ExpirationDate = null;
-      EditLicense($LicenseName, $Description, $InstallDesc, $ExpirationDate);
-    }
-  }
-  else 
-  {
-    echo "fout3";
   }
 }
 
