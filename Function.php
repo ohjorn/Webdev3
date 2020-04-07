@@ -254,13 +254,17 @@ Function GetUserName($UserID)
 function AddLicenseForm()
 {
   echo "
-    <div class=\"col-4\">
+    <div class=\"col-7\">
       <form action=\"Function.php\" method=\"post\">
-        <input type=\"text\" name=\"LicenseName\" placeholder=\"Licentie naam\">
-        <br><input type=\"text\" name=\"Description\" placeholder=\"Omschrijving van de licentie\">
-        <br><input type=\"text\" name=\"InstallDesc\" placeholder=\"Omschrijving van de installatie\">
-        <br>Dag dat de licentie verloopt: <input type=\"date\" name=\"ExpirationDate\">
-        <br><input type=\"submit\" class=\"btn btn-primary\" name=\"AddLicense\" value=\"Licentie toevoegen\">
+        <label>Licentie naam:</label><br>
+        <input type=\"text\" name=\"LicenseName\"><br>
+        <label>Omschrijving van de licentie:</label><br>
+        <textarea name = \"Description\" rows = \"3\" cols = \"80\"></textarea><br>
+        <label>Omschrijving van de installatie:</label><br>
+        <textarea name = \"InstallDesc\" rows = \"3\" cols = \"80\"></textarea><br>
+        <label>Licentie verloop datum:</label><br>
+        <input type=\"date\" name=\"ExpirationDate\"><br><br>
+        <input type=\"submit\" class=\"btn btn-primary\" name=\"AddLicense\" value=\"Licentie toevoegen\">
       </form>
     </div>
   ";
@@ -284,10 +288,15 @@ function EditLicenseForm()
   <div class=\"col-4\">
   bewerken
   <form method=\"post\">
-    <input type=\"text\" name=\"LicenseName2\" placeholder=\"Licentie naam\" value=" . $result['LicentieNaam']  .">
-    <br><input type=\"text\" name=\"Description2\" placeholder=\"Omschrijving van de licentie\" value=" . $result['Beschrijving']  .">
-    <br><input type=\"text\" name=\"InstallDesc2\" placeholder=\"Omschrijving van de installatie\" value=" . $result['InstallatieOmschrijving']  .">
-    <br><input type=\"submit\" class=\"btn btn-success\" name=\"EditLicense\" value=\"Licentie bewerken\">
+    <label>Licentie naam:</label><br>
+    <input type=\"text\" name=\"LicenseName\" value\"".$result["LicentieNaam"]."\"><br>
+    <label>Omschrijving van de licentie:</label><br>
+    <textarea name = \"Description\" rows = \"3\" cols = \"80\">".$result["Beschrijving"]."</textarea><br>
+    <label>Omschrijving van de installatie:</label><br>
+    <textarea name = \"InstallDesc\" rows = \"3\" cols = \"80\">".$result["InstallatieOmschrijving"]."</textarea><br>
+    <label>Licentie verloop datum:</label><br>
+    <input type=\"date\" name=\"ExpirationDate\"><br><br>
+    <input type=\"submit\" class=\"btn btn-success\" name=\"EditLicense\" value=\"Licentie bewerken\">
     <br>
   </form>
 </div>
@@ -412,32 +421,32 @@ if (isset($_POST["AddLicense"]))
 
 if (isset($_POST["EditLicense"]))
 {
-  if (!(empty($_POST["LicenseName2"])))
+  if (!(empty($_POST["LicenseName"])))
   {
-    $LicenseName = $_POST["LicenseName2"];
+    $LicenseName = $_POST["LicenseName"];
     
 
-    if (!(empty($_POST["Description2"])))
+    if (!(empty($_POST["Description"])))
     {
-      $Description = $_POST["Description2"];
+      $Description = $_POST["Description"];
     }
     else 
     {
       $Description = null;
     }
 
-    if (!(empty($_POST["InstallDesc2"])))
+    if (!(empty($_POST["InstallDesc"])))
     {
-      $InstallDesc = $_POST["InstallDesc2"];
+      $InstallDesc = $_POST["InstallDesc"];
     }
     else
     {
       $InstallDesc = null;
     }
 
-    if (!(empty($_POST["ExpirationDate2"])))
+    if (!(empty($_POST["ExpirationDate"])))
     {
-      $temp = $_POST["ExpirationDate2"];
+      $temp = $_POST["ExpirationDate"];
       if (($temp[2] == "/") && ($temp[5] == "/") && (strlen($temp) == 10))
       {
         $DateDay = substr("$temp", 0, 2);
@@ -455,7 +464,7 @@ if (isset($_POST["EditLicense"]))
       }
       else
       {
-        echo "fout2";
+        echo "fout";
       }
     }
     else
@@ -466,7 +475,7 @@ if (isset($_POST["EditLicense"]))
   }
   else 
   {
-    echo "fout3";
+    echo "fout";
   }
 }
 
