@@ -1,6 +1,10 @@
 <?php 
 require("Connect.php");
 
+if (session_status() == PHP_SESSION_NONE) 
+{
+  session_start();
+}
 //Multiple files
 
 ////Trims the string.
@@ -65,10 +69,6 @@ function validateUser($Username, $Password)
     foreach ($stmt->fetchAll() as $row) 
     {
       $result = $row["Wachtwoord"];
-      if (session_status() == PHP_SESSION_NONE) 
-      {
-        session_start();
-      }
       $_SESSION['UserID'] = $row["GebruikerID"];
     }
   }
@@ -97,20 +97,13 @@ if ((!empty($_POST["Login"])) && ($_POST["Login"] == "Inloggen"))
 
   if (($Password != null) && ($Username != null) && validateUser($Username, $Password))
   {
-    if (session_status() == PHP_SESSION_NONE) 
-    {
-      session_start();
-    }
     $_SESSION['Username'] = $Username;
+    $_SESSION["UserID"] = GetUserID($Username);
     header("Location: MainMenu.php");
     exit;
   }
   else 
   {
-    if (session_status() == PHP_SESSION_NONE) 
-    {
-      session_start();
-    }
     $_SESSION['WrongInput'] = "
       De ingevoerde gegevens zijn incorrect.<br>
       Als u uw wachtwood vergeten bent <br>
@@ -150,7 +143,7 @@ if (!empty($_POST["toggle-account-management"]))
   exit;
 }
 
-function GetLicenties()
+function GetLicense()
 {
   $conn = connectDB();
   try
@@ -178,21 +171,14 @@ function GetLicenties()
 
 function LoadLicense()
 {
-  if (session_status() == PHP_SESSION_NONE) 
-  {
-    session_start();
-  }
   if (isset($_SESSION["LicenseNameShow"]))
   {
     echo "
-    <div class=\"col-4\">
+    <div class=\"col-7\">
       <h2><b>Licentie naam</b></h2>
       <p><td>".$_SESSION["LicenseNameShow"]."</td></p>
       <h2><b>Beschrijving</b></h2>
       <p><td>".$_SESSION["DescriptionShow"]."</td></p>
-      <br>
-      <h2><b>Opmerking</b></h2>
-      <p><td>".$_SESSION["CommentShow"]."</td></p>
       <br>
       <h2><b>Installatie omschrijving</b></h2>
       <p><td>".$_SESSION["InstallDescShow"]."</td></p>
@@ -202,29 +188,75 @@ function LoadLicense()
       <br> 
       <h2><b>Laatst aangepast</b></h2>
       <p><td>".$_SESSION["LastChangedShow"].", Door: ".GetUserName($_SESSION["UserIDShow"])."</td></p>
-      <br> 
-    </div>
-    <div class='col-2 text-center' id='submitbtns'>    
-    <form action='' method='post'>
-      <input type='submit' class='btn btn-success' name='Edit-submit' style= 'margin-bottom: 10px;' value='Licentie bewerken'>
-      <input type=\"submit\" class=\"btn btn-danger\" name=\"Delete-submit\"  style= 'margin-bottom: 10px;' value=\"Licentie Verwijderen\">
-    </form>             
+      <br>
+      <br>
+      <form action=\"Function.php\" method=\"post\">
+        <label>Opmerking:</label><br>
+        <textarea name = \"Comment\" rows = \"3\" cols = \"80\"></textarea><br>
+        <input type=\"submit\" class=\"btn btn-primary\" name=\"AddComment\" value=\"Opmerking plaatsen\">
+      </form><br>
+      <form action=\"MainMenu.php\" method=\"post\">
+        <input type=\"submit\" class=\"btn btn-success\" name=\"Edit-submit\" style= \"margin-bottom: 10px;\" value=\"Licentie bewerken\">
+        <input type=\"submit\" class=\"btn btn-danger\" name=\"Delete-submit\"  style= \"margin-bottom: 10px;\" value=\"Licentie Verwijderen\">
+      </form>
     </div>
     ";
 
     $_SESSION["tempLicenseName"] = $_SESSION["LicenseNameShow"];  
-    unset($_SESSION["LicenseNameShow"]);
-    unset($_SESSION["DescriptionShow"]);
-    unset($_SESSION["CommentShow"]);
-    unset($_SESSION["InstallDescShow"]);
-    unset($_SESSION["LastChangedShow"]);
-    unset($_SESSION["ExpirationDateShow"]);
-    unset($_SESSION["UserIDShow"]);
-    exit;
   }
   else
   {
     exit;
+  }
+}
+
+if (isset($_POST["AddComment"]))
+{
+  if ($_POST["Comment"] != null)
+  {
+    AddComment($_POST["Comment"], $_SESSION["UserID"], $_SESSION["LicenseID"]);
+  }
+  else
+  {
+    header("Location: MainMenu.php");
+    exit;
+  }
+}
+
+function AddComment($Comment, $UserID, $LicenseID)
+{
+  $sql = "INSERT INTO `opmerking` (`LicentieID`, `OpmerkingID`, `GebruikerID`, `Opmerking`) VALUES (:LicenseID, NULL, :UserID, :Comment);";
+  $conn = connectDB();
+  $stmt = $conn->prepare($sql);
+  $stmt->bindValue("LicenseID", $LicenseID, PDO::PARAM_STR);
+  $stmt->bindValue("UserID", $UserID, PDO::PARAM_STR);
+  $stmt->bindValue("Comment", $Comment, PDO::PARAM_STR);
+  if($stmt->execute())
+  {
+    header("Location: MainMenu.php");
+  }
+}
+
+Function LoadComments()
+{
+  if (isset($_SESSION["LicenseNameShow"]))
+  {
+    $LicenseID = $_SESSION["LicenseID"];
+    $conn = connectDB();
+    $sql = "SELECT Opmerking, GebruikerID, GeplaatstOp FROM opmerking WHERE LicentieID = :LicenseID ORDER BY OpmerkingID ASC;";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindValue("LicenseID", $LicenseID, PDO::PARAM_STR);
+    if ($stmt->execute())
+    {
+      echo "<h2><b>Comments</b></h2>";
+      foreach ($stmt->fetchAll() as $row)
+      { 
+        echo "
+          \"".$row["Opmerking"]."\"<br>
+          -".GetUserName($row["GebruikerID"])." ".$row["GeplaatstOp"]."<br>
+        ";
+      }
+    }
   }
 }
 
@@ -241,6 +273,29 @@ Function GetUserName($UserID)
       foreach ($stmt->fetchAll() as $row)
       { 
         return $row["UniekeLoginNaam"];
+        exit;
+      }
+    }
+  }
+  catch (PDOException $ex) 
+  {
+    echo "$ex";
+  }
+}
+
+Function GetUserID($Username)
+{
+  try 
+  {
+    $conn = connectDB();
+    $sql = "SELECT GebruikerID FROM gebruiker WHERE UniekeLoginNaam = :Username;";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindValue("Username", $Username, PDO::PARAM_STR);
+    if ($stmt->execute())
+    {
+      foreach ($stmt->fetchAll() as $row)
+      { 
+        return $row["GebruikerID"];
         exit;
       }
     }
@@ -279,10 +334,6 @@ function EditLicenseForm()
  
  $stmt->execute();
  $result = $stmt->fetch(PDO::FETCH_ASSOC);
- if (session_status() == PHP_SESSION_NONE) 
-    {
-      session_start();
-    }
  $_SESSION["tempID"] = $result["LicentieID"];
   echo "
   <div class=\"col-4\">
@@ -305,29 +356,31 @@ function EditLicenseForm()
 
 function DeleteLicense()
 {
-$sql = "DELETE FROM licentie WHERE LicentieNaam=:LicenseName";
-$conn = connectDB();
-$stmt = $conn->prepare($sql);
-$stmt->bindParam(":LicenseName",  $_SESSION["tempLicenseName"], PDO::PARAM_STR);
-if($stmt->execute())
-{
-  unset($_SESSION["tempLicenseName"]);
-?>  <script type="text/javascript">
-window.location.href = 'MainMenu.php';
-</script>
-<?php
-}
- 
+  $sql = "DELETE FROM licentie WHERE LicentieNaam=:LicenseName";
+  $conn = connectDB();
+  $stmt = $conn->prepare($sql);
+  $stmt->bindParam(":LicenseName",  $_SESSION["tempLicenseName"], PDO::PARAM_STR);
+  if($stmt->execute())
+  {
+    unset($_SESSION["tempLicenseName"]);
+  ?>  <script type="text/javascript">
+  window.location.href = 'MainMenu.php';
+  </script>
+  <?php
+  }
+  unset($_SESSION["LicenseNameShow"]);
+  unset($_SESSION["DescriptionShow"]);
+  unset($_SESSION["InstallDescShow"]);
+  unset($_SESSION["LastChangedShow"]);
+  unset($_SESSION["ExpirationDateShow"]);
+  unset($_SESSION["UserIDShow"]);
+  unset($_SESSION["LicenseIDShow"]);
 }
 
 function EditLicense($LicenseName, $Description, $InstallDesc, $ExpirationDate)
 {
   date_default_timezone_set('Europe/Amsterdam');
   $CurrentDate = date('Y/m/d');
-  if (session_status() == PHP_SESSION_NONE) 
-    {
-      session_start();
-    }
 
   $sql ="UPDATE licentie SET LicentieNaam=:LicenseName, Beschrijving=:Description, InstallatieOmschrijving=:InstallDesc,LaatstAangepast=:CurrentDate WHERE LicentieID=:LicenseID";
   $conn = connectDB();
@@ -366,20 +419,11 @@ function AddLicense($LicenseName, $Description, $InstallDesc, $ExpirationDate, $
   }
 }
 
-if(isset($_POST["DeleteLicense"])){
-  DeleteLicense();
-}
-
 if (isset($_POST["AddLicense"]))
 {
   if (!(empty($_POST["LicenseName"])))
   {
-    if (session_status() == PHP_SESSION_NONE) 
-    {
-      session_start();
-    }
     $LicenseName = $_POST["LicenseName"];
-    $UserID = $_SESSION["UserID"];
     if (!(empty($_POST["Description"])))
     {
       $Description = $_POST["Description"];
@@ -405,12 +449,12 @@ if (isset($_POST["AddLicense"]))
       $DateMonth = substr("$temp", 3, 2);
       $DateYear = substr("$temp", 6, 4);
       $ExpirationDate = $DateYear . "-" . $DateMonth . "-" . $DateDay;
-      AddLicense($LicenseName, $Description, $InstallDesc, $ExpirationDate, $UserID);
+      AddLicense($LicenseName, $Description, $InstallDesc, $ExpirationDate, $_SESSION["UserID"]);
     }
     else
     {
       $ExpirationDate = null;
-      AddLicense($LicenseName, $Description, $InstallDesc, $ExpirationDate, $UserID);
+      AddLicense($LicenseName, $Description, $InstallDesc, $ExpirationDate, $_SESSION["UserID"]);
     }
   }
   else
@@ -483,38 +527,27 @@ if (isset($_POST["LicenseNameLoad"]))
 {
   if ($_POST["LicenseNameLoad"] && $_POST["LicenseID"])
   {
-    $LicenseID = $_POST["LicenseID"];
     try 
     {
       $conn = connectDB();
-      $sql = "SELECT LicentieNaam, Beschrijving, Opmerking, InstallatieOmschrijving, VerloopDatum, GebruikerID, LaatstAangepast FROM licentie WHERE LicentieID = :LicenseID;";
+      $sql = "SELECT LicentieNaam, Beschrijving, Opmerking, InstallatieOmschrijving, VerloopDatum, GebruikerID, LaatstAangepast , LicentieID FROM licentie WHERE LicentieID = :LicenseID;";
       $stmt = $conn->prepare($sql);
-      $stmt->bindValue("LicenseID", $LicenseID, PDO::PARAM_STR);
+      $stmt->bindValue("LicenseID", $_POST["LicenseID"], PDO::PARAM_STR);
       if ($stmt->execute())
       {
-        if (session_status() == PHP_SESSION_NONE) 
-        {
-          session_start();
-        }
         foreach ($stmt->fetchAll() as $row)
         { 
+          $_SESSION["LicenseID"] = $row["LicentieID"];
           $_SESSION["LicenseNameShow"] = $row["LicentieNaam"];
           $_SESSION["DescriptionShow"] = $row["Beschrijving"];
           $_SESSION["CommentShow"] = $row["Opmerking"];
           $_SESSION["InstallDescShow"] = $row["InstallatieOmschrijving"];
           $_SESSION["LastChangedShow"] = $row["LaatstAangepast"];
-          if ($row["GebruikerID"] != null)
-          {
-            $_SESSION["UserIDShow"] = $row["GebruikerID"];
-          }
-          else
-          {
-            $_SESSION["UserIDShow"] = "-";
-          }
+          $_SESSION["UserIDShow"] = $row["GebruikerID"];
           $_SESSION["ExpirationDateShow"] = $row["VerloopDatum"];
-          header("Location: MainMenu.php");
         }
       }
+      header("Location: MainMenu.php");
     }
     catch (PDOException $ex) 
     {
