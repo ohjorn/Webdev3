@@ -25,6 +25,7 @@
     <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
+    <script src="script.js" type="text/javascript"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <title>Main menu</title>
   <style>
@@ -45,7 +46,7 @@
       <div class="col-2">
         <nav id="sidebar">
           <div class="sidebar-header form-group">
-            <input type="text" class="form-control" id="searchbar" name="searchbar" placeholder="Licentie naam zoeken">
+            <input type="text" class="form-control" id="search_text" name="search_text" placeholder="Licentie naam zoeken">
           </div>
           <div class="row">
             <div class="col">
@@ -69,6 +70,7 @@
             </div>
           </div>
           <div class="overflow-auto">
+            <div id="result"></div>
             <ul class="list-unstyled components">
               <?php
                 GetLicenties();
