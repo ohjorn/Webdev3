@@ -15,7 +15,10 @@
         {
             $output .= '
                 <li>
-                    <a href=""><?php echo "<td>'.$row["LicentieNaam"].'</td></a>
+                    <form action="Function.php" method="post">
+                        <input type="hidden" name="LicenseID" value="'.$row["LicentieID"].'" >
+                        <input type="submit" name="LicenseNameLoad" value="'.$row["LicentieNaam"].'" >
+                    </form>
                 </li>
             ';
         }
