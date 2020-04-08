@@ -37,6 +37,15 @@
     #sidebar {
       padding-left: 10px;
     }
+
+    .modalstyle {
+     
+		  text-align: center;		
+		  border-radius: 5px;
+		  font-size: 13px;
+		  padding: 10px 5px 4px;
+      margin: 250px 10px 5px;
+    }
   </style>
 </head>
 <body>
@@ -73,26 +82,20 @@
             <div id="result"></div>
             <ul class="list-unstyled components">
               <?php
-                GetLicenties();
-              ?>
-            </ul>
-          </div>
-          <div class="fixed-bottom">
-            <div class="row">
-              <div class="col-2 text-center" id="submitbtns">   
-                <?php
-                  if (IsAdmin())
-                  {
-                    echo "
+                GetLicense();
+                if (IsAdmin())
+                {
+                  echo "
+                    <li style=margin-top:10px;>
                       <form action=\"\" method=\"post\">
                         <input type=\"submit\" class=\"btn btn-primary\" name=\"Add-submit\" style= \"margin-bottom: 10px;\" value=\"Licentie toevoegen\">
                       </form>
-                    ";
-                  }
-                ?>
-              </div>             
-            </div>
-          </div>                    
+                    </li>
+                  ";
+                }
+              ?>
+            </ul>
+          </div>                     
         </nav>                
       </div>
       <div class="col-10">
@@ -117,26 +120,52 @@
           </ul>
         </nav>
         <div class="row bg-light">
-          <?php 
-            if(isset($_POST["Edit-submit"]))
-            {
-              EditLicenseForm();
-            }
-            else if (isset($_POST["Add-submit"]))
-            {
-              AddLicenseForm();
-            }
-            else if(isset($_POST["Delete-submit"])){
-              DeleteLicense();
-            }
-            else
-            {
-              LoadLicense();
-            }
-          ?>
+          <div class="col-7">
+            <?php 
+              if(isset($_POST["Edit-submit"]))
+              {
+                EditLicenseForm();
+              }
+              else if (isset($_POST["Add-submit"]))
+              {
+                AddLicenseForm();
+              }
+              else if(isset($_POST["Delete-submit"])){
+                DeleteLicense();
+              }
+              else
+              {
+                LoadLicense();
+              }
+            ?>
+          </div>
+          <div class="col-3">
+            <?php
+              if (!(isset($_POST["Edit-submit"])) && !(isset($_POST["Add-submit"])))
+              {
+                LoadComments();
+              }
+            ?>
+          </div>
         </div>
       </div>
     </div>
+   
+      
+  <div id="id01" class="modal modalstyle">
+    <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">×</span>
+    <form class="modal-content" method="POST">
+      <div class="container">
+        <h1>Licentie verwijderen</h1>
+        <p>Wilt u deze licentie verwijderen?</p>
+      
+        <div class="clearfix">
+          <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Annuleer</button>
+          <button type="submit" name="Delete-submit" class="deletebtn">Verwijderen</button>
+        </div>
+      </div>
+    </form>
+  </div>
   </main>
 
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
