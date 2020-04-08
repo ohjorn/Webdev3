@@ -82,20 +82,18 @@ $conn = ConnectDB();
   for ($i = 0; $i < count($UniqueLoginName); $i++)
   {
     //maakt hier de rijen aan met de gegevens er in. 
-    echo "
-      <form action=\"UserAdministration.php\" method=\"post\">
-      <input type=\"hidden\" name=\"id\" value=\"".$UserID[$i]."\">
-      <tr>
-        <td>".$UniqueLoginName[$i]."</td>
-        <td>
-          <input type=\"submit\" class=\"btn btn-primary\" name=\"EditUser\"value=\"Aanpassen\">
-        </td> 
-        <td>
-          <input type=\"submit\" class=\"btn btn-primary\" name=\"DeleteUser\"value=\"Verwijderen\">
-        </td>
-      </tr>
-      </form>
-    "; 
+    echo "<form action=\"UserAdministration.php\" method=\"post\">";
+    echo  "<input type=\"hidden\" name=\"id\" value=\"".$UserID[$i]."\">";
+    echo "<tr>";
+    echo "<td>".$UniqueLoginName[$i]."</td>";
+    echo "<td>";
+    echo "<input type=\"submit\" class=\"btn btn-primary\" name=\"EditUser\"value=\"Aanpassen\">";
+    echo "</td>";
+    echo "<td>";
+    echo "<input type=\"submit\" class=\"btn btn-primary\" name=\"DeleteUser\"value=\"Verwijderen\">";
+    echo "</td>";
+    echo "</tr>";
+    echo "</form>";
   } 
   echo "</table>";
 ?>
@@ -128,20 +126,20 @@ $conn = ConnectDB();
   for ($i = 0; $i < count($UniqueLoginName2); $i++)
   {
     //maakt hier de rijen aan met de gegevens er in. 
-    echo "
-      <form action=\"UserAdministration.php\" method=\"post\">
-      <input type=\"hidden\" name=\"id\" value=\"".$UserID2[$i]."\">
-      <tr>
-        <td>".$UniqueLoginName2[$i]."</td>
-        <td>
-          <input type=\"submit\" class=\"btn btn-primary\" name=\"EditUser\"value=\"Aanpassen\">
-        </td> 
-        <td>
-          <input type=\"submit\" class=\"btn btn-primary\" name=\"DeleteUser\"value=\"Verwijderen\">
-        </td>
-      </tr>
-      </form>
-    "; 
+    echo "<tr>";
+    echo "<form action=\"UserAdministration.php\" method=\"post\">";
+    echo  "<input type=\"hidden\" name=\"id\" value=\"".$UserID2[$i]."\">";
+    echo "<td>";
+    echo $UniqueLoginName2[$i];
+    echo "</td>";
+    echo "<td>";
+    echo "<input type=\"submit\" class=\"btn btn-primary\" name=\"EditUser\"value=\"Aanpassen\">";
+    echo "</td>";
+    echo "<td>";
+    echo "<input type=\"submit\" class=\"btn btn-primary\" name=\"DeleteUser\"value=\"Verwijderen\">";
+    echo "</td>";
+    echo "</form>";
+    echo "</tr>";
   } 
   echo "</table>";
 
@@ -160,16 +158,6 @@ if(isset($_POST["EditUserConfirmation"]))
 if(isset($_POST["DeleteUser"]))
 {
   DeleteUserConfirmation($_POST["id"]); 
-}
-
-if(isset($_POST["DeleteUserPerm"]))
-{
-  DeleteUser($_POST["id"]); 
-}
-
-if(isset($_POST["KeepUser"]))
-{
-  header("Location: UserAdministration.php"); 
 }
 ?>
 </p>
