@@ -197,7 +197,7 @@ function LoadLicense()
       </form><br>
       <form action=\"MainMenu.php\" method=\"post\">
         <input type=\"submit\" class=\"btn btn-success\" name=\"Edit-submit\" style= \"margin-bottom: 10px;\" value=\"Licentie bewerken\">
-        <input type=\"submit\" class=\"btn btn-danger\" name=\"Delete-submit\"  style= \"margin-bottom: 10px;\" value=\"Licentie Verwijderen\">
+        <input type=\"button\"class=\"btn btn-danger\" name=\"Delete-submit\" onclick=\"document.getElementById('id01').style.display='block'\"  style= \"margin-bottom: 10px;\" value=\"Licentie Verwijderen\" >
       </form>
     </div>
     ";
@@ -225,12 +225,14 @@ if (isset($_POST["AddComment"]))
 
 function AddComment($Comment, $UserID, $LicenseID)
 {
+
   $sql = "INSERT INTO `opmerking` (`LicentieID`, `OpmerkingID`, `GebruikerID`, `Opmerking`) VALUES (:LicenseID, NULL, :UserID, :Comment);";
   $conn = connectDB();
   $stmt = $conn->prepare($sql);
   $stmt->bindValue("LicenseID", $LicenseID, PDO::PARAM_STR);
   $stmt->bindValue("UserID", $UserID, PDO::PARAM_STR);
   $stmt->bindValue("Comment", $Comment, PDO::PARAM_STR);
+   
   if($stmt->execute())
   {
     header("Location: MainMenu.php");
@@ -327,26 +329,25 @@ function AddLicenseForm()
 
 function EditLicenseForm()
 {
-  $sql = "SELECT LicentieID, LicentieNaam, Beschrijving, Opmerking, InstallatieOmschrijving, LaatstAangepast FROM licentie WHERE LicentieNaam = :LicenseName"; 
+  $sql = "SELECT LicentieID, LicentieNaam, Beschrijving, Opmerking, InstallatieOmschrijving, VerloopDatum ,LaatstAangepast FROM licentie WHERE LicentieID = :LicenseID"; 
  $conn = connectDB();
  $stmt = $conn->prepare($sql);
- $stmt->bindParam("LicenseName", $_SESSION["tempLicenseName"], PDO::PARAM_STR);
+ $stmt->bindParam("LicenseID", $_SESSION["LicenseID"], PDO::PARAM_STR);
  
  $stmt->execute();
  $result = $stmt->fetch(PDO::FETCH_ASSOC);
  $_SESSION["tempID"] = $result["LicentieID"];
   echo "
   <div class=\"col-4\">
-  bewerken
   <form method=\"post\">
     <label>Licentie naam:</label><br>
-    <input type=\"text\" name=\"LicenseName\" value\"".$result["LicentieNaam"]."\"><br>
+    <textarea name = \"Description\" rows = \"3\" cols = \"80\">".$result["LicentieNaam"]."</textarea><br>
     <label>Omschrijving van de licentie:</label><br>
     <textarea name = \"Description\" rows = \"3\" cols = \"80\">".$result["Beschrijving"]."</textarea><br>
     <label>Omschrijving van de installatie:</label><br>
     <textarea name = \"InstallDesc\" rows = \"3\" cols = \"80\">".$result["InstallatieOmschrijving"]."</textarea><br>
     <label>Licentie verloop datum:</label><br>
-    <input type=\"date\" name=\"ExpirationDate\"><br><br>
+    <input type=\"date\" name=\"ExpirationDate\" value=" .$result["VerloopDatum"]. "><br><br>
     <input type=\"submit\" class=\"btn btn-success\" name=\"EditLicense\" value=\"Licentie bewerken\">
     <br>
   </form>
@@ -356,13 +357,13 @@ function EditLicenseForm()
 
 function DeleteLicense()
 {
-  $sql = "DELETE FROM licentie WHERE LicentieNaam=:LicenseName";
+  $sql = "DELETE FROM licentie WHERE LicentieID=:LicenseID";
   $conn = connectDB();
   $stmt = $conn->prepare($sql);
-  $stmt->bindParam(":LicenseName",  $_SESSION["tempLicenseName"], PDO::PARAM_STR);
+  $stmt->bindParam(":LicenseID",  $_SESSION["LicenseID"], PDO::PARAM_STR);
   if($stmt->execute())
   {
-    unset($_SESSION["tempLicenseName"]);
+   
   ?>  <script type="text/javascript">
   window.location.href = 'MainMenu.php';
   </script>
@@ -382,17 +383,17 @@ function EditLicense($LicenseName, $Description, $InstallDesc, $ExpirationDate)
   date_default_timezone_set('Europe/Amsterdam');
   $CurrentDate = date('Y/m/d');
 
-  $sql ="UPDATE licentie SET LicentieNaam=:LicenseName, Beschrijving=:Description, InstallatieOmschrijving=:InstallDesc,LaatstAangepast=:CurrentDate WHERE LicentieID=:LicenseID";
+  $sql ="UPDATE licentie SET LicentieNaam=:LicenseName, Beschrijving=:Description, InstallatieOmschrijving=:InstallDesc, VerloopDatum=:ExpirationDate, LaatstAangepast=:CurrentDate WHERE LicentieID=:LicenseID";
   $conn = connectDB();
   $stmt = $conn->prepare($sql);
-  $stmt->bindParam(":LicenseID", $_SESSION["tempID"], PDO::PARAM_STR);
+  $stmt->bindParam(":LicenseID", $_SESSION["LicenseID"], PDO::PARAM_STR);
   $stmt->bindParam(":LicenseName", $LicenseName, PDO::PARAM_STR);
   $stmt->bindParam(":Description", $Description, PDO::PARAM_STR);
   $stmt->bindParam(":InstallDesc", $InstallDesc, PDO::PARAM_STR);
+  $stmt->bindParam(":ExpirationDate", $ExpirationDate);
   $stmt->bindParam(":CurrentDate", $CurrentDate);
   $res = $stmt->fetch(PDO::FETCH_ASSOC);
   if($stmt->execute()){
-    unset($_SESSION["tempID"]);
     unset( $_SESSION["tempLicenseName"]);
     header("Location: MainMenu.php");    
   }
