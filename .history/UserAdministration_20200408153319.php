@@ -82,23 +82,40 @@ $conn = ConnectDB();
   for ($i = 0; $i < count($UniqueLoginName); $i++)
   {
     //maakt hier de rijen aan met de gegevens er in. 
-    echo "
-      <form action=\"UserAdministration.php\" method=\"post\">
-      <input type=\"hidden\" name=\"id\" value=\"".$UserID[$i]."\">
-      <tr>
-        <td>".$UniqueLoginName[$i]."</td>
-        <td>
-          <input type=\"submit\" class=\"btn btn-primary\" name=\"EditUser\"value=\"Aanpassen\">
-        </td> 
-        <td>
-          <input type=\"submit\" class=\"btn btn-primary\" name=\"DeleteUser\"value=\"Verwijderen\">
-        </td>
-      </tr>
-      </form>
-    "; 
+    echo "<form action=\"UserAdministration.php\" method=\"post\">";
+    echo  "<input type=\"hidden\" name=\"id\" value=\"".$UserID[$i]."\">";
+    echo "<tr>";
+    echo "<td>".$UniqueLoginName[$i]."</td>";
+    echo "<td>";
+    echo "<input type=\"submit\" class=\"btn btn-primary\" name=\"EditUser\"value=\"Aanpassen\">";
+    echo "</td>";
+    echo "<td>";
+    echo "<button onclick=\"document.getElementById('id01').style.display='block'\">Open Model</button>";
+    echo "</td>";
+    echo "</tr>";
+    echo "</form>";
   } 
   echo "</table>";
 ?>
+
+<button onclick="document.getElementById('id01').style.display='block'">Open Modal</button>
+
+<div id="id01" class="modal">
+  <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
+  <form class="modal-content" action="/action_page.php">
+    <div class="container">
+      <h1>Delete Account</h1>
+      <p>Are you sure you want to delete your account?</p>
+
+      <div class="clearfix">
+        <button type="button" class="cancelbtn">Cancel</button>
+        <button type="button" class="deletebtn">Delete</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+
 </p> 
 <p class="col-sm-3">
 <?php 
@@ -128,20 +145,20 @@ $conn = ConnectDB();
   for ($i = 0; $i < count($UniqueLoginName2); $i++)
   {
     //maakt hier de rijen aan met de gegevens er in. 
-    echo "
-      <form action=\"UserAdministration.php\" method=\"post\">
-      <input type=\"hidden\" name=\"id\" value=\"".$UserID2[$i]."\">
-      <tr>
-        <td>".$UniqueLoginName2[$i]."</td>
-        <td>
-          <input type=\"submit\" class=\"btn btn-primary\" name=\"EditUser\"value=\"Aanpassen\">
-        </td> 
-        <td>
-          <input type=\"submit\" class=\"btn btn-primary\" name=\"DeleteUser\"value=\"Verwijderen\">
-        </td>
-      </tr>
-      </form>
-    "; 
+    echo "<tr>";
+    echo "<form action=\"UserAdministration.php\" method=\"post\">";
+    echo  "<input type=\"hidden\" name=\"id\" value=\"".$UserID2[$i]."\">";
+    echo "<td>";
+    echo $UniqueLoginName2[$i];
+    echo "</td>";
+    echo "<td>";
+    echo "<input type=\"submit\" class=\"btn btn-primary\" name=\"EditUser\"value=\"Aanpassen\">";
+    echo "</td>";
+    echo "<td>";
+    echo "<input type=\"submit\" class=\"btn btn-primary\" name=\"DeleteUser\"value=\"Verwijderen\">";
+    echo "</td>";
+    echo "</form>";
+    echo "</tr>";
   } 
   echo "</table>";
 
@@ -156,21 +173,6 @@ if(isset($_POST["EditUserConfirmation"]))
   {
     EditUserInformation($_POST["id"]); 
   }
-
-if(isset($_POST["DeleteUser"]))
-{
-  DeleteUserConfirmation($_POST["id"]); 
-}
-
-if(isset($_POST["DeleteUserPerm"]))
-{
-  DeleteUser($_POST["id"]); 
-}
-
-if(isset($_POST["KeepUser"]))
-{
-  header("Location: UserAdministration.php"); 
-}
 ?>
 </p>
 </div> 
