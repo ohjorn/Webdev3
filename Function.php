@@ -145,6 +145,7 @@ if (!empty($_POST["toggle-account-management"]))
 
 function GetLicense()
 {
+  $counter = 0;
   $conn = connectDB();
   try
   {
@@ -153,6 +154,7 @@ function GetLicense()
     $stmt->execute();
     foreach ($stmt->fetchAll() as $row) 
     {
+      $counter += 1;
       echo "
         <li>
           <form action=\"Function.php\" method=\"post\">
@@ -166,7 +168,12 @@ function GetLicense()
   catch (PDOException $ex) 
   {
     echo "$ex";
-  } 
+  }
+  if (session_status() == PHP_SESSION_NONE) 
+  {
+  session_start();
+  }
+  $_SESSION["counter"] = $counter; 
 }
 
 function LoadLicense()
@@ -341,7 +348,7 @@ function EditLicenseForm()
   <div class=\"col-4\">
   <form method=\"post\">
     <label>Licentie naam:</label><br>
-    <textarea name = \"Description\" rows = \"3\" cols = \"80\">".$result["LicentieNaam"]."</textarea><br>
+    <input type=\"text\" name = \"LicenseName\" rows = \"3\" cols = \"80\" value=".$result["LicentieNaam"]."><br>
     <label>Omschrijving van de licentie:</label><br>
     <textarea name = \"Description\" rows = \"3\" cols = \"80\">".$result["Beschrijving"]."</textarea><br>
     <label>Omschrijving van de installatie:</label><br>
@@ -445,11 +452,8 @@ if (isset($_POST["AddLicense"]))
 
     if (!(empty($_POST["ExpirationDate"])))
     {
-      $temp = $_POST["ExpirationDate"];
-      $DateDay = substr("$temp", 0, 2);
-      $DateMonth = substr("$temp", 3, 2);
-      $DateYear = substr("$temp", 6, 4);
-      $ExpirationDate = $DateYear . "-" . $DateMonth . "-" . $DateDay;
+     
+      $ExpirationDate = $_POST["ExpirationDate"];
       AddLicense($LicenseName, $Description, $InstallDesc, $ExpirationDate, $_SESSION["UserID"]);
     }
     else
@@ -491,26 +495,8 @@ if (isset($_POST["EditLicense"]))
 
     if (!(empty($_POST["ExpirationDate"])))
     {
-      $temp = $_POST["ExpirationDate"];
-      if (($temp[2] == "/") && ($temp[5] == "/") && (strlen($temp) == 10))
-      {
-        $DateDay = substr("$temp", 0, 2);
-        $DateMonth = substr("$temp", 3, 2);
-        $DateYear = substr("$temp", 6, 4);
-        if (checkdate($DateMonth, $DateDay, $DateYear))
-        {
-          $ExpirationDate = $temp;
-          EditLicense($LicenseName, $Description, $InstallDesc, $ExpirationDate);
-        }
-        else 
-        {
-          echo "fout";
-        }
-      }
-      else
-      {
-        echo "fout";
-      }
+      $ExpirationDate = $_POST["ExpirationDate"];
+      EditLicense($LicenseName, $Description, $InstallDesc, $ExpirationDate);
     }
     else
     {
