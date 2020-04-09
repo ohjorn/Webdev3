@@ -46,6 +46,7 @@
 		  padding: 10px 5px 4px;
       margin: 250px 10px 5px;
     }
+    
   </style>
 </head>
 <body>
@@ -80,7 +81,7 @@
           </div>
           <div class="overflow-auto">
             <div id="result"></div>
-            <ul class="list-unstyled components">
+            <ul class="list-unstyled components">          
               <?php
                 GetLicense();
                 if (IsAdmin())
@@ -95,7 +96,8 @@
                 }
               ?>
             </ul>
-          </div>                     
+          </div> 
+          <span class="ban alert alert-primary jummie3">Er zijn momenteel <?=$_SESSION["counter"]?> licenties</span>                    
         </nav>                
       </div>
       <div class="col-10">
