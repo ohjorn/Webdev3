@@ -22,7 +22,6 @@
                 </li>
             ';
         }
-        $output .= '<hr>';
         echo $output;
     } 
     else 
