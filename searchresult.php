@@ -9,8 +9,10 @@
     $sql->execute();
     if ($sql->rowCount() != 0) 
     {
+        //Lijst met styling
         $output .= '<ul class="list-unstyled components">';
 
+        //Oproepen van de gezochte lijst punten
         while ($row = $sql->fetch()) 
         {
             $output .= '
@@ -22,10 +24,12 @@
                 </li>
             ';
         }
+        //Geef weer op scherm
         echo $output;
     } 
     else 
     {
+        //Anders foutmelding geven als er niks gevonden is
         echo 'Data Not Found';
     }
 ?>
