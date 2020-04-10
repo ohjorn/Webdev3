@@ -145,6 +145,7 @@ if (!empty($_POST["toggle-account-management"]))
 
 function GetLicense()
 {
+  $counter = 0;
   $conn = connectDB();
   try
   {
@@ -153,6 +154,7 @@ function GetLicense()
     $stmt->execute();
     foreach ($stmt->fetchAll() as $row) 
     {
+      $counter += 1;
       echo "
         <li>
           <form action=\"Function.php\" method=\"post\">
@@ -166,7 +168,12 @@ function GetLicense()
   catch (PDOException $ex) 
   {
     echo "$ex";
-  } 
+  }
+  if (session_status() == PHP_SESSION_NONE) 
+  {
+  session_start();
+  }
+  $_SESSION["counter"] = $counter; 
 }
 
 function LoadLicense()
@@ -197,7 +204,7 @@ function LoadLicense()
       </form><br>
       <form action=\"MainMenu.php\" method=\"post\">
         <input type=\"submit\" class=\"btn btn-success\" name=\"Edit-submit\" style= \"margin-bottom: 10px;\" value=\"Licentie bewerken\">
-        <input type=\"submit\" class=\"btn btn-danger\" name=\"Delete-submit\"  style= \"margin-bottom: 10px;\" value=\"Licentie Verwijderen\">
+        <input type=\"button\"class=\"btn btn-danger\" name=\"Delete-submit\" onclick=\"document.getElementById('id01').style.display='block'\"  style= \"margin-bottom: 10px;\" value=\"Licentie Verwijderen\" >
       </form>
     </div>
     ";
@@ -225,12 +232,14 @@ if (isset($_POST["AddComment"]))
 
 function AddComment($Comment, $UserID, $LicenseID)
 {
+
   $sql = "INSERT INTO `opmerking` (`LicentieID`, `OpmerkingID`, `GebruikerID`, `Opmerking`) VALUES (:LicenseID, NULL, :UserID, :Comment);";
   $conn = connectDB();
   $stmt = $conn->prepare($sql);
   $stmt->bindValue("LicenseID", $LicenseID, PDO::PARAM_STR);
   $stmt->bindValue("UserID", $UserID, PDO::PARAM_STR);
   $stmt->bindValue("Comment", $Comment, PDO::PARAM_STR);
+   
   if($stmt->execute())
   {
     header("Location: MainMenu.php");
@@ -327,26 +336,25 @@ function AddLicenseForm()
 
 function EditLicenseForm()
 {
-  $sql = "SELECT LicentieID, LicentieNaam, Beschrijving, Opmerking, InstallatieOmschrijving, LaatstAangepast FROM licentie WHERE LicentieNaam = :LicenseName"; 
+  $sql = "SELECT LicentieID, LicentieNaam, Beschrijving, Opmerking, InstallatieOmschrijving, VerloopDatum ,LaatstAangepast FROM licentie WHERE LicentieID = :LicenseID"; 
  $conn = connectDB();
  $stmt = $conn->prepare($sql);
- $stmt->bindParam("LicenseName", $_SESSION["tempLicenseName"], PDO::PARAM_STR);
+ $stmt->bindParam("LicenseID", $_SESSION["LicenseID"], PDO::PARAM_STR);
  
  $stmt->execute();
  $result = $stmt->fetch(PDO::FETCH_ASSOC);
  $_SESSION["tempID"] = $result["LicentieID"];
   echo "
   <div class=\"col-4\">
-  bewerken
   <form method=\"post\">
     <label>Licentie naam:</label><br>
-    <input type=\"text\" name=\"LicenseName\" value\"".$result["LicentieNaam"]."\"><br>
+    <input type=\"text\" name = \"LicenseName\" rows = \"3\" cols = \"80\" value=".$result["LicentieNaam"]."><br>
     <label>Omschrijving van de licentie:</label><br>
     <textarea name = \"Description\" rows = \"3\" cols = \"80\">".$result["Beschrijving"]."</textarea><br>
     <label>Omschrijving van de installatie:</label><br>
     <textarea name = \"InstallDesc\" rows = \"3\" cols = \"80\">".$result["InstallatieOmschrijving"]."</textarea><br>
     <label>Licentie verloop datum:</label><br>
-    <input type=\"date\" name=\"ExpirationDate\"><br><br>
+    <input type=\"date\" name=\"ExpirationDate\" value=" .$result["VerloopDatum"]. "><br><br>
     <input type=\"submit\" class=\"btn btn-success\" name=\"EditLicense\" value=\"Licentie bewerken\">
     <br>
   </form>
@@ -356,13 +364,13 @@ function EditLicenseForm()
 
 function DeleteLicense()
 {
-  $sql = "DELETE FROM licentie WHERE LicentieNaam=:LicenseName";
+  $sql = "DELETE FROM licentie WHERE LicentieID=:LicenseID";
   $conn = connectDB();
   $stmt = $conn->prepare($sql);
-  $stmt->bindParam(":LicenseName",  $_SESSION["tempLicenseName"], PDO::PARAM_STR);
+  $stmt->bindParam(":LicenseID",  $_SESSION["LicenseID"], PDO::PARAM_STR);
   if($stmt->execute())
   {
-    unset($_SESSION["tempLicenseName"]);
+   
   ?>  <script type="text/javascript">
   window.location.href = 'MainMenu.php';
   </script>
@@ -382,17 +390,17 @@ function EditLicense($LicenseName, $Description, $InstallDesc, $ExpirationDate)
   date_default_timezone_set('Europe/Amsterdam');
   $CurrentDate = date('Y/m/d');
 
-  $sql ="UPDATE licentie SET LicentieNaam=:LicenseName, Beschrijving=:Description, InstallatieOmschrijving=:InstallDesc,LaatstAangepast=:CurrentDate WHERE LicentieID=:LicenseID";
+  $sql ="UPDATE licentie SET LicentieNaam=:LicenseName, Beschrijving=:Description, InstallatieOmschrijving=:InstallDesc, VerloopDatum=:ExpirationDate, LaatstAangepast=:CurrentDate WHERE LicentieID=:LicenseID";
   $conn = connectDB();
   $stmt = $conn->prepare($sql);
-  $stmt->bindParam(":LicenseID", $_SESSION["tempID"], PDO::PARAM_STR);
+  $stmt->bindParam(":LicenseID", $_SESSION["LicenseID"], PDO::PARAM_STR);
   $stmt->bindParam(":LicenseName", $LicenseName, PDO::PARAM_STR);
   $stmt->bindParam(":Description", $Description, PDO::PARAM_STR);
   $stmt->bindParam(":InstallDesc", $InstallDesc, PDO::PARAM_STR);
+  $stmt->bindParam(":ExpirationDate", $ExpirationDate);
   $stmt->bindParam(":CurrentDate", $CurrentDate);
   $res = $stmt->fetch(PDO::FETCH_ASSOC);
   if($stmt->execute()){
-    unset($_SESSION["tempID"]);
     unset( $_SESSION["tempLicenseName"]);
     header("Location: MainMenu.php");    
   }
@@ -444,11 +452,8 @@ if (isset($_POST["AddLicense"]))
 
     if (!(empty($_POST["ExpirationDate"])))
     {
-      $temp = $_POST["ExpirationDate"];
-      $DateDay = substr("$temp", 0, 2);
-      $DateMonth = substr("$temp", 3, 2);
-      $DateYear = substr("$temp", 6, 4);
-      $ExpirationDate = $DateYear . "-" . $DateMonth . "-" . $DateDay;
+     
+      $ExpirationDate = $_POST["ExpirationDate"];
       AddLicense($LicenseName, $Description, $InstallDesc, $ExpirationDate, $_SESSION["UserID"]);
     }
     else
@@ -490,26 +495,8 @@ if (isset($_POST["EditLicense"]))
 
     if (!(empty($_POST["ExpirationDate"])))
     {
-      $temp = $_POST["ExpirationDate"];
-      if (($temp[2] == "/") && ($temp[5] == "/") && (strlen($temp) == 10))
-      {
-        $DateDay = substr("$temp", 0, 2);
-        $DateMonth = substr("$temp", 3, 2);
-        $DateYear = substr("$temp", 6, 4);
-        if (checkdate($DateMonth, $DateDay, $DateYear))
-        {
-          $ExpirationDate = $temp;
-          EditLicense($LicenseName, $Description, $InstallDesc, $ExpirationDate);
-        }
-        else 
-        {
-          echo "fout";
-        }
-      }
-      else
-      {
-        echo "fout";
-      }
+      $ExpirationDate = $_POST["ExpirationDate"];
+      EditLicense($LicenseName, $Description, $InstallDesc, $ExpirationDate);
     }
     else
     {
@@ -582,6 +569,7 @@ function validateNewAccount()
 
   try
   {
+    $Result = NULL; 
     $sql = "SELECT UniekeLoginNaam FROM gebruiker WHERE UniekeLoginNaam = :Username";
     $stmt = $conn->prepare($sql);
     $stmt->bindValue("Username", $Username, PDO::PARAM_STR);
@@ -611,7 +599,7 @@ function validateNewAccount()
       }
       elseif (strlen($Username) < 3)
       {
-        echo "Je gebruikersnaam is te kort.";
+        echo "De gebruikersnaam is te kort.";
       }
       if (!($Password == $Password2))
       {
@@ -626,5 +614,140 @@ function validateNewAccount()
 }
 //// ^^^^
 
+function EditUserInformationForm($ID)
+{
+  echo "
+    <div class=\"col-7\">
+      <form action=\"UserAdministration.php\" method=\"post\">
+        <input type=\"hidden\" name=\"id\" value=\"".$ID."\">
+        <label>Gebruikersnaam:</label><br>
+        <input type=\"text\" name=\"NewUsername\"><br>
+        <label>Nieuwe wachtwoord:</label><br>
+        <input type=\"password\" name=\"NewPassword\"><br>
+        <label>Wachtwoord hertypen:</label><br>
+        <input type=\"password\" name=\"NewPassword2\"><br>
+        <input type=\"radio\" name=\"NewRights\" value=\"0\" checked>
+        <label for=\"Lezer\">Lezer</label><br>
+        <input type=\"radio\" name=\"NewRights\" value=\"1\">
+        <label for=\"Administrator\">Administrator</label><br>
+        <input type=\"submit\" class=\"btn btn-primary\" name=\"EditUserConfirmation\" value=\"Gegevens aanpassen\">
+      </form>
+    </div>
+  ";
+}
+
+function EditUserInformation($UserID)
+{
+  $conn = connectDB();
+
+  $Password = filter_var($_POST["NewPassword"], FILTER_SANITIZE_STRING);
+  $Password = validate($Password);
+  $Password2 = filter_var($_POST["NewPassword2"], FILTER_SANITIZE_STRING);
+  $Password2 = validate($Password2);
+  $Hashed = password_hash($Password, PASSWORD_DEFAULT);
+  $Rights = $_POST["NewRights"];
+  //controleert of er een naam is ingevoerd. 
+  if(!(empty($_POST["NewUsername"])))
+  {
+    $Username = $_POST["NewUsername"];
+  }
+  //als er geen naam is ingevoerd is de waarde van Username de oude gebruikersnaam
+  else 
+  {
+    $Username = GetUserName($UserID); 
+  }
+
+  //controleren of de gebruikersnaam hetzelfde is ingevuld als de huidige gebruikersnaam. 
+  try
+  {
+    $Result = NULL; 
+    //selecteerd alle gebruikersnamen uit de tabel gebruiker die hetzelfde zijn als de ingevoerde waarde. 
+    $sql = "SELECT UniekeLoginNaam FROM gebruiker WHERE UniekeLoginNaam = :Username"; 
+    $stmt = $conn->prepare($sql);
+    $stmt->bindValue("Username", $Username, PDO::PARAM_STR);
+    $stmt->execute();
+    foreach ($stmt->fetchAll() as $row) 
+    {
+      $Result = $row["UniekeLoginNaam"];
+    }
+    $PastUsername = GetUserName($UserID);
+    //als er al een naam in de database staat die hetzelfde is als de ingevoerde waarde of als deze niet hetzelfde is als de vorige gebruikersnaam
+    //krijgt de gebruiker een melding dat deze gebruikersnaam al bestaat. 
+    if ($Result == $Username && $Result != $PastUsername)
+      {
+        echo "Deze gebruikersnaam is al in gebruik.";
+      }
+    if ((!($Result == $Username)) && ($Password == $Password2)) 
+    {
+     
+      if (empty($Password))
+      {
+        $sql = "SELECT Wachtwoord FROM gebruiker WHERE GebruikerID = :UserID";
+        $stmt = $conn->prepare($sql);
+        $stmt->bindValue("UserID", $UserID, PDO::PARAM_STR);
+        if($stmt->execute()) 
+        {
+          foreach ($stmt->fetchAll() as $row) 
+          {
+            $Password = $row["Wachtwoord"];
+          }
+        }
+     }   
+
+      $sql = "UPDATE `gebruiker` SET UniekeLoginNaam=:Username, Wachtwoord=:Password, Rechten=:Rights WHERE GebruikerID = $UserID;";
+
+      $stmt = $conn->prepare($sql);
+      $stmt->bindValue("Password", $Hashed, PDO::PARAM_STR);
+      $stmt->bindValue("Username", $Username, PDO::PARAM_STR);
+      $stmt->bindValue("Rights", $Rights, PDO::PARAM_STR);
+      if($stmt->execute()) 
+      {
+        echo "De gebruikersgegevens zijn succesvol aangepast!";
+        header("Location: UserAdministration.php"); 
+      }
+    }
+    else
+    {
+      if (strlen($Username) < 3 && $Result = !$PastUsername)
+      {
+        echo "De gebruikersnaam is te kort.";
+      }
+      if (!($Password == $Password2))
+      {
+        echo "De wachtwoorden komen niet overeen.";
+      }
+    }
+  }
+  catch(exception $ex)
+  {
+    echo "Er was een fout met de connectie met het database.";
+  }
+}
+
+function DeleteUserConfirmation($ID)
+{
+  echo "
+      <div class=\"col-7\">
+      <form action=\"UserAdministration.php\" method=\"post\">
+        <input type=\"hidden\" name=\"id\" value=\"".$ID."\">
+        <label>Weet u zeker dat u deze gebruiker wilt verwijderen?</label><br>
+        <input type=\"submit\" class=\"btn btn-primary\" name=\"DeleteUserPerm\" value=\"Gebruiker verwijderen\">
+        <input type=\"submit\" class=\"btn btn-primary\" name=\"KeepUser\" value=\"Gebruiker behouden\">
+      </form>
+    </div>
+  "; 
+}
+
+function DeleteUser($UserID)
+{
+$sql = "DELETE FROM gebruiker WHERE GebruikerID=:UserID";
+$conn = connectDB();
+$stmt = $conn->prepare($sql);
+$stmt->bindValue("UserID", $UserID, PDO::PARAM_STR);
+  if($stmt->execute())
+  {
+    header("Location: UserAdministration.php"); 
+  }
+}
 //UserAdministration.php ^^^^
 ?>

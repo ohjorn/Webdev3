@@ -37,6 +37,16 @@
     #sidebar {
       padding-left: 10px;
     }
+
+    .modalstyle {
+     
+		  text-align: center;		
+		  border-radius: 5px;
+		  font-size: 13px;
+		  padding: 10px 5px 4px;
+      margin: 250px 10px 5px;
+    }
+    
   </style>
 </head>
 <body>
@@ -71,7 +81,7 @@
           </div>
           <div class="overflow-auto">
             <div id="result"></div>
-            <ul class="list-unstyled components">
+            <ul class="list-unstyled components">          
               <?php
                 GetLicense();
                 if (IsAdmin())
@@ -86,7 +96,8 @@
                 }
               ?>
             </ul>
-          </div>                     
+          </div> 
+          <span class="ban alert alert-primary jummie3">Er zijn momenteel <?=$_SESSION["counter"]?> licenties</span>                    
         </nav>                
       </div>
       <div class="col-10">
@@ -141,6 +152,22 @@
         </div>
       </div>
     </div>
+   
+      
+  <div id="id01" class="modal modalstyle">
+    <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">×</span>
+    <form class="modal-content" method="POST">
+      <div class="container">
+        <h1>Licentie verwijderen</h1>
+        <p>Wilt u deze licentie verwijderen?</p>
+      
+        <div class="clearfix">
+          <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Annuleer</button>
+          <button type="submit" name="Delete-submit" class="deletebtn">Verwijderen</button>
+        </div>
+      </div>
+    </form>
+  </div>
   </main>
 
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
