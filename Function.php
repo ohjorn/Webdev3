@@ -145,6 +145,7 @@ if (!empty($_POST["toggle-account-management"]))
 
 function GetLicense()
 {
+  $counter = 0;
   $conn = connectDB();
   try
   {
@@ -153,6 +154,7 @@ function GetLicense()
     $stmt->execute();
     foreach ($stmt->fetchAll() as $row) 
     {
+      $counter += 1;
       echo "
         <li>
           <form action=\"Function.php\" method=\"post\">
@@ -167,19 +169,23 @@ function GetLicense()
   {
     echo "$ex";
   } 
+
+  if (session_status() == PHP_SESSION_NONE) 
+  {
+  session_start();
+  }
+  $_SESSION["counter"] = $counter; 
 }
 
 function LoadLicense()
 {
   if (isset($_SESSION["LicenseNameShow"]))
   {
-    echo "
+    $Licenseview = '';
+    $Licenseview .= "
     <div class=\"col-7\">
       <h2><b>Licentie naam</b></h2>
       <p><td>".$_SESSION["LicenseNameShow"]."</td></p>
-      <h2><b>Doelgroep</b></h2>
-      <p><td>".$_SESSION["AudienceShow"]."</td></p>
-      <br>
       <h2><b>Beschrijving</b></h2>
       <p><td>".$_SESSION["DescriptionShow"]."</td></p>
       <br>
@@ -198,14 +204,20 @@ function LoadLicense()
         <textarea name = \"Comment\" rows = \"3\" cols = \"80\"></textarea><br>
         <input type=\"submit\" class=\"btn btn-primary\" name=\"AddComment\" value=\"Opmerking plaatsen\">
       </form><br>
-      <form action=\"MainMenu.php\" method=\"post\">
-        <input type=\"submit\" class=\"btn btn-success\" name=\"Edit-submit\" style= \"margin-bottom: 10px;\" value=\"Licentie bewerken\">
-        <input type=\"button\"class=\"btn btn-danger\" name=\"Delete-submit\" onclick=\"document.getElementById('id01').style.display='block'\"  style= \"margin-bottom: 10px;\" value=\"Licentie Verwijderen\" >
-      </form>
     </div>
     ";
+    if(IsAdmin())
+    {
+    $Licenseview .= "
+    <form action=\"MainMenu.php\" method=\"post\">
+    <input type=\"submit\" class=\"btn btn-success\" name=\"Edit-submit\" style= \"margin-bottom: 10px;\" value=\"Licentie bewerken\">
+    <input type=\"button\"class=\"btn btn-danger\" name=\"Delete-submit\" onclick=\"document.getElementById('id01').style.display='block'\"  style= \"margin-bottom: 10px;\" value=\"Licentie Verwijderen\" >
+  </form>
+    ";
+    }
+    echo $Licenseview;
 
-    $_SESSION["tempLicenseName"] = $_SESSION["LicenseNameShow"];  
+        $_SESSION["tempLicenseName"] = $_SESSION["LicenseNameShow"];  
   }
   else
   {
@@ -253,12 +265,12 @@ Function LoadComments()
     $stmt->bindValue("LicenseID", $LicenseID, PDO::PARAM_STR);
     if ($stmt->execute())
     {
-      echo "<h2><b>Comments</b></h2>";
+      echo "<h2><b>Opmerkingen</b></h2>";
       foreach ($stmt->fetchAll() as $row)
       { 
         echo "
           \"".$row["Opmerking"]."\"<br>
-          -".GetUserName($row["GebruikerID"])." ".$row["GeplaatstOp"]."<br>
+          -".GetUserName($row["GebruikerID"])." ".$row["GeplaatstOp"]."<br><hr>
         ";
       }
     }
@@ -346,7 +358,7 @@ function EditLicenseForm()
   <div class=\"col-4\">
   <form method=\"post\">
     <label>Licentie naam:</label><br>
-    <textarea name = \"Description\" rows = \"3\" cols = \"80\">".$result["LicentieNaam"]."</textarea><br>
+    <input type=\"text\" name = \"LicenseName\" rows = \"3\" cols = \"80\" value=".$result["LicentieNaam"]."><br>
     <label>Doelgroep:</label><br>
     <textarea name = \"Audience\" rows = \"3\" cols = \"80\">".$result["Doelgroep"]."</textarea><br>
     <label>Omschrijving van de licentie:</label><br>
@@ -457,11 +469,7 @@ if (isset($_POST["AddLicense"]))
 
     if (!(empty($_POST["ExpirationDate"])))
     {
-      $temp = $_POST["ExpirationDate"];
-      $DateDay = substr("$temp", 0, 2);
-      $DateMonth = substr("$temp", 3, 2);
-      $DateYear = substr("$temp", 6, 4);
-      $ExpirationDate = $DateYear . "-" . $DateMonth . "-" . $DateDay;
+      $ExpirationDate = $_POST["ExpirationDate"];
       AddLicense($LicenseName, $Description, $InstallDesc, $ExpirationDate, $_SESSION["UserID"]);
     }
     else
@@ -503,26 +511,8 @@ if (isset($_POST["EditLicense"]))
 
     if (!(empty($_POST["ExpirationDate"])))
     {
-      $temp = $_POST["ExpirationDate"];
-      if (($temp[2] == "/") && ($temp[5] == "/") && (strlen($temp) == 10))
-      {
-        $DateDay = substr("$temp", 0, 2);
-        $DateMonth = substr("$temp", 3, 2);
-        $DateYear = substr("$temp", 6, 4);
-        if (checkdate($DateMonth, $DateDay, $DateYear))
-        {
-          $ExpirationDate = $temp;
-          EditLicense($LicenseName, $Description, $InstallDesc, $ExpirationDate);
-        }
-        else 
-        {
-          echo "fout";
-        }
-      }
-      else
-      {
-        echo "fout";
-      }
+      $ExpirationDate = $_POST["ExpirationDate"];
+      EditLicense($LicenseName, $Description, $InstallDesc, $ExpirationDate);
     }
     else
     {
