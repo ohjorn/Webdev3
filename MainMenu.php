@@ -46,7 +46,6 @@
 		  padding: 10px 5px 4px;
       margin: 250px 10px 5px;
     }
-    
   </style>
 </head>
 <body>
@@ -80,8 +79,10 @@
             </div>
           </div>
           <div class="overflow-auto">
+            <!--Div die de gezochte punten laat zien-->            
             <div id="result"></div>
-            <ul class="list-unstyled components">          
+            <!--Lijst met alle licenties-->
+            <ul class="list-unstyled components">
               <?php
                 GetLicense();
                 if (IsAdmin())
@@ -96,11 +97,11 @@
                 }
               ?>
             </ul>
-          </div> 
-          <span class="ban alert alert-primary jummie3">Er zijn momenteel <?=$_SESSION["counter"]?> licenties</span>                    
+          </div>                     
         </nav>                
       </div>
       <div class="col-10">
+        <!--Navigatie balk-->
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item">
