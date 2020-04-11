@@ -643,20 +643,22 @@ function validateNewAccount()
 function EditUserInformationForm($ID)
 {
   echo "
-    <form action=\"UserAdministration.php\" method=\"post\">
-      <input type=\"hidden\" name=\"id\" value=\"".$ID."\">
-      <label>Nieuwe gebruikersnaam:</label><br>
-      <input type=\"text\" name=\"NewUsername\"><br>
-      <label>Nieuwe wachtwoord:</label><br>
-      <input type=\"password\" name=\"NewPassword\"><br>
-      <label>Wachtwoord hertypen:</label><br>
-      <input type=\"password\" name=\"NewPassword2\"><br>
-      <input type=\"radio\" name=\"NewRights\" value=\"0\" checked>
-      <label for=\"Lezer\">Lezer</label><br>
-      <input type=\"radio\" name=\"NewRights\" value=\"1\">
-      <label for=\"Administrator\">Administrator</label><br>
-      <input type=\"submit\" class=\"btn btn-primary\" name=\"EditUserConfirmation\" value=\"Gegevens aanpassen\">
-    </form>
+    <div class=\"col-7\">
+      <form action=\"UserAdministration.php\" method=\"post\">
+        <input type=\"hidden\" name=\"id\" value=\"".$ID."\">
+        <label>Gebruikersnaam:</label><br>
+        <input type=\"text\" name=\"NewUsername\"><br>
+        <label>Nieuwe wachtwoord:</label><br>
+        <input type=\"password\" name=\"NewPassword\"><br>
+        <label>Wachtwoord hertypen:</label><br>
+        <input type=\"password\" name=\"NewPassword2\"><br>
+        <input type=\"radio\" name=\"NewRights\" value=\"0\" checked>
+        <label for=\"Lezer\">Lezer</label><br>
+        <input type=\"radio\" name=\"NewRights\" value=\"1\">
+        <label for=\"Administrator\">Administrator</label><br>
+        <input type=\"submit\" class=\"btn btn-primary\" name=\"EditUserConfirmation\" value=\"Gegevens aanpassen\">
+      </form>
+    </div>
   ";
 }
 
