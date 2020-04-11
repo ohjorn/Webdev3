@@ -390,9 +390,8 @@ function EditLicense($LicenseName, $Description, $InstallDesc, $ExpirationDate)
 {
   date_default_timezone_set('Europe/Amsterdam');
   $CurrentDate = date('Y/m/d');
-  $Audience = $_POST["Audience"];
 
-  $sql ="UPDATE licentie SET LicentieNaam=:LicenseName, Beschrijving=:Description, InstallatieOmschrijving=:InstallDesc, VerloopDatum=:ExpirationDate, LaatstAangepast=:CurrentDate, Doelgroep=:Audience WHERE LicentieID=:LicenseID";
+  $sql ="UPDATE licentie SET LicentieNaam=:LicenseName, Beschrijving=:Description, InstallatieOmschrijving=:InstallDesc, VerloopDatum=:ExpirationDate, LaatstAangepast=:CurrentDate WHERE LicentieID=:LicenseID";
   $conn = connectDB();
   $stmt = $conn->prepare($sql);
   $stmt->bindParam(":LicenseID", $_SESSION["LicenseID"], PDO::PARAM_STR);
@@ -401,7 +400,6 @@ function EditLicense($LicenseName, $Description, $InstallDesc, $ExpirationDate)
   $stmt->bindParam(":InstallDesc", $InstallDesc, PDO::PARAM_STR);
   $stmt->bindParam(":ExpirationDate", $ExpirationDate);
   $stmt->bindParam(":CurrentDate", $CurrentDate);
-  $stmt->bindParam(":Audience", $Audience);
   $res = $stmt->fetch(PDO::FETCH_ASSOC);
   if($stmt->execute()){
     unset( $_SESSION["tempLicenseName"]);
@@ -643,20 +641,22 @@ function validateNewAccount()
 function EditUserInformationForm($ID)
 {
   echo "
-    <form action=\"UserAdministration.php\" method=\"post\">
-      <input type=\"hidden\" name=\"id\" value=\"".$ID."\">
-      <label>Nieuwe gebruikersnaam:</label><br>
-      <input type=\"text\" name=\"NewUsername\"><br>
-      <label>Nieuwe wachtwoord:</label><br>
-      <input type=\"password\" name=\"NewPassword\"><br>
-      <label>Wachtwoord hertypen:</label><br>
-      <input type=\"password\" name=\"NewPassword2\"><br>
-      <input type=\"radio\" name=\"NewRights\" value=\"0\" checked>
-      <label for=\"Lezer\">Lezer</label><br>
-      <input type=\"radio\" name=\"NewRights\" value=\"1\">
-      <label for=\"Administrator\">Administrator</label><br>
-      <input type=\"submit\" class=\"btn btn-primary\" name=\"EditUserConfirmation\" value=\"Gegevens aanpassen\">
-    </form>
+    <div class=\"col-7\">
+      <form action=\"UserAdministration.php\" method=\"post\">
+        <input type=\"hidden\" name=\"id\" value=\"".$ID."\">
+        <label>Gebruikersnaam:</label><br>
+        <input type=\"text\" name=\"NewUsername\"><br>
+        <label>Nieuwe wachtwoord:</label><br>
+        <input type=\"password\" name=\"NewPassword\"><br>
+        <label>Wachtwoord hertypen:</label><br>
+        <input type=\"password\" name=\"NewPassword2\"><br>
+        <input type=\"radio\" name=\"NewRights\" value=\"0\" checked>
+        <label for=\"Lezer\">Lezer</label><br>
+        <input type=\"radio\" name=\"NewRights\" value=\"1\">
+        <label for=\"Administrator\">Administrator</label><br>
+        <input type=\"submit\" class=\"btn btn-primary\" name=\"EditUserConfirmation\" value=\"Gegevens aanpassen\">
+      </form>
+    </div>
   ";
 }
 

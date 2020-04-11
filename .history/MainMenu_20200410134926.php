@@ -65,7 +65,7 @@
                   <a href="#">A t/m Z</a>
                 </li>
                 <li>
-                  <a href="#">Doelgroep</a>
+                  <a href="#">Start datum</a>
                 </li>
               </ul>
             </div>
@@ -76,9 +76,7 @@
             </div>
           </div>
           <div class="overflow-auto">
-            <!--Div die de gezochte punten laat zien-->            
             <div id="result"></div>
-            <!--Lijst met alle licenties-->
             <ul class="list-unstyled components">
               <?php
                 GetLicense();
@@ -98,7 +96,6 @@
         </nav>                
       </div>
       <div class="col-10">
-        <!--Navigatie balk-->
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item">
