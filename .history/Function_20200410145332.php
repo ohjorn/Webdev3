@@ -334,7 +334,7 @@ function AddLicenseForm()
 
 function EditLicenseForm()
 {
-  $sql = "SELECT LicentieID, LicentieNaam, Beschrijving, InstallatieOmschrijving, VerloopDatum ,LaatstAangepast, Doelgroep FROM licentie WHERE LicentieID = :LicenseID"; 
+  $sql = "SELECT LicentieID, LicentieNaam, Beschrijving, Opmerking, InstallatieOmschrijving, VerloopDatum ,LaatstAangepast, Doelgroep FROM licentie WHERE LicentieID = :LicenseID"; 
  $conn = connectDB();
  $stmt = $conn->prepare($sql);
  $stmt->bindParam("LicenseID", $_SESSION["LicenseID"], PDO::PARAM_STR);
@@ -347,8 +347,6 @@ function EditLicenseForm()
   <form method=\"post\">
     <label>Licentie naam:</label><br>
     <textarea name = \"Description\" rows = \"3\" cols = \"80\">".$result["LicentieNaam"]."</textarea><br>
-    <label>Doelgroep:</label><br>
-    <textarea name = \"Audience\" rows = \"3\" cols = \"80\">".$result["Doelgroep"]."</textarea><br>
     <label>Omschrijving van de licentie:</label><br>
     <textarea name = \"Description\" rows = \"3\" cols = \"80\">".$result["Beschrijving"]."</textarea><br>
     <label>Omschrijving van de installatie:</label><br>
@@ -390,9 +388,8 @@ function EditLicense($LicenseName, $Description, $InstallDesc, $ExpirationDate)
 {
   date_default_timezone_set('Europe/Amsterdam');
   $CurrentDate = date('Y/m/d');
-  $Audience = $_POST["Audience"];
 
-  $sql ="UPDATE licentie SET LicentieNaam=:LicenseName, Beschrijving=:Description, InstallatieOmschrijving=:InstallDesc, VerloopDatum=:ExpirationDate, LaatstAangepast=:CurrentDate, Doelgroep=:Audience WHERE LicentieID=:LicenseID";
+  $sql ="UPDATE licentie SET LicentieNaam=:LicenseName, Beschrijving=:Description, InstallatieOmschrijving=:InstallDesc, VerloopDatum=:ExpirationDate, LaatstAangepast=:CurrentDate WHERE LicentieID=:LicenseID";
   $conn = connectDB();
   $stmt = $conn->prepare($sql);
   $stmt->bindParam(":LicenseID", $_SESSION["LicenseID"], PDO::PARAM_STR);
@@ -401,7 +398,6 @@ function EditLicense($LicenseName, $Description, $InstallDesc, $ExpirationDate)
   $stmt->bindParam(":InstallDesc", $InstallDesc, PDO::PARAM_STR);
   $stmt->bindParam(":ExpirationDate", $ExpirationDate);
   $stmt->bindParam(":CurrentDate", $CurrentDate);
-  $stmt->bindParam(":Audience", $Audience);
   $res = $stmt->fetch(PDO::FETCH_ASSOC);
   if($stmt->execute()){
     unset( $_SESSION["tempLicenseName"]);
@@ -543,7 +539,7 @@ if (isset($_POST["LicenseNameLoad"]))
     try 
     {
       $conn = connectDB();
-      $sql = "SELECT LicentieNaam, Beschrijving, InstallatieOmschrijving, VerloopDatum, GebruikerID, LaatstAangepast , LicentieID, Doelgroep FROM licentie WHERE LicentieID = :LicenseID;";
+      $sql = "SELECT LicentieNaam, Beschrijving, Opmerking, InstallatieOmschrijving, VerloopDatum, GebruikerID, LaatstAangepast , LicentieID, Doelgroep FROM licentie WHERE LicentieID = :LicenseID;";
       $stmt = $conn->prepare($sql);
       $stmt->bindValue("LicenseID", $_POST["LicenseID"], PDO::PARAM_STR);
       if ($stmt->execute())
@@ -553,6 +549,7 @@ if (isset($_POST["LicenseNameLoad"]))
           $_SESSION["LicenseID"] = $row["LicentieID"];
           $_SESSION["LicenseNameShow"] = $row["LicentieNaam"];
           $_SESSION["DescriptionShow"] = $row["Beschrijving"];
+          $_SESSION["CommentShow"] = $row["Opmerking"];
           $_SESSION["InstallDescShow"] = $row["InstallatieOmschrijving"];
           $_SESSION["LastChangedShow"] = $row["LaatstAangepast"];
           $_SESSION["UserIDShow"] = $row["GebruikerID"];

@@ -347,8 +347,6 @@ function EditLicenseForm()
   <form method=\"post\">
     <label>Licentie naam:</label><br>
     <textarea name = \"Description\" rows = \"3\" cols = \"80\">".$result["LicentieNaam"]."</textarea><br>
-    <label>Doelgroep:</label><br>
-    <textarea name = \"Audience\" rows = \"3\" cols = \"80\">".$result["Doelgroep"]."</textarea><br>
     <label>Omschrijving van de licentie:</label><br>
     <textarea name = \"Description\" rows = \"3\" cols = \"80\">".$result["Beschrijving"]."</textarea><br>
     <label>Omschrijving van de installatie:</label><br>
@@ -390,9 +388,8 @@ function EditLicense($LicenseName, $Description, $InstallDesc, $ExpirationDate)
 {
   date_default_timezone_set('Europe/Amsterdam');
   $CurrentDate = date('Y/m/d');
-  $Audience = $_POST["Audience"];
 
-  $sql ="UPDATE licentie SET LicentieNaam=:LicenseName, Beschrijving=:Description, InstallatieOmschrijving=:InstallDesc, VerloopDatum=:ExpirationDate, LaatstAangepast=:CurrentDate, Doelgroep=:Audience WHERE LicentieID=:LicenseID";
+  $sql ="UPDATE licentie SET LicentieNaam=:LicenseName, Beschrijving=:Description, InstallatieOmschrijving=:InstallDesc, VerloopDatum=:ExpirationDate, LaatstAangepast=:CurrentDate WHERE LicentieID=:LicenseID";
   $conn = connectDB();
   $stmt = $conn->prepare($sql);
   $stmt->bindParam(":LicenseID", $_SESSION["LicenseID"], PDO::PARAM_STR);
@@ -401,7 +398,6 @@ function EditLicense($LicenseName, $Description, $InstallDesc, $ExpirationDate)
   $stmt->bindParam(":InstallDesc", $InstallDesc, PDO::PARAM_STR);
   $stmt->bindParam(":ExpirationDate", $ExpirationDate);
   $stmt->bindParam(":CurrentDate", $CurrentDate);
-  $stmt->bindParam(":Audience", $Audience);
   $res = $stmt->fetch(PDO::FETCH_ASSOC);
   if($stmt->execute()){
     unset( $_SESSION["tempLicenseName"]);

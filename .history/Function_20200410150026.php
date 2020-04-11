@@ -392,7 +392,7 @@ function EditLicense($LicenseName, $Description, $InstallDesc, $ExpirationDate)
   $CurrentDate = date('Y/m/d');
   $Audience = $_POST["Audience"];
 
-  $sql ="UPDATE licentie SET LicentieNaam=:LicenseName, Beschrijving=:Description, InstallatieOmschrijving=:InstallDesc, VerloopDatum=:ExpirationDate, LaatstAangepast=:CurrentDate, Doelgroep=:Audience WHERE LicentieID=:LicenseID";
+  $sql ="UPDATE licentie SET LicentieNaam=:LicenseName, Beschrijving=:Description, InstallatieOmschrijving=:InstallDesc, VerloopDatum=:ExpirationDate, LaatstAangepast=:CurrentDate WHERE LicentieID=:LicenseID";
   $conn = connectDB();
   $stmt = $conn->prepare($sql);
   $stmt->bindParam(":LicenseID", $_SESSION["LicenseID"], PDO::PARAM_STR);

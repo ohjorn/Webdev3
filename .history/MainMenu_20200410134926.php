@@ -65,7 +65,7 @@
                   <a href="#">A t/m Z</a>
                 </li>
                 <li>
-                  <a href="#">Doelgroep</a>
+                  <a href="#">Start datum</a>
                 </li>
               </ul>
             </div>
