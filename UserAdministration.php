@@ -1,5 +1,9 @@
 <?php 
-  require("Function.php");
+  require("UserAdministrationPHP.php");
+  if (!class_exists('connectDB'))
+  {
+    include_once("Connect.php");
+  }
   if (session_status() == PHP_SESSION_NONE) 
   {
     session_start();

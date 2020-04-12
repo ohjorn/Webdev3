@@ -1,5 +1,5 @@
 <?php
-  require("Function.php");
+  require("MainMenuPHP.php");
   if (session_status() == PHP_SESSION_NONE) 
   {
     session_start();
@@ -17,7 +17,6 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -94,7 +93,8 @@
                 }
               ?>
             </ul>
-          </div>                     
+          </div> 
+          <span class="ban alert alert-primary jummie3">Er zijn momenteel <?=$_SESSION["counter"]?> licenties</span>
         </nav>                
       </div>
       <div class="col-10">

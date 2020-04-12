@@ -1,5 +1,8 @@
 <?php
-    include 'Connect.php';
+    if (!class_exists('connectDB'))
+    {
+        include_once("Connect.php");
+    }
     $conn = connectDB();
     $output = '';
     $searchresult = $_POST["search"];
@@ -18,13 +21,14 @@
         {
             $output .= '
                 <li>
-                    <form action="Function.php" method="post">
+                    <form action="MainMenuPHP.php" method="post">
                         <input type="hidden" name="LicenseID" value="'.$row["LicentieID"].'" >
                         <input type="submit" name="LicenseNameLoad" value="'.$row["LicentieNaam"].'" >
                     </form>
                 </li>
             ';
         }
+        $output .= '<hr>';
         echo $output;
     } 
     else 
