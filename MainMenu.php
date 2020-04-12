@@ -17,6 +17,7 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -58,6 +59,13 @@
           </div>
           <div class="row">
             <div class="col">
+              <div class="form-group" id="submitbtns">   
+                <form method="POST">                     
+                <button type="submit" class="btn btn-primary" name="csv">Exporteer naar csv</button>
+                </form>
+              </div>
+            </div>
+            <div class="col">
               <a href="#sortingmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Sorteer op</a>
               <ul class="collapse list-unstyled" id="sortingmenu">
                 <li>
@@ -68,12 +76,7 @@
                 </li>
               </ul>
             </div>
-            <div class="col">
-              <div class="form-group" id="submitbtns">                        
-                <button type="submit" class="btn btn-primary" name="search-submit">Zoeken</button>
-              </div>
-            </div>
-          </div>
+          </div><hr>
           <div class="overflow-auto">
             <!--Div die de gezochte punten laat zien-->            
             <div id="result"></div>
@@ -93,8 +96,7 @@
                 }
               ?>
             </ul>
-          </div> 
-          <span class="ban alert alert-primary jummie3">Er zijn momenteel <?=$_SESSION["counter"]?> licenties</span>
+          </div>                     
         </nav>                
       </div>
       <div class="col-10">
