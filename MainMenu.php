@@ -96,7 +96,8 @@
                 }
               ?>
             </ul>
-          </div>                     
+          </div>
+          <span class="ban alert alert-primary jummie3">Er zijn momenteel <?=$_SESSION["counter"]?> licenties</span>                    
         </nav>                
       </div>
       <div class="col-10">
