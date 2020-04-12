@@ -311,49 +311,36 @@ function DeleteUserConfirmation($UserID)
   echo "
       <div class=\"col-7\">
       <form action=\"UserAdministrationPHP.php\" method=\"post\">
-        <input type=\"hidden\" name=\"id\" value=\"".$UserID."\">
+        <input type=\"hidden\" name=\"UserID\" value=\"".$UserID."\">
         <label>Weet u zeker dat u deze gebruiker wilt verwijderen?</label><br>
         <input type=\"submit\" class=\"btn btn-primary\" name=\"DeleteUserPerm\" value=\"Gebruiker verwijderen\">
-        <input type=\"submit\" class=\"btn btn-primary\" name=\"KeepUser\" value=\"Gebruiker behouden\">
-      </form>
+      </form><br>
+      <button type=\"submit\" onclick=\"window.location.href = 'UserAdministration.php';\" class=\"btn btn-primary\" name=\"KeepUser\">Gebruiker behouden</button>
     </div>
   "; 
 }
 
-function DeleteUser($UserID)
-{
-$sql = "DELETE FROM gebruiker WHERE GebruikerID=:UserID";
-$conn = connectDB();
-$stmt = $conn->prepare($sql);
-$stmt->bindValue("UserID", $UserID, PDO::PARAM_STR);
-  if($stmt->execute())
-  {
-    header("Location: UserAdministration.php"); 
-  }
-}
-//UserAdministration.php ^^^^
-
-//Bij het aanmaken van een licentie kan de doelgroep worden ingevuld
-//Doelgroepen die eerder zijn ingevuld komen als suggesties in een dropdownmenu 
-//Bij licenties aanpassen kan ook de doelgroep worden aangepast. 
-//De licenties kunnen worden gesorteerd op doelgroep. 
 if(isset($_POST["EditUserConfirmation"]))
-  {
-    EditUserInformation($_POST["id"]); 
-  }
-
-if(isset($_POST["DeleteUser"]))
 {
-  DeleteUserConfirmation($_POST["id"]); 
+  EditUserInformation($_POST["id"]); 
 }
-
 if(isset($_POST["DeleteUserPerm"]))
 {
-  DeleteUser($_POST["id"]); 
-}
-
-if(isset($_POST["KeepUser"]))
-{
-  header("Location: UserAdministration.php"); 
-}
+  try
+  {
+    $sql = "DELETE FROM gebruiker WHERE GebruikerID=:UserID";
+    $conn = connectDB();
+    $stmt = $conn->prepare($sql);
+    $stmt->bindValue("UserID", $_POST["UserID"], PDO::PARAM_STR);
+    if($stmt->execute())
+    {
+      $_SESSION["UserAdminEcho"] = "De gebruiker is succesvol verwijderd.";
+      header("Location: UserAdministration.php"); 
+    }
+  }
+  catch(exception $ex)
+  {
+    echo "Er was een fout met de connectie met het database.";
+  }
+} 
 ?>
