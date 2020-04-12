@@ -65,6 +65,10 @@
       echo $_SESSION["UserAdminEcho"];
       unset($_SESSION["UserAdminEcho"]);
     }
+    if(isset($_POST["DeleteUser"]))
+    {
+      DeleteUserConfirmation($_POST["UserIDForm"]); 
+    }
   ?>
 </div>
 </body>
