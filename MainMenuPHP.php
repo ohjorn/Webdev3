@@ -109,9 +109,10 @@ function LoadLicense()
     <form action=\"MainMenu.php\" method=\"post\">
     <input type=\"submit\" class=\"btn btn-success\" name=\"Edit-submit\" style= \"margin-bottom: 10px;\" value=\"Licentie bewerken\">
     <input type=\"button\"class=\"btn btn-danger\" name=\"Delete-submit\" onclick=\"document.getElementById('id01').style.display='block'\"  style= \"margin-bottom: 10px;\" value=\"Licentie Verwijderen\" >
-  </form>
+    </form>
     ";
     }
+
     echo $Licenseview;
 
         $_SESSION["tempLicenseName"] = $_SESSION["LicenseNameShow"];  
@@ -303,6 +304,35 @@ function AddLicense($LicenseName, $Description, $InstallDesc, $ExpirationDate, $
     header("Location: MainMenu.php");
   }
 }
+
+if(isset($_POST["csv"]))
+{
+  ToCsv();
+}
+
+function ToCsv()
+{
+ $filename = "licenties.csv";
+
+ header("Content-type: text/csv; charset=utf-8");
+  
+ header("Content-Disposition: attachment; filename=$filename");
+ $fp = fopen('php://output', 'w');
+ fputcsv($fp, array('Licentienaam', 'Beschrijving', 'Installatie omschrijving'), ";");
+ $sql = "SELECT LicentieNaam, Beschrijving, InstallatieOmschrijving FROM licentie"; 
+ $conn = connectDB();
+ $stmt = $conn->prepare($sql);
+ $stmt->execute(); 
+ 
+ while ($res = $stmt->fetch(PDO::FETCH_ASSOC))
+ {
+   fputcsv($fp, $res, ';');
+ }
+ fclose($fp);
+ exit();
+
+}
+
 
 if (isset($_POST["AddLicense"]))
 {
