@@ -117,7 +117,6 @@ function LoadReaders()
   echo "</table>";
 }
 
-////Calls upon the "validateNewAccount" function when the "Aanmaken" knop is pressed.
 if ((!empty($_POST["CreateAcc"])) && ($_POST["CreateAcc"] == "Aanmaken"))
 {
   $conn = connectDB();
@@ -182,7 +181,6 @@ if ((!empty($_POST["CreateAcc"])) && ($_POST["CreateAcc"] == "Aanmaken"))
     echo "Er was een fout met de connectie met het database.";
   }
 }
-//// ^^^^
 
 function EditUserInformationForm($UserID, $Rights, $Username)
 {

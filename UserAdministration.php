@@ -67,7 +67,15 @@
     }
     if(isset($_POST["DeleteUser"]))
     {
-      DeleteUserConfirmation($_POST["UserIDForm"]); 
+      if ($_POST["UserIDForm"] == $_SESSION["UserID"])
+      {
+        $_SESSION["UserAdminEcho"] = "U kan niet uw eigen account verwijderen.";
+        header("Location: UserAdministration.php");
+      }
+      else
+      {
+        DeleteUserConfirmation($_POST["UserIDForm"]); 
+      }
     }
   ?>
 </div>
