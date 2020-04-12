@@ -34,13 +34,13 @@ function validate($str)
 //Checks if the user is an admin, returns true if this is the case.
 function IsAdmin()
 {
-  $Username = $_SESSION['Username'];
+  $UserID = $_SESSION['UserID'];
   $conn = connectDB();
   try
   {
-    $sql = "SELECT Rechten FROM gebruiker WHERE `UniekeLoginNaam` = :Username";
+    $sql = "SELECT Rechten FROM gebruiker WHERE `GebruikerID` = :UserID";
     $stmt = $conn->prepare($sql);
-    $stmt->bindValue("Username", $Username, PDO::PARAM_STR);
+    $stmt->bindValue("UserID", $UserID, PDO::PARAM_STR);
     $stmt->execute();
     foreach ($stmt->fetchAll() as $row) 
     {
@@ -82,4 +82,31 @@ Function GetUserID($Username)
   }
 }
 // ^^^
+
+Function GetUserName($UserID)
+{
+  try 
+  {
+    $conn = connectDB();
+    $sql = "SELECT UniekeLoginNaam FROM gebruiker WHERE GebruikerID = :UserID;";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindValue("UserID", $UserID, PDO::PARAM_STR);
+    if ($stmt->execute())
+    {
+      foreach ($stmt->fetchAll() as $row)
+      { 
+        if (!empty($row["UniekeLoginNaam"]))
+        {
+          return $row["UniekeLoginNaam"];
+          exit;
+        }
+      }
+      return "Verwijderde gebruiker";
+    }
+  }
+  catch (PDOException $ex) 
+  {
+    echo "$ex";
+  }
+}
 ?>
