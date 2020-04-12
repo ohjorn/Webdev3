@@ -10,15 +10,115 @@ if (session_status() == PHP_SESSION_NONE)
 
 //UserAdministration.php
 
+function loadAdmins()
+{
+  $conn = ConnectDB(); 
+  $sql = "SELECT * FROM gebruiker WHERE Rechten = 1 ORDER BY UniekeLoginNaam ASC";
+  $stmt = $conn->prepare($sql);
+  $stmt->execute();
+
+  //hier worder de arrays aangemaakt, anders komen er foutmeldingen als de array niet bestaat. 
+  $UniqueLoginNameAdmin = [];
+  $RightsAdmin = [];
+  $PasswordAdmin = [];
+  $UserIDAdmin = [];
+
+  // voor elke rij in de table gaat hij erlangs om de array te vullen
+  foreach ($stmt->fetchAll() as $row) 
+  {
+      //zet de gegevens in een array.
+  array_push($UniqueLoginNameAdmin, $row["UniekeLoginNaam"]);
+  array_push($RightsAdmin, $row["Rechten"]);
+  array_push($PasswordAdmin, $row["Wachtwoord"]);
+  array_push($UserIDAdmin, $row["GebruikerID"]);
+  }
+
+  //hier worden de html code weergegeven om de table te maken. 
+  //hij controleert de lengte en  maakt voor elke rij in de tabel een rij. 
+  echo "
+  <h2>Administrators</h2>
+  <table>
+  ";
+  for ($i = 0; $i < count($UniqueLoginNameAdmin); $i++)
+  {
+    //maakt hier de rijen aan met de gegevens er in. 
+    echo "
+      <form action=\"UserAdministration.php\" method=\"post\">
+        <input type=\"hidden\" name=\"UserIDForm\" value=\"".$UserIDAdmin[$i]."\">
+        <input type=\"hidden\" name=\"RightsForm\" value=\"1\">
+        <input type=\"hidden\" name=\"UniqueLoginNameForm\" value=\"".$UniqueLoginNameAdmin[$i]."\">
+        <tr>
+          <td>
+            ".$UniqueLoginNameAdmin[$i]."
+          </td>
+          <td>
+              <input type=\"submit\" class=\"btn btn-primary\" name=\"EditUser\"value=\"Aanpassen\">
+          </td> 
+          <td>
+              <input type=\"submit\" class=\"btn btn-primary\" name=\"DeleteUser\"value=\"Verwijderen\">
+          </td>
+        </tr>
+      </form>
+    "; 
+  } 
+  echo "</table>";
+}
+
+function LoadReaders()
+{
+  $conn = ConnectDB();
+  $sql = "SELECT * FROM gebruiker WHERE Rechten = 0 ORDER BY UniekeLoginNaam ASC";
+  $stmt = $conn->prepare($sql);
+  $stmt->execute();
+
+  //hier worder de arrays aangemaakt, anders komen er foutmeldingen als de array niet bestaat. 
+  $UniqueLoginNameReader = [];
+  $RightsReader = [];
+  $PasswordReader = [];
+  $UserIDReader = [];
+
+  foreach ($stmt->fetchAll() as $row) 
+  {
+    //zet de gegevens in een array.
+    array_push($UniqueLoginNameReader, $row["UniekeLoginNaam"]);
+    array_push($RightsReader, $row["Rechten"]);
+    array_push($PasswordReader, $row["Wachtwoord"]);
+    array_push($UserIDReader, $row["GebruikerID"]);
+  }
+
+  //hier worden de html code weergegeven om de table te maken. 
+  //hij controleert de lengte en  maakt voor elke rij in de tabel een rij. 
+  echo "
+    <h2>Lezers</h2>
+    <table>
+  ";
+  for ($i = 0; $i < count($UniqueLoginNameReader); $i++)
+  {
+    //maakt hier de rijen aan met de gegevens er in. 
+    echo "
+      <form action=\"UserAdministration.php\" method=\"post\">
+        <input type=\"hidden\" name=\"UserIDForm\" value=\"".$UserIDReader[$i]."\">
+        <input type=\"hidden\" name=\"RightsForm\" value=\"0\">
+        <input type=\"hidden\" name=\"UniqueLoginNameForm\" value=\"".$UniqueLoginNameReader[$i]."\">
+        <tr>
+          <td>
+            ".$UniqueLoginNameReader[$i]."
+          </td>
+          <td>
+            <input type=\"submit\" class=\"btn btn-primary\" name=\"EditUser\"value=\"Aanpassen\">
+          </td> 
+          <td>
+            <input type=\"submit\" class=\"btn btn-primary\" name=\"DeleteUser\"value=\"Verwijderen\">
+          </td>
+        </tr>
+      </form>
+    "; 
+  } 
+  echo "</table>";
+}
+
 ////Calls upon the "validateNewAccount" function when the "Aanmaken" knop is pressed.
 if ((!empty($_POST["CreateAcc"])) && ($_POST["CreateAcc"] == "Aanmaken"))
-{
-  validateNewAccount();
-}
-//// ^^^^
-
-////Checks if the entered username is not already in use, if the username is longer than 2 characters and if the 2 entered passwords are the same, if these are all correct it puts the new account in the database.
-function validateNewAccount()
 {
   $conn = connectDB();
 
@@ -41,7 +141,27 @@ function validateNewAccount()
     {
       $Result = $row["UniekeLoginNaam"];
     }
-    if ((!($Result == $Username)) && ($Password == $Password2) && (strlen($Username) > 2))
+    if (!(isset($Result)))
+    {
+      $Result = null;
+    }
+    if (($Result == $Username) || !($Password == $Password2) || ((strlen($Password)) < 5) || ((strlen($Password2)) < 5) || (strlen($Username) < 3))
+    {
+      $_SESSION["UserAdminEcho"] = null;
+      if ($Result == $Username)
+      {
+        $_SESSION["UserAdminEcho"] = "Deze gebruikersnaam is al in gebruik door iemand anders.<br>";
+      }
+      if (!($Password == $Password2) || ((strlen($Password)) < 5) || ((strlen($Password2)) < 5))
+      {
+        $_SESSION["UserAdminEcho"] = $_SESSION["UserAdminEcho"] . "De wachtwoorden zijn niet gelijk of je hebt het wachtwoord te kort (moet minimaal 5 characters bevatten).<br>";
+      }
+      if (strlen($Username) < 3)
+      {
+        $_SESSION["UserAdminEcho"] = $_SESSION["UserAdminEcho"] . "De gebruikersnaam is te kort, hij moet minimaal 3 characters bevatten.<br>";
+      }
+    }
+    else
     {
       $sql = "INSERT INTO `gebruiker` (`GebruikerID`, `UniekeLoginNaam`, `Wachtwoord`, `Rechten`) VALUES (NULL, :Username, :Password, :Rights);";
 
@@ -51,24 +171,11 @@ function validateNewAccount()
       $stmt->bindValue("Rights", $Rights, PDO::PARAM_STR);
       if($stmt->execute()) 
       {
-        echo "Het account is succesvol aangemaakt!";
+        $_SESSION["UserAdminEcho"] = "Het account is succesvol aangemaakt!";
       }
     }
-    else
-    {
-      if ($Result == $Username)
-      {
-        echo "Deze gebruikersnaam is al in gebruik.";
-      }
-      elseif (strlen($Username) < 3)
-      {
-        echo "De gebruikersnaam is te kort.";
-      }
-      if (!($Password == $Password2))
-      {
-        echo "De wachtwoorden komen niet overeen.";
-      }
-    }
+    header("Location: UserAdministration.php");
+    exit;
   }
   catch(exception $ex)
   {
@@ -77,84 +184,108 @@ function validateNewAccount()
 }
 //// ^^^^
 
-function EditUserInformationForm($ID)
+function EditUserInformationForm($UserID, $Rights, $Username)
 {
   echo "
-    <form action=\"UserAdministration.php\" method=\"post\">
-      <input type=\"hidden\" name=\"id\" value=\"".$ID."\">
-      <label>Nieuwe gebruikersnaam:</label><br>
-      <input type=\"text\" name=\"NewUsername\"><br>
-      <label>Nieuwe wachtwoord:</label><br>
+    <form action=\"UserAdministrationPHP.php\" method=\"post\">
+      <input type=\"hidden\" name=\"id\" value=\"".$UserID."\">
+      <label>Nieuwe gebruikersnaam (minimaal 3 characters):</label><br>
+      <input type=\"text\" name=\"NewUsername\" value=\"".$Username."\"><br>
+      <label>Nieuwe wachtwoord(minimaal 5 characters):</label><br>
       <input type=\"password\" name=\"NewPassword\"><br>
       <label>Wachtwoord hertypen:</label><br>
       <input type=\"password\" name=\"NewPassword2\"><br>
-      <input type=\"radio\" name=\"NewRights\" value=\"0\" checked>
+  ";
+  if ($Rights == 1)
+  {
+    echo "
+      <input type=\"radio\" name=\"NewRights\" value=\"1\" checked>
+      <label for=\"Administrator\">Administrator</label><br>
+      <input type=\"radio\" name=\"NewRights\" value=\"0\">
       <label for=\"Lezer\">Lezer</label><br>
+    ";
+  }
+  else
+  {
+    echo "
       <input type=\"radio\" name=\"NewRights\" value=\"1\">
       <label for=\"Administrator\">Administrator</label><br>
+      <input type=\"radio\" name=\"NewRights\" value=\"0\" checked>
+      <label for=\"Lezer\">Lezer</label><br>
+    ";
+  }
+  echo "
       <input type=\"submit\" class=\"btn btn-primary\" name=\"EditUserConfirmation\" value=\"Gegevens aanpassen\">
-    </form>
+    </form><br>
+    <button type=\"submit\" onclick=\"window.location.href = 'UserAdministration.php';\" class=\"btn btn-primary\" name=\"Cancel\">Annuleren</button>
+  ";
+}
+
+function CreateUserForm()
+{
+  echo "
+    <form action=\"UserAdministrationPHP.php\" method=\"post\">
+      <label>Gebruikersnaam (Minimaal 3 characters):</label><br>
+      <input type=\"str\" name=\"Username\"><br>
+      <label>Wachtwoord(Minimaal 5 characters):</label><br>
+      <input type=\"password\" name=\"Password\"><br>
+      <label>Wachtwoord hertypen:</label><br>
+      <input type=\"password\" name=\"Password2\"><br>
+      <input type=\"radio\" name=\"Rights\" value=\"1\">
+      <label for=\"Administrator\">Administrator</label><br>
+      <input type=\"radio\" name=\"Rights\" value=\"0\" checked>
+      <label for=\"Lezer\">Lezer</label><br>
+      <input type=\"submit\" class=\"btn btn-primary\" name=\"CreateAcc\" value=\"Aanmaken\">
+    </form><br>
+    <button type=\"submit\" onclick=\"window.location.href = 'MainMenu.php';\" class=\"btn btn-primary\" name=\"BackToMainMenu\">Terug</button>
   ";
 }
 
 function EditUserInformation($UserID)
 {
   $conn = connectDB();
-
+  $Username = filter_var($_POST["NewUsername"], FILTER_SANITIZE_STRING);
+  $Username = validate($Username);
   $Password = filter_var($_POST["NewPassword"], FILTER_SANITIZE_STRING);
   $Password = validate($Password);
   $Password2 = filter_var($_POST["NewPassword2"], FILTER_SANITIZE_STRING);
   $Password2 = validate($Password2);
   $Hashed = password_hash($Password, PASSWORD_DEFAULT);
   $Rights = $_POST["NewRights"];
-  //controleert of er een naam is ingevoerd. 
-  if(!(empty($_POST["NewUsername"])))
-  {
-    $Username = $_POST["NewUsername"];
-  }
-  //als er geen naam is ingevoerd is de waarde van Username de oude gebruikersnaam
-  else 
-  {
-    $Username = GetUserName($UserID); 
-  }
-
-  //controleren of de gebruikersnaam hetzelfde is ingevuld als de huidige gebruikersnaam. 
   try
   {
-    $Result = NULL; 
     //selecteerd alle gebruikersnamen uit de tabel gebruiker die hetzelfde zijn als de ingevoerde waarde. 
     $sql = "SELECT UniekeLoginNaam FROM gebruiker WHERE UniekeLoginNaam = :Username"; 
     $stmt = $conn->prepare($sql);
     $stmt->bindValue("Username", $Username, PDO::PARAM_STR);
     $stmt->execute();
-    foreach ($stmt->fetchAll() as $row) 
+    foreach ($stmt->fetchAll() as $row)
     {
       $Result = $row["UniekeLoginNaam"];
     }
-    $PastUsername = GetUserName($UserID);
-    //als er al een naam in de database staat die hetzelfde is als de ingevoerde waarde of als deze niet hetzelfde is als de vorige gebruikersnaam
-    //krijgt de gebruiker een melding dat deze gebruikersnaam al bestaat. 
-    if ($Result == $Username && $Result != $PastUsername)
-      {
-        echo "Deze gebruikersnaam is al in gebruik.";
-      }
-    if ((!($Result == $Username)) && ($Password == $Password2)) 
+    if (!(isset($Result)))
     {
-     
-      if (empty($Password))
+      $Result = null;
+    }
+    $PastUsername = GetUserName($UserID);
+    if (($Result == $Username && $Result != $PastUsername) || !($Password == $Password2) || ((strlen($Password)) < 5) || ((strlen($Password2)) < 5) || (strlen($Username) < 3))
+    {
+      $_SESSION["UserAdminEcho"] = null;
+      if ($Result == $Username && $Result != $PastUsername)
       {
-        $sql = "SELECT Wachtwoord FROM gebruiker WHERE GebruikerID = :UserID";
-        $stmt = $conn->prepare($sql);
-        $stmt->bindValue("UserID", $UserID, PDO::PARAM_STR);
-        if($stmt->execute()) 
-        {
-          foreach ($stmt->fetchAll() as $row) 
-          {
-            $Password = $row["Wachtwoord"];
-          }
-        }
-     }   
-
+        $_SESSION["UserAdminEcho"] = "Deze gebruikersnaam is al in gebruik door iemand anders.<br>";
+      }
+      if (!($Password == $Password2) || ((strlen($Password)) < 5) || ((strlen($Password2)) < 5))
+      {
+        $_SESSION["UserAdminEcho"] = $_SESSION["UserAdminEcho"] . "De wachtwoorden zijn niet gelijk of je hebt het wachtwoord te kort (moet minimaal 5 characters bevatten).<br>";
+      }
+      if (strlen($Username) < 3)
+      {
+        $_SESSION["UserAdminEcho"] = $_SESSION["UserAdminEcho"] . "Deze gebruikersnaam is te kort, hij moet minimaal 3 characters bevatten.<br>";
+      }
+    }
+    else
+    {
       $sql = "UPDATE `gebruiker` SET UniekeLoginNaam=:Username, Wachtwoord=:Password, Rechten=:Rights WHERE GebruikerID = $UserID;";
 
       $stmt = $conn->prepare($sql);
@@ -163,21 +294,11 @@ function EditUserInformation($UserID)
       $stmt->bindValue("Rights", $Rights, PDO::PARAM_STR);
       if($stmt->execute()) 
       {
-        echo "De gebruikersgegevens zijn succesvol aangepast!";
-        header("Location: UserAdministration.php"); 
+        echo "De gebruikersgegevens zijn succesvol aangepast!"; 
       }
     }
-    else
-    {
-      if (strlen($Username) < 3 && $Result = !$PastUsername)
-      {
-        echo "De gebruikersnaam is te kort.";
-      }
-      if (!($Password == $Password2))
-      {
-        echo "De wachtwoorden komen niet overeen.";
-      }
-    }
+    header("Location: UserAdministration.php");
+    exit;
   }
   catch(exception $ex)
   {
@@ -185,12 +306,12 @@ function EditUserInformation($UserID)
   }
 }
 
-function DeleteUserConfirmation($ID)
+function DeleteUserConfirmation($UserID)
 {
   echo "
       <div class=\"col-7\">
-      <form action=\"UserAdministration.php\" method=\"post\">
-        <input type=\"hidden\" name=\"id\" value=\"".$ID."\">
+      <form action=\"UserAdministrationPHP.php\" method=\"post\">
+        <input type=\"hidden\" name=\"id\" value=\"".$UserID."\">
         <label>Weet u zeker dat u deze gebruiker wilt verwijderen?</label><br>
         <input type=\"submit\" class=\"btn btn-primary\" name=\"DeleteUserPerm\" value=\"Gebruiker verwijderen\">
         <input type=\"submit\" class=\"btn btn-primary\" name=\"KeepUser\" value=\"Gebruiker behouden\">
@@ -216,5 +337,23 @@ $stmt->bindValue("UserID", $UserID, PDO::PARAM_STR);
 //Doelgroepen die eerder zijn ingevuld komen als suggesties in een dropdownmenu 
 //Bij licenties aanpassen kan ook de doelgroep worden aangepast. 
 //De licenties kunnen worden gesorteerd op doelgroep. 
+if(isset($_POST["EditUserConfirmation"]))
+  {
+    EditUserInformation($_POST["id"]); 
+  }
 
+if(isset($_POST["DeleteUser"]))
+{
+  DeleteUserConfirmation($_POST["id"]); 
+}
+
+if(isset($_POST["DeleteUserPerm"]))
+{
+  DeleteUser($_POST["id"]); 
+}
+
+if(isset($_POST["KeepUser"]))
+{
+  header("Location: UserAdministration.php"); 
+}
 ?>

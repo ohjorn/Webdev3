@@ -28,6 +28,14 @@ if (!empty($_POST["logout-submit"]))
 
 if (!empty($_POST["toggle-account-management"]))
 {
+  unset($_SESSION["LicenseNameShow"]);
+  unset($_SESSION["DescriptionShow"]);
+  unset($_SESSION["InstallDescShow"]);
+  unset($_SESSION["LastChangedShow"]);
+  unset($_SESSION["ExpirationDateShow"]);
+  unset($_SESSION["UserIDShow"]);
+  unset($_SESSION["LicenseIDShow"]);
+  unset($_SESSION["AudienceShow"]);
   header("Location: UserAdministration.php");
   exit;
 }
@@ -166,29 +174,6 @@ Function LoadComments()
   }
 }
 
-Function GetUserName($UserID)
-{
-  try 
-  {
-    $conn = connectDB();
-    $sql = "SELECT UniekeLoginNaam FROM gebruiker WHERE GebruikerID = :UserID;";
-    $stmt = $conn->prepare($sql);
-    $stmt->bindValue("UserID", $UserID, PDO::PARAM_STR);
-    if ($stmt->execute())
-    {
-      foreach ($stmt->fetchAll() as $row)
-      { 
-        return $row["UniekeLoginNaam"];
-        exit;
-      }
-    }
-  }
-  catch (PDOException $ex) 
-  {
-    echo "$ex";
-  }
-}
-
 function AddLicenseForm()
 {
   echo "
@@ -264,13 +249,13 @@ function DeleteLicense()
   unset($_SESSION["AudienceShow"]);
 }
 
-function EditLicense($LicenseName, $Description, $InstallDesc, $ExpirationDate)
+function EditLicense($LicenseName, $Description, $InstallDesc, $ExpirationDate, $UserID)
 {
   date_default_timezone_set('Europe/Amsterdam');
   $CurrentDate = date('Y/m/d');
   $Audience = $_POST["Audience"];
 
-  $sql ="UPDATE licentie SET LicentieNaam=:LicenseName, Beschrijving=:Description, InstallatieOmschrijving=:InstallDesc, VerloopDatum=:ExpirationDate, LaatstAangepast=:CurrentDate, Doelgroep=:Audience WHERE LicentieID=:LicenseID";
+  $sql ="UPDATE licentie SET LicentieNaam=:LicenseName, Beschrijving=:Description, InstallatieOmschrijving=:InstallDesc, VerloopDatum=:ExpirationDate, GebruikerID=:UserID, LaatstAangepast=:CurrentDate, Doelgroep=:Audience WHERE LicentieID=:LicenseID";
   $conn = connectDB();
   $stmt = $conn->prepare($sql);
   $stmt->bindParam(":LicenseID", $_SESSION["LicenseID"], PDO::PARAM_STR);
@@ -280,9 +265,18 @@ function EditLicense($LicenseName, $Description, $InstallDesc, $ExpirationDate)
   $stmt->bindParam(":ExpirationDate", $ExpirationDate);
   $stmt->bindParam(":CurrentDate", $CurrentDate);
   $stmt->bindParam(":Audience", $Audience);
+  $stmt->bindParam(":UserID", $UserID);
   $res = $stmt->fetch(PDO::FETCH_ASSOC);
   if($stmt->execute()){
     unset( $_SESSION["tempLicenseName"]);
+    $_SESSION["LicenseID"] = $_SESSION["LicenseID"];
+    $_SESSION["LicenseNameShow"] = $LicenseName;
+    $_SESSION["DescriptionShow"] = $Description;
+    $_SESSION["InstallDescShow"] = $InstallDesc;
+    $_SESSION["LastChangedShow"] = $CurrentDate;
+    $_SESSION["UserIDShow"] = $UserID;
+    $_SESSION["ExpirationDateShow"] = $ExpirationDate;
+    $_SESSION["AudienceShow"] = $Audience;
     header("Location: MainMenu.php");    
   }
 }
@@ -305,7 +299,7 @@ function AddLicense($LicenseName, $Description, $InstallDesc, $ExpirationDate, $
   $stmt->bindValue("UserID", $UserID, PDO::PARAM_STR);
   $stmt->bindValue("Audience", $Audience, PDO::PARAM_STR);
   if($stmt->execute())
-  {
+  {          
     header("Location: MainMenu.php");
   }
 }
@@ -378,7 +372,7 @@ if (isset($_POST["EditLicense"]))
     if (!(empty($_POST["ExpirationDate"])))
     {
       $ExpirationDate = $_POST["ExpirationDate"];
-      EditLicense($LicenseName, $Description, $InstallDesc, $ExpirationDate);
+      EditLicense($LicenseName, $Description, $InstallDesc, $ExpirationDate, $_SESSION["UserID"]);
     }
     else
     {
