@@ -31,7 +31,7 @@
 <?php 
   if (isset($_SESSION['WrongInput']))
   {
-    echo $_SESSION['WrongInput'];
+    echo "<span style='color:red;'> ".$_SESSION['WrongInput']."<span>";
     unset($_SESSION['WrongInput']);
   }
 ?>

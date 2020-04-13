@@ -28,35 +28,18 @@ if (!empty($_POST["logout-submit"]))
 
 if (!empty($_POST["toggle-account-management"]))
 {
-  unset($_SESSION["LicenseNameShow"]);
-  unset($_SESSION["DescriptionShow"]);
-  unset($_SESSION["InstallDescShow"]);
-  unset($_SESSION["LastChangedShow"]);
-  unset($_SESSION["ExpirationDateShow"]);
-  unset($_SESSION["UserIDShow"]);
-  unset($_SESSION["LicenseIDShow"]);
-  unset($_SESSION["AudienceShow"]);
   header("Location: UserAdministration.php");
   exit;
 }
 
 function GetLicense()
-{
-  if (isset($_GET["Sort"])){
-    $Sort = $_GET["Sort"]; 
-    $_SESSION['sort'] = $_GET["Sort"]; 
-  }
-  else {
-    $Sort = 0; 
-  }
-  if (!(isset($_SESSION["sort"]))){
-    $_SESSION['sort'] = 1; 
-  }
+{ 
   $counter = 0;
   $conn = connectDB();
   try
   {
-    if ($Sort == 2 || $_SESSION['sort'] == '2'){
+    if ($_POST['Sort'] == 'Audience') || $_SESSION['sort'] == 'Audience'){
+    $_SESSION['sort'] = 'Audience'; 
     $sql = "SELECT LicentieID, LicentieNaam, Doelgroep FROM licentie ORDER BY Doelgroep asc";
     $stmt = $conn->prepare($sql);
     $stmt->execute();
@@ -74,7 +57,8 @@ function GetLicense()
     }
     }
 
-    if ($Sort == 1 || $_SESSION['sort'] == '1'){
+    if ($_POST['Sort'] == 'Alphabetically') || $_SESSION['sort'] == 'Alphabetically'){
+    $_SESSION['sort'] = 'Alphabetically';
     $sql = "SELECT LicentieID, LicentieNaam FROM licentie ORDER BY LicentieNaam asc";
     $stmt = $conn->prepare($sql);
     $stmt->execute();
@@ -142,10 +126,9 @@ function LoadLicense()
     <form action=\"MainMenu.php\" method=\"post\">
     <input type=\"submit\" class=\"btn btn-success\" name=\"Edit-submit\" style= \"margin-bottom: 10px;\" value=\"Licentie bewerken\">
     <input type=\"button\"class=\"btn btn-danger\" name=\"Delete-submit\" onclick=\"document.getElementById('id01').style.display='block'\"  style= \"margin-bottom: 10px;\" value=\"Licentie Verwijderen\" >
-    </form>
+  </form>
     ";
     }
-
     echo $Licenseview;
 
         $_SESSION["tempLicenseName"] = $_SESSION["LicenseNameShow"];  
@@ -205,6 +188,29 @@ Function LoadComments()
         ";
       }
     }
+  }
+}
+
+Function GetUserName($UserID)
+{
+  try 
+  {
+    $conn = connectDB();
+    $sql = "SELECT UniekeLoginNaam FROM gebruiker WHERE GebruikerID = :UserID;";
+    $stmt = $conn->prepare($sql);
+    $stmt->bindValue("UserID", $UserID, PDO::PARAM_STR);
+    if ($stmt->execute())
+    {
+      foreach ($stmt->fetchAll() as $row)
+      { 
+        return $row["UniekeLoginNaam"];
+        exit;
+      }
+    }
+  }
+  catch (PDOException $ex) 
+  {
+    echo "$ex";
   }
 }
 
@@ -283,13 +289,13 @@ function DeleteLicense()
   unset($_SESSION["AudienceShow"]);
 }
 
-function EditLicense($LicenseName, $Description, $InstallDesc, $ExpirationDate, $UserID)
+function EditLicense($LicenseName, $Description, $InstallDesc, $ExpirationDate)
 {
   date_default_timezone_set('Europe/Amsterdam');
   $CurrentDate = date('Y/m/d');
   $Audience = $_POST["Audience"];
 
-  $sql ="UPDATE licentie SET LicentieNaam=:LicenseName, Beschrijving=:Description, InstallatieOmschrijving=:InstallDesc, VerloopDatum=:ExpirationDate, GebruikerID=:UserID, LaatstAangepast=:CurrentDate, Doelgroep=:Audience WHERE LicentieID=:LicenseID";
+  $sql ="UPDATE licentie SET LicentieNaam=:LicenseName, Beschrijving=:Description, InstallatieOmschrijving=:InstallDesc, VerloopDatum=:ExpirationDate, LaatstAangepast=:CurrentDate, Doelgroep=:Audience WHERE LicentieID=:LicenseID";
   $conn = connectDB();
   $stmt = $conn->prepare($sql);
   $stmt->bindParam(":LicenseID", $_SESSION["LicenseID"], PDO::PARAM_STR);
@@ -299,18 +305,9 @@ function EditLicense($LicenseName, $Description, $InstallDesc, $ExpirationDate, 
   $stmt->bindParam(":ExpirationDate", $ExpirationDate);
   $stmt->bindParam(":CurrentDate", $CurrentDate);
   $stmt->bindParam(":Audience", $Audience);
-  $stmt->bindParam(":UserID", $UserID);
   $res = $stmt->fetch(PDO::FETCH_ASSOC);
   if($stmt->execute()){
     unset( $_SESSION["tempLicenseName"]);
-    $_SESSION["LicenseID"] = $_SESSION["LicenseID"];
-    $_SESSION["LicenseNameShow"] = $LicenseName;
-    $_SESSION["DescriptionShow"] = $Description;
-    $_SESSION["InstallDescShow"] = $InstallDesc;
-    $_SESSION["LastChangedShow"] = $CurrentDate;
-    $_SESSION["UserIDShow"] = $UserID;
-    $_SESSION["ExpirationDateShow"] = $ExpirationDate;
-    $_SESSION["AudienceShow"] = $Audience;
     header("Location: MainMenu.php");    
   }
 }
@@ -333,39 +330,10 @@ function AddLicense($LicenseName, $Description, $InstallDesc, $ExpirationDate, $
   $stmt->bindValue("UserID", $UserID, PDO::PARAM_STR);
   $stmt->bindValue("Audience", $Audience, PDO::PARAM_STR);
   if($stmt->execute())
-  {          
+  {
     header("Location: MainMenu.php");
   }
 }
-
-if(isset($_POST["csv"]))
-{
-  ToCsv();
-}
-
-function ToCsv()
-{
- $filename = "licenties.csv";
-
- header("Content-type: text/csv; charset=utf-8");
-  
- header("Content-Disposition: attachment; filename=$filename");
- $fp = fopen('php://output', 'w');
- fputcsv($fp, array('Licentienaam', 'Beschrijving', 'Installatie omschrijving'), ";");
- $sql = "SELECT LicentieNaam, Beschrijving, InstallatieOmschrijving FROM licentie"; 
- $conn = connectDB();
- $stmt = $conn->prepare($sql);
- $stmt->execute(); 
- 
- while ($res = $stmt->fetch(PDO::FETCH_ASSOC))
- {
-   fputcsv($fp, $res, ';');
- }
- fclose($fp);
- exit();
-
-}
-
 
 if (isset($_POST["AddLicense"]))
 {
@@ -435,7 +403,7 @@ if (isset($_POST["EditLicense"]))
     if (!(empty($_POST["ExpirationDate"])))
     {
       $ExpirationDate = $_POST["ExpirationDate"];
-      EditLicense($LicenseName, $Description, $InstallDesc, $ExpirationDate, $_SESSION["UserID"]);
+      EditLicense($LicenseName, $Description, $InstallDesc, $ExpirationDate);
     }
     else
     {
