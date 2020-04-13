@@ -1,4 +1,5 @@
 <?php
+      require("MainMenuPHP.php");
     if (!class_exists('connectDB'))
     {
         include_once("Connect.php");
@@ -8,7 +9,7 @@
     $searchresult = $_POST["search"];
     
     //alle data uit LicentieID die lijken op "tekst in zoekvenster"
-    $sql = $conn->prepare("SELECT * FROM `licentie` WHERE `LicentieNaam` LIKE '%$searchresult%' OR `Doelgroep` LIKE '%$searchresult%'");
+    $sql = $conn->prepare("SELECT * FROM `licentie` WHERE `LicentieNaam` LIKE '%$searchresult%'");
     $sql->execute();
     //Als er regels gelijk zijn aan wat er gezocht wordt
     if ($sql->rowCount() != 0) 
@@ -22,8 +23,8 @@
             $output .= '
                 <li>
                     <form action="MainMenuPHP.php" method="post">
-                        <input type="hidden" name="LicenseID" class="license" '.$row["LicentieID"].'" >
-                        <input type="submit" name="LicenseNameLoad" class="license" value="'.$row["LicentieNaam"].'" >
+                        <input type="hidden" name="LicenseID" value="'.$row["LicentieID"].'" >
+                        <input type="submit" name="LicenseNameLoad" value="'.$row["LicentieNaam"].'" >
                     </form>
                 </li>
             ';

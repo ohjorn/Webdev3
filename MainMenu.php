@@ -1,5 +1,5 @@
 <?php
-  require("MainMenuPHP.php");
+      require("MainMenuPHP.php");
   if (session_status() == PHP_SESSION_NONE) 
   {
     session_start();
@@ -106,9 +106,7 @@
         color: black;
 
     }
-
     .modalstyle {
-     
 		  text-align: center;		
 		  border-radius: 5px;
 		  font-size: 13px;
@@ -122,8 +120,6 @@
 <!--navbar -->
 <nav style="height: 80px; background: #008487; border-radius: 0px;" class="navbar fixed-top navbar-expand-lg">
     <a class="navbar-brand" href="/"> <img style= "margin-top: -25px;" src="nhl.png" width="70px" height="70px" alt=""></a>
-
-
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto navbar-right">
             <li class="nav-item">
@@ -172,24 +168,24 @@
     <?php if (IsAdmin())
     {
         echo "
-                    <li style=margin-top:10px;>
-                      <form action=\"\" method=\"post\">
-                        <input type=\"submit\" class=\"button1\" name=\"Add-submit\" style= \"margin-bottom: 10px;\" value=\"Licentie toevoegen\">
-                      </form>
-                    </li>
-                  ";
+          <li style=margin-top:10px;>
+            <form action=\"\" method=\"post\">
+              <input type=\"submit\" class=\"button1\" name=\"Add-submit\" style= \"margin-bottom: 10px;\" value=\"Licentie toevoegen\">
+            </form>
+          </li>
+        ";
     }
     ?>
     <br><br><br>
     <ul class="list-unstyled components">
         <a href="#sortingmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Sorteer op</a>
         <ul class="collapse list-unstyled" id="sortingmenu">
-            <li>
-                <a href="#">A t/m Z</a>
-            </li>
-            <li>
-                <a href="#">Doelgroep</a>
-            </li>
+          <li>
+            <a href="MainMenu.php?Sort=1">A t/m Z</a>
+          </li>
+          <li>
+            <a href="MainMenu.php?Sort=2">Doelgroep</a>
+          </li>
         </ul>
     </ul>
     </br>
@@ -236,28 +232,47 @@
         <div class="row bg-light" style="height: 100vh;" >
           <div class="col-7">
             <?php 
-              if(isset($_POST["Edit-submit"]))
+              
+              if(isset($_POST["Edit-submit"]) || isset($_SESSION["EditLicenseError"]) )
               {
                 EditLicenseForm();
+                if (isset($_SESSION["EditLicenseError"]))
+                {
+                  echo $_SESSION["EditLicenseError"];
+                }   
+                              
               }
-              else if (isset($_POST["Add-submit"]))
+              else if (isset($_POST["Add-submit"]) || isset($_SESSION["AddLicenseError"]))
               {
                 AddLicenseForm();
+                if (isset($_SESSION["AddLicenseError"]))
+                {
+                  echo $_SESSION["AddLicenseError"];
+                }
               }
-              else if(isset($_POST["Delete-submit"])){
+              else if(isset($_POST["Delete-submit"]))
+              {
                 DeleteLicense();
               }
               else
               {
                 LoadLicense();
+                
+              }
+              if($_SESSION["home"]){
+                Expire();
               }
             ?>
           </div>
           <div class="col-3">
             <?php
-              if (!(isset($_POST["Edit-submit"])) && !(isset($_POST["Add-submit"])))
+              if (!(isset($_POST["Edit-submit"])) && !(isset($_POST["Add-submit"])) && !(isset($_SESSION["AddLicenseError"])))
               {
                 LoadComments();
+              }
+              else if (isset($_SESSION["AddLicenseError"]))
+              {
+                unset($_SESSION["AddLicenseError"]);
               }
             ?>
           </div>
