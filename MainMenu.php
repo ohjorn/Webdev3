@@ -124,9 +124,15 @@
         <div class="row bg-light">
           <div class="col-7">
             <?php 
-              if(isset($_POST["Edit-submit"]))
+              
+              if(isset($_POST["Edit-submit"]) || isset($_SESSION["EditLicenseError"]) )
               {
                 EditLicenseForm();
+                if (isset($_SESSION["EditLicenseError"]))
+                {
+                  echo $_SESSION["EditLicenseError"];
+                }   
+                              
               }
               else if (isset($_POST["Add-submit"]) || isset($_SESSION["AddLicenseError"]))
               {
@@ -143,6 +149,10 @@
               else
               {
                 LoadLicense();
+                
+              }
+              if($_SESSION["home"]){
+                Expire();
               }
             ?>
           </div>
