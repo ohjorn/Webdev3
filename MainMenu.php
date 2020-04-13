@@ -128,11 +128,16 @@
               {
                 EditLicenseForm();
               }
-              else if (isset($_POST["Add-submit"]))
+              else if (isset($_POST["Add-submit"]) || isset($_SESSION["AddLicenseError"]))
               {
                 AddLicenseForm();
+                if (isset($_SESSION["AddLicenseError"]))
+                {
+                  echo $_SESSION["AddLicenseError"];
+                }
               }
-              else if(isset($_POST["Delete-submit"])){
+              else if(isset($_POST["Delete-submit"]))
+              {
                 DeleteLicense();
               }
               else
@@ -143,9 +148,13 @@
           </div>
           <div class="col-3">
             <?php
-              if (!(isset($_POST["Edit-submit"])) && !(isset($_POST["Add-submit"])))
+              if (!(isset($_POST["Edit-submit"])) && !(isset($_POST["Add-submit"])) && !(isset($_SESSION["AddLicenseError"])))
               {
                 LoadComments();
+              }
+              else if (isset($_SESSION["AddLicenseError"]))
+              {
+                unset($_SESSION["AddLicenseError"]);
               }
             ?>
           </div>

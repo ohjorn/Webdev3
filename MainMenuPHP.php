@@ -114,17 +114,36 @@ function LoadLicense()
     <div class=\"col-7\">
       <h2><b>Licentie naam</b></h2>
       <p><td>".$_SESSION["LicenseNameShow"]."</td></p>
-      <h2><b>Doelgroep</b></h2>
-      <p><td>".$_SESSION["AudienceShow"]."</td></p>
-      <h2><b>Beschrijving</b></h2>
-      <p><td>".$_SESSION["DescriptionShow"]."</td></p>
-      <br>
-      <h2><b>Installatie omschrijving</b></h2>
-      <p><td>".$_SESSION["InstallDescShow"]."</td></p>
-      <br> 
-      <h2><b>Verloop datum</b></h2>
-      <p><td>".$_SESSION["ExpirationDateShow"]."</td></p>
-      <br> 
+      ";
+      if ($_SESSION["AudienceShow"] != null)
+      {
+        $Licenseview .= "
+          <h2><b>Doelgroep</b></h2>
+          <p><td>".$_SESSION["AudienceShow"]."</td></p>
+        ";
+      }
+      if ($_SESSION["DescriptionShow"] != null)
+      {
+        $Licenseview .= "
+          <h2><b>Beschrijving</b></h2>
+          <p><td>".$_SESSION["DescriptionShow"]."</td></p><br>
+        ";
+      }
+      if ($_SESSION["InstallDescShow"] != null)
+      {
+        $Licenseview .= "
+          <h2><b>Installatie omschrijving</b></h2>
+          <p><td>".$_SESSION["InstallDescShow"]."</td></p><br> 
+        ";
+      }
+      if ($_SESSION["ExpirationDateShow"] != null)
+      {
+        $Licenseview .= "
+          <h2><b>Verloop datum</b></h2>
+          <p><td>".$_SESSION["ExpirationDateShow"]."</td></p><br>
+        ";
+      }
+      $Licenseview .= "
       <h2><b>Laatst aangepast</b></h2>
       <p><td>".$_SESSION["LastChangedShow"].", Door: ".GetUserName($_SESSION["UserIDShow"])."</td></p>
       <br>
@@ -145,14 +164,8 @@ function LoadLicense()
     </form>
     ";
     }
-
     echo $Licenseview;
-
-        $_SESSION["tempLicenseName"] = $_SESSION["LicenseNameShow"];  
-  }
-  else
-  {
-    exit;
+    $_SESSION["tempLicenseName"] = $_SESSION["LicenseNameShow"];  
   }
 }
 
@@ -410,7 +423,9 @@ if (isset($_POST["AddLicense"]))
   }
   else
   {
-    echo "Fout";
+    $_SESSION["AddLicenseError"] = "De licentie moet een naam bevatten.";
+    $_POST["Add-submit"] = "test";
+    header("Location: MainMenu.php");
   }
 }
 
@@ -447,7 +462,7 @@ if (isset($_POST["EditLicense"]))
     else
     {
       $ExpirationDate = null;
-      EditLicense($LicenseName, $Description, $InstallDesc, $ExpirationDate);
+      EditLicense($LicenseName, $Description, $InstallDesc, $ExpirationDate, $_SESSION["UserID"]);
     }
   }
   else 
