@@ -37,9 +37,7 @@
     #sidebar {
       padding-left: 10px;
     }
-
     .modalstyle {
-     
 		  text-align: center;		
 		  border-radius: 5px;
 		  font-size: 13px;
@@ -61,7 +59,8 @@
             <div class="col">
               <div class="form-group" id="submitbtns">   
                 <form method="POST">                     
-                <button type="submit" class="btn btn-primary" name="csv">Exporteer naar csv</button>
+                  <button type="submit" class="btn btn-primary" name="csv">Exporteer naar csv</button>
+                  <button type="submit" class="btn btn-primary" name="Home"><i class="glyphicon glyphicon-home"></i></button>
                 </form>
               </div>
             </div>
@@ -129,11 +128,16 @@
               {
                 EditLicenseForm();
               }
-              else if (isset($_POST["Add-submit"]))
+              else if (isset($_POST["Add-submit"]) || isset($_SESSION["AddLicenseError"]))
               {
                 AddLicenseForm();
+                if (isset($_SESSION["AddLicenseError"]))
+                {
+                  echo $_SESSION["AddLicenseError"];
+                }
               }
-              else if(isset($_POST["Delete-submit"])){
+              else if(isset($_POST["Delete-submit"]))
+              {
                 DeleteLicense();
               }
               else
@@ -144,9 +148,13 @@
           </div>
           <div class="col-3">
             <?php
-              if (!(isset($_POST["Edit-submit"])) && !(isset($_POST["Add-submit"])))
+              if (!(isset($_POST["Edit-submit"])) && !(isset($_POST["Add-submit"])) && !(isset($_SESSION["AddLicenseError"])))
               {
                 LoadComments();
+              }
+              else if (isset($_SESSION["AddLicenseError"]))
+              {
+                unset($_SESSION["AddLicenseError"]);
               }
             ?>
           </div>
