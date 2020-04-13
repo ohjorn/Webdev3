@@ -8,7 +8,7 @@
     $searchresult = $_POST["search"];
     
     //alle data uit LicentieID die lijken op "tekst in zoekvenster"
-    $sql = $conn->prepare("SELECT * FROM `licentie` WHERE `LicentieNaam` LIKE '%$searchresult%' OR `Doelgroep` LIKE '%$searchresult%'");
+    $sql = $conn->prepare("SELECT * FROM `licentie` WHERE `LicentieNaam` LIKE '%$searchresult%' AND `Doelgroep` LIKE '%$searchresult%'");
     $sql->execute();
     //Als er regels gelijk zijn aan wat er gezocht wordt
     if ($sql->rowCount() != 0) 
