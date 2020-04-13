@@ -85,8 +85,8 @@ function GetLicense()
       echo "
         <li>
           <form action=\"MainMenuPHP.php\" method=\"post\">
-            <input type=\"hidden\" name=\"LicenseID\" value=\"".$row["LicentieID"]."\">
-            <input type=\"submit\"name=\"LicenseNameLoad\"value=\"".$row["LicentieNaam"]."\">
+            <input type=\"hidden\" name=\"LicenseID\" class=\"license\" value=\"".$row["LicentieID"]."\">
+            <input type=\"submit\"name=\"LicenseNameLoad\" class=\"license\" value=\"".$row["LicentieNaam"]."\">
           </form>
         </li>
       ";
@@ -150,11 +150,7 @@ function LoadLicense()
       <p><td>".$_SESSION["LastChangedShow"].", Door: ".GetUserName($_SESSION["UserIDShow"])."</td></p>
       <br>
       <br>
-      <form action=\"MainMenuPHP.php\" method=\"post\">
-        <label>Opmerking:</label><br>
-        <textarea name = \"Comment\" rows = \"3\" cols = \"80\"></textarea><br>
-        <input type=\"submit\" class=\"btn btn-primary\" name=\"AddComment\" value=\"Opmerking plaatsen\">
-      </form><br>
+      
     </div>
     ";
     if(IsAdmin())
@@ -211,7 +207,12 @@ Function LoadComments()
     $stmt->bindValue("LicenseID", $LicenseID, PDO::PARAM_STR);
     if ($stmt->execute())
     {
-      echo "<h2><b>Opmerkingen</b></h2>";
+      echo "<form action=\"MainMenuPHP.php\" method=\"post\">
+        <label>Opmerking:</label><br>
+        <textarea name = \"Comment\" rows = \"3\" cols = \"80\"></textarea><br>
+        <input type=\"submit\" class=\"btn1 btn - primary\" name=\"AddComment\" value=\"Opmerking plaatsen\">
+      </form><br>
+<h2><b>Opmerkingen</b></h2>";
       foreach ($stmt->fetchAll() as $row)
       { 
         echo "
