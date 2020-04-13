@@ -1,5 +1,5 @@
 <?php
-      require("MainMenuPHP.php");
+  require("MainMenuPHP.php");
   if (session_status() == PHP_SESSION_NONE) 
   {
     session_start();
@@ -61,12 +61,18 @@
               <a href="#sortingmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Sorteer op</a>
               <ul class="collapse list-unstyled" id="sortingmenu">
                 <li>
-                  <a href="MainMenu.php?Sort=1">A t/m Z</a>
+                  <a href="MainMenuPHP.php?link=Alphabetically">A t/m Z</a>
                 </li>
                 <li>
-                  <a href="MainMenu.php?Sort=2">Doelgroep</a>
+                  <a href="MainMenuPHP.php?link=Audience">Doelgroep</a>
+                  if( $_GET['link']=='2' ){}
                 </li>
               </ul>
+            </div>
+            <div class="col">
+              <div class="form-group" id="submitbtns">                        
+                <button type="submit" class="btn btn-primary" name="search-submit">Zoeken</button>
+              </div>
             </div>
           </div>
           <div class="overflow-auto">

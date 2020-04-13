@@ -33,22 +33,13 @@ if (!empty($_POST["toggle-account-management"]))
 }
 
 function GetLicense()
-{
-  if (isset($_GET["Sort"])){
-    $Sort = $_GET["Sort"]; 
-    $_SESSION['sort'] = $_GET["Sort"]; 
-  }
-  else {
-    $Sort = 0; 
-  }
-  if (!(isset($_SESSION["sort"]))){
-    $_SESSION['sort'] = 1; 
-  }
+{ 
   $counter = 0;
   $conn = connectDB();
   try
   {
-    if ($Sort == 2 || $_SESSION['sort'] == '2'){
+    if (isset($_POST['Sort'] == 'Audience') || ($_SESSION['sort'] == 'Audience')){
+    $_SESSION['sort'] = 'Audience'; 
     $sql = "SELECT LicentieID, LicentieNaam, Doelgroep FROM licentie ORDER BY Doelgroep asc";
     $stmt = $conn->prepare($sql);
     $stmt->execute();
@@ -66,7 +57,8 @@ function GetLicense()
     }
     }
 
-    if ($Sort == 1 || $_SESSION['sort'] == '1'){
+    if (($_POST['Sort'] == 'Alphabetically') || ($_SESSION['sort'] == 'Alphabetically')){
+    $_SESSION['sort'] = 'Alphabetically';
     $sql = "SELECT LicentieID, LicentieNaam FROM licentie ORDER BY LicentieNaam asc";
     $stmt = $conn->prepare($sql);
     $stmt->execute();

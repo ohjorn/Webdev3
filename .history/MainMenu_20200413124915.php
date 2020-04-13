@@ -59,6 +59,7 @@
           <div class="row">
             <div class="col">
               <a href="#sortingmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Sorteer op</a>
+              <br> 
               <ul class="collapse list-unstyled" id="sortingmenu">
                 <li>
                   <a href="MainMenu.php?Sort=1">A t/m Z</a>

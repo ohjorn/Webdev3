@@ -58,15 +58,26 @@
           </div>
           <div class="row">
             <div class="col">
+            <select id="cars" name="cars">
+               <option value="volvo">Volvo</option>
+              <option value="saab">Saab</option>
+              <option value="fiat">Fiat</option>
+              <option value="audi">Audi</option>
+            </select>
               <a href="#sortingmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Sorteer op</a>
               <ul class="collapse list-unstyled" id="sortingmenu">
                 <li>
-                  <a href="MainMenu.php?Sort=1">A t/m Z</a>
+                  <a href="MainMenu.php?Alphabetically=true">A t/m Z</a>
                 </li>
                 <li>
-                  <a href="MainMenu.php?Sort=2">Doelgroep</a>
+                  <a href="MainMenu.php?Audience=true">Doelgroep</a>
                 </li>
               </ul>
+            </div>
+            <div class="col">
+              <div class="form-group" id="submitbtns">                        
+                <button type="submit" class="btn btn-primary" name="search-submit">Zoeken</button>
+              </div>
             </div>
           </div>
           <div class="overflow-auto">

@@ -68,6 +68,11 @@
                 </li>
               </ul>
             </div>
+            <div class="col">
+              <div class="form-group" id="submitbtns">                        
+                <button type="submit" class="btn btn-primary" name="search-submit">Zoeken</button>
+              </div>
+            </div>
           </div>
           <div class="overflow-auto">
             <!--Div die de gezochte punten laat zien-->            

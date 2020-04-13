@@ -41,9 +41,6 @@ function GetLicense()
   else {
     $Sort = 0; 
   }
-  if (!(isset($_SESSION["sort"]))){
-    $_SESSION['sort'] = 1; 
-  }
   $counter = 0;
   $conn = connectDB();
   try

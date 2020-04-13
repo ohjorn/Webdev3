@@ -34,22 +34,12 @@ if (!empty($_POST["toggle-account-management"]))
 
 function GetLicense()
 {
-  if (isset($_GET["Sort"])){
-    $Sort = $_GET["Sort"]; 
-    $_SESSION['sort'] = $_GET["Sort"]; 
-  }
-  else {
-    $Sort = 0; 
-  }
-  if (!(isset($_SESSION["sort"]))){
-    $_SESSION['sort'] = 1; 
-  }
   $counter = 0;
   $conn = connectDB();
   try
   {
-    if ($Sort == 2 || $_SESSION['sort'] == '2'){
-    $sql = "SELECT LicentieID, LicentieNaam, Doelgroep FROM licentie ORDER BY Doelgroep asc";
+    if ( $_GET['name']=='Audience' ){
+    $sql = "SELECT LicentieID, LicentieNaam FROM licentie ORDER BY Doelgroep asc";
     $stmt = $conn->prepare($sql);
     $stmt->execute();
     foreach ($stmt->fetchAll() as $row) 
@@ -66,7 +56,7 @@ function GetLicense()
     }
     }
 
-    if ($Sort == 1 || $_SESSION['sort'] == '1'){
+    if ( $_GET['link']=='Alphabetically' ){
     $sql = "SELECT LicentieID, LicentieNaam FROM licentie ORDER BY LicentieNaam asc";
     $stmt = $conn->prepare($sql);
     $stmt->execute();
@@ -106,8 +96,6 @@ function LoadLicense()
     <div class=\"col-7\">
       <h2><b>Licentie naam</b></h2>
       <p><td>".$_SESSION["LicenseNameShow"]."</td></p>
-      <h2><b>Doelgroep</b></h2>
-      <p><td>".$_SESSION["AudienceShow"]."</td></p>
       <h2><b>Beschrijving</b></h2>
       <p><td>".$_SESSION["DescriptionShow"]."</td></p>
       <br>

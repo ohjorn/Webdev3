@@ -41,14 +41,11 @@ function GetLicense()
   else {
     $Sort = 0; 
   }
-  if (!(isset($_SESSION["sort"]))){
-    $_SESSION['sort'] = 1; 
-  }
   $counter = 0;
   $conn = connectDB();
   try
   {
-    if ($Sort == 2 || $_SESSION['sort'] == '2'){
+    if ($Sort == 1 || $_SESSION['sort'] == '1'){
     $sql = "SELECT LicentieID, LicentieNaam, Doelgroep FROM licentie ORDER BY Doelgroep asc";
     $stmt = $conn->prepare($sql);
     $stmt->execute();
@@ -66,7 +63,7 @@ function GetLicense()
     }
     }
 
-    if ($Sort == 1 || $_SESSION['sort'] == '1'){
+    if ($Sort == 2 || $_SESSION['sort'] == '2'){
     $sql = "SELECT LicentieID, LicentieNaam FROM licentie ORDER BY LicentieNaam asc";
     $stmt = $conn->prepare($sql);
     $stmt->execute();

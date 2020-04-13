@@ -58,15 +58,31 @@
           </div>
           <div class="row">
             <div class="col">
-              <a href="#sortingmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Sorteer op</a>
+            <form action="MainMenuPHP.php">
+              <label for="Sorting"> Sorteer op:</label>
+              <select id="Sort" name="Sort">
+                <option value="Alphabetically">A tm Z</option>
+                <option value="Audience">Doelgroep</option>
+              </select>
+              <div class="form-group" id="submitbtns">      
+              <button type="submit" class="btn btn-primary" name="SortOnItem">Sorteer</button> 
+              </div> 
+            </form>
+
+              <!-- <a href="#sortingmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Sorteer op</a>
               <ul class="collapse list-unstyled" id="sortingmenu">
                 <li>
-                  <a href="MainMenu.php?Sort=1">A t/m Z</a>
+                  <a href="MainMenu.php?Alphabetically=true">A t/m Z</a>
                 </li>
                 <li>
-                  <a href="MainMenu.php?Sort=2">Doelgroep</a>
+                  <a href="MainMenu.php?Audience=true">Doelgroep</a>
                 </li>
-              </ul>
+              </ul> -->
+            </div>
+            <div class="col">
+              <div class="form-group" id="submitbtns">                        
+                <button type="submit" class="btn btn-primary" name="search-submit">Zoeken</button>
+              </div>
             </div>
           </div>
           <div class="overflow-auto">

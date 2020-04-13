@@ -41,7 +41,7 @@ function GetLicense()
   else {
     $Sort = 0; 
   }
-  if (!(isset($_SESSION["sort"]))){
+  if (!(isset($_SESSION["Sort"]))){
     $_SESSION['sort'] = 1; 
   }
   $counter = 0;
