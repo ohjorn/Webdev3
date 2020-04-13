@@ -7,6 +7,7 @@ if (!(class_exists('connectDB')))
 if (session_status() == PHP_SESSION_NONE) 
 {
   session_start();
+  $_SESSION["home"] = true;
 }
 
 ////Clears the session when pressing the logout button.
@@ -109,6 +110,7 @@ function LoadLicense()
 {
   if (isset($_SESSION["LicenseNameShow"]))
   {
+    $_SESSION["home"] = false;
     $Licenseview = '';
     $Licenseview .= "
     <div class=\"col-7\">
@@ -223,6 +225,7 @@ Function LoadComments()
 
 function AddLicenseForm()
 {
+  $_SESSION["home"] = false;
   echo "
     <div class=\"col-7\">
       <form action=\"MainMenuPHP.php\" method=\"post\">
@@ -244,6 +247,7 @@ function AddLicenseForm()
 
 function EditLicenseForm()
 {
+  $_SESSION["home"] = false;
   $sql = "SELECT LicentieID, LicentieNaam, Beschrijving, InstallatieOmschrijving, VerloopDatum ,LaatstAangepast, Doelgroep FROM licentie WHERE LicentieID = :LicenseID"; 
  $conn = connectDB();
  $stmt = $conn->prepare($sql);
@@ -383,6 +387,7 @@ if (isset($_POST["Home"]))
   unset($_SESSION["UserIDShow"]);
   unset($_SESSION["LicenseIDShow"]);
   unset($_SESSION["AudienceShow"]);
+  $_SESSION["home"] = true;
   header("Location: MainMenu.php");
   exit;
 }
@@ -434,6 +439,7 @@ if (isset($_POST["EditLicense"]))
   if (!(empty($_POST["LicenseName"])))
   {
     $LicenseName = $_POST["LicenseName"];
+    unset($_SESSION["EditLicenseError"]);
     
 
     if (!(empty($_POST["Description"])))
@@ -465,9 +471,11 @@ if (isset($_POST["EditLicense"]))
       EditLicense($LicenseName, $Description, $InstallDesc, $ExpirationDate, $_SESSION["UserID"]);
     }
   }
-  else 
+  else
   {
-    echo "fout";
+    $_SESSION["EditLicenseError"] = "De licentie moet een naam bevatten.";
+    $_POST["Edit-submit"] = "test";
+    header("Location: MainMenu.php");
   }
 }
 
@@ -501,6 +509,33 @@ if (isset($_POST["LicenseNameLoad"]))
     {
       echo "$ex";
     }
+  }
+}
+
+function Expire()
+{
+  $count = 0;
+  $date_now = date('Y-m-d');
+  $datetime2 = new DateTime($date_now);
+  $conn = connectDB();
+  $sql = "SELECT LicentieNaam, VerloopDatum FROM licentie";
+  $stmt = $conn->prepare($sql);
+  $stmt->execute();
+ 
+  foreach ($stmt->fetchAll() as $row)
+  {
+    $expiredate = $row["VerloopDatum"];   
+    $datetime1 = new DateTime($expiredate);
+    $interval = $datetime2->diff($datetime1);
+    if ($interval->format('%d') <= 7 && $interval->format('%d') > 0 && $interval->format('%Y') == 0 && $interval->format('%m') == 0){
+        echo $interval->format('<br><h3><strong>Deze licentie verloopt in %d dag(en):</h3></strong>'); 
+        echo "<h3><strong>".$row["LicentieNaam"]."</strong></h3>";  
+        $count =+ 1;
+    }
+  
+  }
+  if($count === 0){
+    echo "<h3><strong>Er verlopen binnenkort geen licenties</strong></h3>";
   }
 }
 
