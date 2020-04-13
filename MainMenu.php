@@ -37,9 +37,7 @@
     #sidebar {
       padding-left: 10px;
     }
-
     .modalstyle {
-     
 		  text-align: center;		
 		  border-radius: 5px;
 		  font-size: 13px;
@@ -61,7 +59,8 @@
             <div class="col">
               <div class="form-group" id="submitbtns">   
                 <form method="POST">                     
-                <button type="submit" class="btn btn-primary" name="csv">Exporteer naar csv</button>
+                  <button type="submit" class="btn btn-primary" name="csv">Exporteer naar csv</button>
+                  <button type="submit" class="btn btn-primary" name="Home"><i class="glyphicon glyphicon-home"></i></button>
                 </form>
               </div>
             </div>

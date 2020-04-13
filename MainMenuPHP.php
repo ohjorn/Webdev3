@@ -340,32 +340,39 @@ function AddLicense($LicenseName, $Description, $InstallDesc, $ExpirationDate, $
 
 if(isset($_POST["csv"]))
 {
-  ToCsv();
-}
+  $filename = "licenties.csv";
 
-function ToCsv()
-{
- $filename = "licenties.csv";
-
- header("Content-type: text/csv; charset=utf-8");
+  header("Content-type: text/csv; charset=utf-8");
+    
+  header("Content-Disposition: attachment; filename=$filename");
+  $fp = fopen('php://output', 'w');
+  fputcsv($fp, array('Licentienaam', 'Beschrijving', 'Installatie omschrijving'), ";");
+  $sql = "SELECT LicentieNaam, Beschrijving, InstallatieOmschrijving FROM licentie"; 
+  $conn = connectDB();
+  $stmt = $conn->prepare($sql);
+  $stmt->execute(); 
   
- header("Content-Disposition: attachment; filename=$filename");
- $fp = fopen('php://output', 'w');
- fputcsv($fp, array('Licentienaam', 'Beschrijving', 'Installatie omschrijving'), ";");
- $sql = "SELECT LicentieNaam, Beschrijving, InstallatieOmschrijving FROM licentie"; 
- $conn = connectDB();
- $stmt = $conn->prepare($sql);
- $stmt->execute(); 
- 
- while ($res = $stmt->fetch(PDO::FETCH_ASSOC))
- {
-   fputcsv($fp, $res, ';');
- }
- fclose($fp);
- exit();
-
+  while ($res = $stmt->fetch(PDO::FETCH_ASSOC))
+  {
+    fputcsv($fp, $res, ';');
+  }
+  fclose($fp);
+  exit();
 }
 
+if (isset($_POST["Home"]))
+{
+  unset($_SESSION["LicenseNameShow"]);
+  unset($_SESSION["DescriptionShow"]);
+  unset($_SESSION["InstallDescShow"]);
+  unset($_SESSION["LastChangedShow"]);
+  unset($_SESSION["ExpirationDateShow"]);
+  unset($_SESSION["UserIDShow"]);
+  unset($_SESSION["LicenseIDShow"]);
+  unset($_SESSION["AudienceShow"]);
+  header("Location: MainMenu.php");
+  exit;
+}
 
 if (isset($_POST["AddLicense"]))
 {
