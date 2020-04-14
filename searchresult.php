@@ -22,8 +22,8 @@
             $output .= '
                 <li>
                     <form action="MainMenuPHP.php" method="post">
-                        <input type="hidden" name="LicenseID" class="license" '.$row["LicentieID"].'" >
-                        <input type="submit" name="LicenseNameLoad" class="license" value="'.$row["LicentieNaam"].'" >
+                        <input type="hidden" name="LicenseID" value="'.$row["LicentieID"].'" >
+                        <input type="submit" name="LicenseNameLoad" value="'.$row["LicentieNaam"].'" >
                     </form>
                 </li>
             ';
