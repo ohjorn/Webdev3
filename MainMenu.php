@@ -25,9 +25,11 @@
     <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
+    <link rel="stylesheet" href="stylesheet.css">
     <script src="script.js" type="text/javascript"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <title>Main menu</title>
+<<<<<<< Updated upstream
   <style>
     .wrapper {
       display: flex;
@@ -47,18 +49,31 @@
       margin: 250px 10px 5px;
     }
   </style>
+=======
+>>>>>>> Stashed changes
 </head>
 <body>
   <br>
   <main>
-    <div class="row">
-      <div class="col-2">
+    <div class="row justify-content-center" id="rowmargin">
+      <div class="col-2" id="sidebaredit">
         <nav id="sidebar">
-          <div class="sidebar-header form-group">
+          <div class="sidebar-header form-group" id="sidebarheaderedit">
             <input type="text" class="form-control" id="search_text" name="search_text" placeholder="Licentie naam zoeken">
           </div>
           <div class="row">
             <div class="col">
+<<<<<<< Updated upstream
+=======
+              <div class="form-group" id="submitbtns">   
+                <form method="POST">                     
+                  <button type="submit" class="btn" name="csv" id="buttondesign">Exporteer naar csv</button>
+                  <button type="submit" class="btn" name="Home" id="buttondesign"><i class="glyphicon glyphicon-home"></i></button>
+                </form>
+              </div>
+            </div>
+            <div class="col">
+>>>>>>> Stashed changes
               <a href="#sortingmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Sorteer op</a>
               <ul class="collapse list-unstyled" id="sortingmenu">
                 <li>
@@ -90,7 +105,7 @@
                   echo "
                     <li style=margin-top:10px;>
                       <form action=\"\" method=\"post\">
-                        <input type=\"submit\" class=\"btn btn-primary\" name=\"Add-submit\" style= \"margin-bottom: 10px;\" value=\"Licentie toevoegen\">
+                        <input type=\"submit\" class=\"btn\" id=\"buttondesign\" name=\"Add-submit\" style= \"margin-bottom: 10px;\" value=\"Licentie toevoegen\">
                       </form>
                     </li>
                   ";
@@ -100,12 +115,12 @@
           </div>                     
         </nav>                
       </div>
-      <div class="col-10">
+      <div class="col-9" id="mainmenu">
         <!--Navigatie balk-->
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav class="navbar navbar-expand-lg navbar-light" id="navbarmain">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-              <a class="navbar-brand" href="#">"Logo?"</a>
+              <a class="navbar-brand" id="logo" href="MainMenu.php"><img src="nhl.png" width="50" height="50" alt="NHLStenden logo.png"></a>
             </li>
           </ul>
           <ul class="navbar-nav ml-auto">
@@ -114,7 +129,7 @@
                 <?php
                   if (IsAdmin())
                   {
-                    echo "<input type=\"submit\" class=\"btn btn-primary\" name=\"toggle-account-management\" value=\"Accounts beheren\">";
+                    echo "<input type=\"submit\" class=\"btn btn-primary\" id=\"buttondesign\" name=\"toggle-account-management\" value=\"Accounts beheren\">";
                   }
                 ?>
                 <input type="submit" class="btn btn-primary" name="logout-submit" value="Uitloggen">
@@ -122,8 +137,8 @@
             </li>
           </ul>
         </nav>
-        <div class="row bg-light">
-          <div class="col-7">
+        <div class="row" id="mainmenuroundborder">
+          <div class="col-8">
             <?php 
               if(isset($_POST["Edit-submit"]))
               {
@@ -142,7 +157,7 @@
               }
             ?>
           </div>
-          <div class="col-3">
+          <div class="col-4 bg-light" id="comments">
             <?php
               if (!(isset($_POST["Edit-submit"])) && !(isset($_POST["Add-submit"])))
               {

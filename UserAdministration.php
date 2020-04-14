@@ -24,13 +24,14 @@
 <html lang="en">
 <head>
 
-  <title>Bootstrap 4 Website Example</title>
+  <title>Gebruikers administratie NHLStenden Hogeschool</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-  <link rel="stylesheet" href="UserAdministration.css">
+  <link rel="stylesheet" href="stylesheet.css">
 </head>
 <body>
+<<<<<<< Updated upstream
 <div class="row text-center">
   <h1 class="col-sm-6">Gebruike toevoegen</h1>
   <h1 class="col-sm-3">Administrators</h1>
@@ -174,5 +175,55 @@ if(isset($_POST["KeepUser"]))
 ?>
 </p>
 </div> 
+=======
+  <div class="container">
+    <div class="row justify-content-center text-center" style="margin-bottom: 10%;">
+      <div class="col-sm-4">
+        <?php
+          loadAdmins();
+        ?>
+      </div>
+      <div class="col-sm-4">
+        <?php 
+          LoadReaders();
+        ?>
+      </div>
+
+      <?php
+        if (isset($_SESSION["UserAdminEcho"]))
+        {
+          echo $_SESSION["UserAdminEcho"];
+          unset($_SESSION["UserAdminEcho"]);
+        }
+        if(isset($_POST["DeleteUser"]))
+        {
+          if ($_POST["UserIDForm"] == $_SESSION["UserID"])
+          {
+            $_SESSION["UserAdminEcho"] = "U kan niet uw eigen account verwijderen.";
+            header("Location: UserAdministration.php");
+          }
+          else
+          {
+            DeleteUserConfirmation($_POST["UserIDForm"]); 
+          }
+        }
+      ?>
+    </div>
+    <br>
+    <div class="row justify-content-center text-center">      
+      <div class="col-sm-6">
+          <?php
+            if(isset($_POST["EditUser"]))
+            {
+              EditUserInformationForm($_POST["UserIDForm"], $_POST["RightsForm"], $_POST["UniqueLoginNameForm"]); 
+            }
+            else{
+              CreateUserForm();
+            }
+          ?>
+      </div>
+    </div>
+  </div>
+>>>>>>> Stashed changes
 </body>
 </html>
