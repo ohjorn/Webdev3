@@ -37,7 +37,7 @@ function loadAdmins()
   //hij controleert de lengte en  maakt voor elke rij in de tabel een rij. 
   echo "
   <h2>Administrators</h2>
-  <table>
+  <table style=\"margin: auto;\">
   ";
   for ($i = 0; $i < count($UniqueLoginNameAdmin); $i++)
   {
@@ -90,7 +90,7 @@ function LoadReaders()
   //hij controleert de lengte en  maakt voor elke rij in de tabel een rij. 
   echo "
     <h2>Lezers</h2>
-    <table>
+    <table style=\"margin: auto;\">
   ";
   for ($i = 0; $i < count($UniqueLoginNameReader); $i++)
   {

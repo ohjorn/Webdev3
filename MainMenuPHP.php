@@ -160,7 +160,7 @@ function LoadLicense()
     if(IsAdmin())
     {
     $Licenseview .= "
-    <form action=\"MainMenu.php\" method=\"post\">
+    <form action=\"MainMenu.php\" method=\"post\" style=\"padding-left: inherit;\">
     <input type=\"submit\" class=\"btn btn-success\" name=\"Edit-submit\" style= \"margin-bottom: 10px;\" value=\"Licentie bewerken\">
     <input type=\"button\"class=\"btn btn-danger\" name=\"Delete-submit\" onclick=\"document.getElementById('id01').style.display='block'\"  style= \"margin-bottom: 10px;\" value=\"Licentie Verwijderen\" >
     </form>
@@ -239,7 +239,7 @@ function AddLicenseForm()
         <textarea name = \"InstallDesc\" rows = \"3\" cols = \"80\"></textarea><br>
         <label>Licentie verloop datum:</label><br>
         <input type=\"date\" name=\"ExpirationDate\"><br><br>
-        <input type=\"submit\" class=\"btn btn-primary\" name=\"AddLicense\" value=\"Licentie toevoegen\">
+        <input type=\"submit\" class=\"btn\" name=\"AddLicense\" value=\"Licentie toevoegen\" id=\"buttondesign\">
       </form>
     </div>
   ";
