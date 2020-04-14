@@ -46,6 +46,7 @@
       LoadReaders();
     ?>
   </div>
+  </div>
   <div class="col-sm-3">
       <?php
         if(isset($_POST["EditUser"]))

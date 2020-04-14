@@ -23,12 +23,6 @@ body
 }
 
 #formdesign {
-    border-bottom: 1px solid lightgray;
+    border-bottom: 1px solid gray;
     margin-top: 10px; 
-}
-
-.col-sm-3{
-    background-color: #DCDCDC !important;
-    border-radius: 25px;
-    padding: 10px 5px 4px;
 }

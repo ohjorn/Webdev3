@@ -26,9 +26,3 @@ body
     border-bottom: 1px solid lightgray;
     margin-top: 10px; 
 }
-
-.col-sm-3{
-    background-color: #DCDCDC !important;
-    border-radius: 25px;
-    padding: 10px 5px 4px;
-}

@@ -46,17 +46,6 @@
       LoadReaders();
     ?>
   </div>
-  <div class="col-sm-3">
-      <?php
-        if(isset($_POST["EditUser"]))
-        {
-          EditUserInformationForm($_POST["UserIDForm"], $_POST["RightsForm"], $_POST["UniqueLoginNameForm"]); 
-        }
-        else{
-          CreateUserForm();
-        }
-      ?>
-  </div>
 </div>
 <div class="row justify-content-center text-center rowedit" id="alertfont">
   <?php
@@ -78,5 +67,20 @@
       }
     }
   ?>
+</div>
+<br>
+<div class="row justify-content-center text-center rowedit">
+  <div class="col-sm-6">
+      <?php
+        if(isset($_POST["EditUser"]))
+        {
+          EditUserInformationForm($_POST["UserIDForm"], $_POST["RightsForm"], $_POST["UniqueLoginNameForm"]); 
+        }
+        else{
+          CreateUserForm();
+        }
+      ?>
+  </div>
+</div>
 </body>
 </html>

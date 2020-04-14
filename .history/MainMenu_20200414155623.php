@@ -80,7 +80,7 @@
               ?>
             </ul>
           </div>
-          <span  id="TotalLicenceCount" class="ban alert alert-primary">Er zijn momenteel <?=$_SESSION["counter"]?> licenties</span>                    
+          <span class="ban alert alert-primary">Er zijn momenteel <?=$_SESSION["counter"]?> licenties</span>                    
         </nav>                
       </div>
       <div class="col-9">
@@ -140,7 +140,7 @@
               }
             ?>
           </div>
-          <div class="col-4" id="comments">
+          <div class="col-4 bg-light" id="comments">
             <?php
               if (!(isset($_POST["Edit-submit"])) && !(isset($_POST["Add-submit"])) && !(isset($_SESSION["AddLicenseError"])))
               {
