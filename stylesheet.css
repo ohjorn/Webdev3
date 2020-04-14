@@ -45,10 +45,10 @@ body
 .modalstyle 
 {
     text-align: center;		
-    border-radius: 5px;
+    border-radius: 50px;
     font-size: 13px;
     padding: 10px 5px 4px;
-    margin: 250px 10px 5px;
+    margin: 85px 330px 100px;
 }
 
 #navbarmain
@@ -104,3 +104,96 @@ input[type=submit] {
 #TotalLicenceCount {
     background-color: rgb(242, 242, 242, 0.5); 
 }
+
+
+.button12 {
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    opacity: 0.9;
+  }
+  
+  .button12:hover {
+    opacity:1;
+  }
+  
+  
+  .cancelbtn, .deletebtn {
+    float: left;
+    width: 10%;
+  }
+  
+  
+  .cancelbtn {
+    background-color: #ccc;
+    color: black;
+   
+  }
+  
+  
+  .deletebtn {
+    background-color: #f44336;
+  }
+  
+  
+  .container {
+    padding: 16px;
+    text-align: center;
+  }
+  
+  
+  .modal {
+    display: none; 
+    position: center; 
+    z-index: 1; 
+    left: 0;
+    top: 0;
+    width: 600px; 
+    height: 400px; 
+    background-color: #474e5d;
+    padding-top: 60px;
+  }
+  
+  
+  .modal-content {
+    background-color: #fefefe;
+    margin: 5% auto 15% auto; 
+    border: 1px solid #888;
+    width: 45%; 
+    }
+  
+  
+  .hrr {
+    border: 1px solid #f1f1f1;
+    margin-bottom: 25px;
+  }
+   
+  
+  .close {
+    position: absolute;
+    right: 35px;
+    top: 15px;
+    font-size: 40px;
+    font-weight: bold;
+    color: #f1f1f1;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: #f44336;
+    cursor: pointer;
+  }
+  
+  
+  .clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+
+  
+  

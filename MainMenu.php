@@ -160,13 +160,12 @@
   <div id="id01" class="modal modalstyle">
     <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">×</span>
     <form class="modal-content" method="POST">
-      <div class="container">
-        <h1>Licentie verwijderen</h1>
+    <h1>Licentie verwijderen</h1>
         <p>Wilt u deze licentie verwijderen?</p>
-      
+      <div class="container">
         <div class="clearfix">
-          <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Annuleer</button>
-          <button type="submit" name="Delete-submit" class="deletebtn">Verwijderen</button>
+          <button type="button" onclick="document.getElementById('id01').style.display='none'" class="button12 cancelbtn">Annuleer</button>
+          <button type="submit" name="Delete-submit" class="button12 deletebtn">Verwijderen</button>
         </div>
       </div>
     </form>
