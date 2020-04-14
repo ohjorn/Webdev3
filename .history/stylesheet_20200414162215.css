@@ -1,7 +1,6 @@
 body
 {
     background-color: #F5F5F5;
-    background-image: url("background.jfif");
 }
 
 #rowmargin
@@ -59,7 +58,7 @@ body
 {
     border-top-right-radius: 25px;
     border-bottom-right-radius: 25px;
-    background-color: #f2f2f2;
+    background-color: #e9e9e9;
 }
 
 #buttondesign
@@ -83,7 +82,7 @@ input[type=submit] {
     color: #004085;
     border: 1px solid #999;
     border: none transparent;
-    background-color: rgb(242, 242, 242, 0.5);
+    background-color: rgba(131, 47, 47, 0.5);
     text-decoration: none;
     border-radius: 2px; 
 }
@@ -98,8 +97,4 @@ input[type=submit] {
 {
     margin-bottom: 30px;
     margin-top: 30px;
-}
-
-#TotalLicenceCount {
-    background-color: rgb(242, 242, 242, 0.5); 
 }

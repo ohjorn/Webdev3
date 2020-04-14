@@ -80,7 +80,7 @@
               ?>
             </ul>
           </div>
-          <span  id="TotalLicenceCount" class="ban alert alert-primary">Er zijn momenteel <?=$_SESSION["counter"]?> licenties</span>                    
+          <span class="ban alert alert-primary">Er zijn momenteel <?=$_SESSION["counter"]?> licenties</span>                    
         </nav>                
       </div>
       <div class="col-9">
@@ -97,7 +97,7 @@
                 <?php
                   if (IsAdmin())
                   {
-                    echo "<input type=\"submit\" id=\"buttondesign\" class=\"btn btn-primary\" name=\"toggle-account-management\" value=\"Accounts beheren\">";
+                    echo "<input type=\"submit\" class=\"btn btn-primary\" name=\"toggle-account-management\" value=\"Accounts beheren\">";
                   }
                 ?>
                 <input type="submit" class="btn btn-primary" name="logout-submit" id="buttondesign" value="Uitloggen">
@@ -140,7 +140,7 @@
               }
             ?>
           </div>
-          <div class="col-4" id="comments">
+          <div class="col-4 bg-light" id="comments">
             <?php
               if (!(isset($_POST["Edit-submit"])) && !(isset($_POST["Add-submit"])) && !(isset($_SESSION["AddLicenseError"])))
               {

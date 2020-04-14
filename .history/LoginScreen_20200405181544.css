@@ -39,7 +39,7 @@ body{
     padding-top: 40px;
     position: absolute;
     font-size: 35px;
-    color: #188487; 
+    color: #2980b9; 
    }
     
    .form-input:nth-child(2)::before{
@@ -49,6 +49,6 @@ body{
    .btn-login{
     padding: 15px 25px;
     border: none;
-    background-color: #188487;
+    background-color: royalblue;
     color: #fff;
    }

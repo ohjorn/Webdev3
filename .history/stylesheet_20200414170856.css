@@ -2,6 +2,7 @@ body
 {
     background-color: #F5F5F5;
     background-image: url("background.jfif");
+    opacity: 0.5; 
 }
 
 #rowmargin

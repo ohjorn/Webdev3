@@ -32,7 +32,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-  <link rel="stylesheet" href="UserAdministration.css">
+  <link rel="stylesheet" href="stylesheet.css">
 </head>
 <body>
 <div class="row justify-content-center text-center rowedit" id="adminlezermain">
@@ -45,17 +45,6 @@
     <?php 
       LoadReaders();
     ?>
-  </div>
-  <div class="col-sm-3">
-      <?php
-        if(isset($_POST["EditUser"]))
-        {
-          EditUserInformationForm($_POST["UserIDForm"], $_POST["RightsForm"], $_POST["UniqueLoginNameForm"]); 
-        }
-        else{
-          CreateUserForm();
-        }
-      ?>
   </div>
 </div>
 <div class="row justify-content-center text-center rowedit" id="alertfont">
@@ -78,5 +67,20 @@
       }
     }
   ?>
+</div>
+<br>
+<div class="row justify-content-center text-center rowedit">
+  <div class="col-sm-6">
+      <?php
+        if(isset($_POST["EditUser"]))
+        {
+          EditUserInformationForm($_POST["UserIDForm"], $_POST["RightsForm"], $_POST["UniqueLoginNameForm"]); 
+        }
+        else{
+          CreateUserForm();
+        }
+      ?>
+  </div>
+</div>
 </body>
 </html>

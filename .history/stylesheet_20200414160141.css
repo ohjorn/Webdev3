@@ -1,7 +1,6 @@
 body
 {
-    background-color: #F5F5F5;
-    background-image: url("background.jfif");
+    background-color: white;
 }
 
 #rowmargin
@@ -20,7 +19,7 @@ body
 {
     width: 1113px;
     border-radius: 25px;
-    background-color: #DCDCDC;
+    background-color: #F5F5F5;
     margin-left: 0px;
 }
 
@@ -39,7 +38,7 @@ body
 #sidebaredit
 {
     border-radius: 25px;
-    background-color:#DCDCDC;
+    background-color:#F5F5F5;
 }
 .modalstyle 
 {
@@ -52,14 +51,13 @@ body
 
 #navbarmain
 {
-    background-color: #DCDCDC;
+    background-color: #F5F5F5;
 }
 
 #comments
 {
     border-top-right-radius: 25px;
     border-bottom-right-radius: 25px;
-    background-color: #f2f2f2;
 }
 
 #buttondesign
@@ -71,7 +69,7 @@ body
     color: rgba(0,0,0,.8) !important;
     border: 1px solid #999 !important;
     border: none transparent !important;
-    background-color: rgb(0, 128, 128, 0.5) !important;
+    background-color: #188487 !important;
     text-decoration: none !important;
     border-radius: 2px !important;
 }
@@ -83,7 +81,7 @@ input[type=submit] {
     color: #004085;
     border: 1px solid #999;
     border: none transparent;
-    background-color: rgb(242, 242, 242, 0.5);
+    background-color: #cce5ff;
     text-decoration: none;
     border-radius: 2px; 
 }
@@ -98,8 +96,4 @@ input[type=submit] {
 {
     margin-bottom: 30px;
     margin-top: 30px;
-}
-
-#TotalLicenceCount {
-    background-color: rgb(242, 242, 242, 0.5); 
 }

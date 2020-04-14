@@ -269,7 +269,7 @@ function EditLicenseForm()
     <textarea name = \"InstallDesc\" rows = \"3\" cols = \"80\">".$result["InstallatieOmschrijving"]."</textarea><br>
     <label>Licentie verloop datum:</label><br>
     <input type=\"date\" name=\"ExpirationDate\" value=" .$result["VerloopDatum"]. "><br><br>
-    <input type=\"submit\" class=\"btn btn-success\"  id=\"buttondesign\" name=\"EditLicense\" value=\"Licentie bewerken\">
+    <input type=\"submit\" class=\"btn btn-success\" name=\"EditLicense\" value=\"Licentie bewerken\">
     <br>
   </form>
 </div>
