@@ -29,28 +29,6 @@
     <script src="script.js" type="text/javascript"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <title>Main menu</title>
-<<<<<<< Updated upstream
-  <style>
-    .wrapper {
-      display: flex;
-      width: 100%;
-      align-items: stretch;
-    }
-    #sidebar {
-      padding-left: 10px;
-    }
-
-    .modalstyle {
-     
-		  text-align: center;		
-		  border-radius: 5px;
-		  font-size: 13px;
-		  padding: 10px 5px 4px;
-      margin: 250px 10px 5px;
-    }
-  </style>
-=======
->>>>>>> Stashed changes
 </head>
 <body>
   <br>
@@ -63,8 +41,6 @@
           </div>
           <div class="row">
             <div class="col">
-<<<<<<< Updated upstream
-=======
               <div class="form-group" id="submitbtns">   
                 <form method="POST">                     
                   <button type="submit" class="btn" name="csv" id="buttondesign">Exporteer naar csv</button>
@@ -73,7 +49,6 @@
               </div>
             </div>
             <div class="col">
->>>>>>> Stashed changes
               <a href="#sortingmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Sorteer op</a>
               <ul class="collapse list-unstyled" id="sortingmenu">
                 <li>

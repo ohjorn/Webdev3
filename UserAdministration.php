@@ -30,8 +30,7 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="stylesheet.css">
 </head>
-<body>
-<<<<<<< Updated upstream
+<body> 
 <div class="row text-center">
   <h1 class="col-sm-6">Gebruike toevoegen</h1>
   <h1 class="col-sm-3">Administrators</h1>
@@ -175,7 +174,6 @@ if(isset($_POST["KeepUser"]))
 ?>
 </p>
 </div> 
-=======
   <div class="container">
     <div class="row justify-content-center text-center" style="margin-bottom: 10%;">
       <div class="col-sm-4">
@@ -224,6 +222,5 @@ if(isset($_POST["KeepUser"]))
       </div>
     </div>
   </div>
->>>>>>> Stashed changes
 </body>
 </html>
