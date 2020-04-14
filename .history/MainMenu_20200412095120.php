@@ -1,5 +1,5 @@
 <?php
-      require("MainMenuPHP.php");
+  require("MainMenuPHP.php");
   if (session_status() == PHP_SESSION_NONE) 
   {
     session_start();
@@ -17,7 +17,6 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -37,7 +36,9 @@
     #sidebar {
       padding-left: 10px;
     }
+
     .modalstyle {
+     
 		  text-align: center;		
 		  border-radius: 5px;
 		  font-size: 13px;
@@ -57,23 +58,21 @@
           </div>
           <div class="row">
             <div class="col">
-              <div class="form-group" id="submitbtns">   
-                <form method="POST">                     
-                  <button type="submit" class="btn btn-primary" name="csv">Exporteer naar csv</button>
-                  <button type="submit" class="btn btn-primary" name="Home"><i class="glyphicon glyphicon-home"></i></button>
-                </form>
-              </div>
-            </div>
-            <div class="col">
               <a href="#sortingmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Sorteer op</a>
               <ul class="collapse list-unstyled" id="sortingmenu">
                 <li>
-                  <a href="MainMenu.php?Sort=1">A t/m Z</a>
+                  <a href="MainMenu.php?link=Alfabetisch">A t/m Z</a>
                 </li>
                 <li>
-                  <a href="MainMenu.php?Sort=2">Doelgroep</a>
+                  <a href="MainMenu.php?link=Doelgroep">Doelgroep</a>
+                  if( $_GET['link']=='2' ){}
                 </li>
               </ul>
+            </div>
+            <div class="col">
+              <div class="form-group" id="submitbtns">                        
+                <button type="submit" class="btn btn-primary" name="search-submit">Zoeken</button>
+              </div>
             </div>
           </div>
           <div class="overflow-auto">
@@ -95,8 +94,8 @@
                 }
               ?>
             </ul>
-          </div>
-          <span class="ban alert alert-primary jummie3">Er zijn momenteel <?=$_SESSION["counter"]?> licenties</span>                    
+          </div> 
+          <span class="ban alert alert-primary jummie3">Er zijn momenteel <?=$_SESSION["counter"]?> licenties</span>
         </nav>                
       </div>
       <div class="col-10">
@@ -124,47 +123,28 @@
         <div class="row bg-light">
           <div class="col-7">
             <?php 
-              
-              if(isset($_POST["Edit-submit"]) || isset($_SESSION["EditLicenseError"]) )
+              if(isset($_POST["Edit-submit"]))
               {
                 EditLicenseForm();
-                if (isset($_SESSION["EditLicenseError"]))
-                {
-                  echo $_SESSION["EditLicenseError"];
-                }   
-                              
               }
-              else if (isset($_POST["Add-submit"]) || isset($_SESSION["AddLicenseError"]))
+              else if (isset($_POST["Add-submit"]))
               {
                 AddLicenseForm();
-                if (isset($_SESSION["AddLicenseError"]))
-                {
-                  echo $_SESSION["AddLicenseError"];
-                }
               }
-              else if(isset($_POST["Delete-submit"]))
-              {
+              else if(isset($_POST["Delete-submit"])){
                 DeleteLicense();
               }
               else
               {
                 LoadLicense();
-                
-              }
-              if($_SESSION["home"]){
-                Expire();
               }
             ?>
           </div>
           <div class="col-3">
             <?php
-              if (!(isset($_POST["Edit-submit"])) && !(isset($_POST["Add-submit"])) && !(isset($_SESSION["AddLicenseError"])))
+              if (!(isset($_POST["Edit-submit"])) && !(isset($_POST["Add-submit"])))
               {
                 LoadComments();
-              }
-              else if (isset($_SESSION["AddLicenseError"]))
-              {
-                unset($_SESSION["AddLicenseError"]);
               }
             ?>
           </div>

@@ -1,5 +1,9 @@
 <?php 
-  require("Function.php");
+  require("LoginScreenPHP.php");
+  if (session_status() == PHP_SESSION_NONE) 
+  {
+    session_start();
+  }
 ?>
 
 <!DOCTYPE html>
@@ -19,19 +23,15 @@
 <body>
 <div class="container">
  <img src="usericon.png"/>
-<form action="Function.php" method="post" name="form">
+<form action="LoginScreenPHP.php" method="post" name="form">
   <br><input type="text" name="Username" placeholder="Gebruikersnaam" >
   <br><input type="password" name="Password" placeholder="Wachtwoord">
   <br><input type="submit" name="Login" value="Inloggen" class="btn-login">
 </form>
 <?php 
-  if (session_status() == PHP_SESSION_NONE) 
-  {
-    session_start();
-  }
   if (isset($_SESSION['WrongInput']))
   {
-    echo $_SESSION['WrongInput'];
+    echo "<span style='color:red;'> ".$_SESSION['WrongInput']."<span>";
     unset($_SESSION['WrongInput']);
   }
 ?>
