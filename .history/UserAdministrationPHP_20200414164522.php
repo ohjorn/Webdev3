@@ -47,7 +47,7 @@ function loadAdmins()
         <input type=\"hidden\" name=\"UserIDForm\" value=\"".$UserIDAdmin[$i]."\">
         <input type=\"hidden\" name=\"RightsForm\" value=\"1\">
         <input type=\"hidden\" name=\"UniqueLoginNameForm\" value=\"".$UniqueLoginNameAdmin[$i]."\">
-        <tr id=\"formdesign\">
+        <tr>
           <td>
             ".$UniqueLoginNameAdmin[$i]."
           </td>
@@ -96,11 +96,11 @@ function LoadReaders()
   {
     //maakt hier de rijen aan met de gegevens er in. 
     echo "
-      <form action=\"UserAdministration.php\" method=\"post\">
+      <form action=\"UserAdministration.php\" method=\"post\" id=\"formdesign\">
         <input type=\"hidden\" name=\"UserIDForm\" value=\"".$UserIDReader[$i]."\">
         <input type=\"hidden\" name=\"RightsForm\" value=\"0\">
         <input type=\"hidden\" name=\"UniqueLoginNameForm\" value=\"".$UniqueLoginNameReader[$i]."\">
-        <tr id=\"formdesign\">
+        <tr>
           <td>
             ".$UniqueLoginNameReader[$i]."
           </td>
@@ -315,9 +315,9 @@ function DeleteUserConfirmation($UserID)
       <form action=\"UserAdministrationPHP.php\" method=\"post\">
         <input type=\"hidden\" name=\"UserID\" value=\"".$UserID."\">
         <label>Weet u zeker dat u deze gebruiker wilt verwijderen?</label><br>
-        <input type=\"submit\" id=\"buttondesigning\" class=\"btn btn-primary\" name=\"DeleteUserPerm\" value=\"Gebruiker verwijderen\">
+        <input type=\"submit\" class=\"btn btn-primary\" name=\"DeleteUserPerm\" value=\"Gebruiker verwijderen\">
       </form><br>
-      <button type=\"submit\" id=\"buttondesigning\" onclick=\"window.location.href = 'UserAdministration.php';\" class=\"btn btn-primary\" name=\"KeepUser\">Gebruiker behouden</button>
+      <button type=\"submit\" onclick=\"window.location.href = 'UserAdministration.php';\" class=\"btn btn-primary\" name=\"KeepUser\">Gebruiker behouden</button>
     </div>
   "; 
 }

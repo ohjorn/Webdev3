@@ -26,7 +26,7 @@
 <form action="LoginScreenPHP.php" method="post" name="form">
   <br><input type="text" name="Username" placeholder="Gebruikersnaam" >
   <br><input type="password" name="Password" placeholder="Wachtwoord">
-  <br><input type="submit" id="btn-login" name="Login" value="Inloggen" class="btn-login">
+  <br><input type="submit" name="Login" value="Inloggen" class="btn-login">
 </form>
 <?php 
   if (isset($_SESSION['WrongInput']))

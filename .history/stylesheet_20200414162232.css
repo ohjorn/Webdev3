@@ -1,8 +1,6 @@
 body
 {
     background-color: #F5F5F5;
-    background-image: url("background.jfif");
-    background-size: 100%;
 }
 
 #rowmargin
@@ -99,8 +97,4 @@ input[type=submit] {
 {
     margin-bottom: 30px;
     margin-top: 30px;
-}
-
-#TotalLicenceCount {
-    background-color: rgb(242, 242, 242, 0.5); 
 }

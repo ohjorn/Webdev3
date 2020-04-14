@@ -4,7 +4,7 @@ body
 }
 
 
-#buttondesigning
+#buttondesign
 {
     font-family: inherit !important;
     font-size: 100% !important;
@@ -13,22 +13,7 @@ body
     color: rgba(0,0,0,.8) !important;
     border: 1px solid #999 !important;
     border: none transparent !important;
-    background-color: rgb(0, 128, 128, 0.3)!important;
+    background-color: rgb(0, 128, 128, 0.5) !important;
     text-decoration: none !important;
     border-radius: 2px !important;
-}
-
-#buttondesigning:hover{
-    background-color: rgb(0, 128, 128, 0.5) !important;
-}
-
-#formdesign {
-    border-bottom: 1px solid lightgray;
-    margin-top: 10px; 
-}
-
-.col-sm-3{
-    background-color: #DCDCDC !important;
-    border-radius: 25px;
-    padding: 10px 5px 4px;
 }

@@ -315,9 +315,9 @@ function DeleteUserConfirmation($UserID)
       <form action=\"UserAdministrationPHP.php\" method=\"post\">
         <input type=\"hidden\" name=\"UserID\" value=\"".$UserID."\">
         <label>Weet u zeker dat u deze gebruiker wilt verwijderen?</label><br>
-        <input type=\"submit\" id=\"buttondesigning\" class=\"btn btn-primary\" name=\"DeleteUserPerm\" value=\"Gebruiker verwijderen\">
+        <input type=\"submit\" class=\"btn btn-primary\" name=\"DeleteUserPerm\" value=\"Gebruiker verwijderen\">
       </form><br>
-      <button type=\"submit\" id=\"buttondesigning\" onclick=\"window.location.href = 'UserAdministration.php';\" class=\"btn btn-primary\" name=\"KeepUser\">Gebruiker behouden</button>
+      <button type=\"submit\" onclick=\"window.location.href = 'UserAdministration.php';\" class=\"btn btn-primary\" name=\"KeepUser\">Gebruiker behouden</button>
     </div>
   "; 
 }

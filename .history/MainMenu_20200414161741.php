@@ -80,7 +80,7 @@
               ?>
             </ul>
           </div>
-          <span  id="TotalLicenceCount" class="ban alert alert-primary">Er zijn momenteel <?=$_SESSION["counter"]?> licenties</span>                    
+          <span class="ban alert alert-primary">Er zijn momenteel <?=$_SESSION["counter"]?> licenties</span>                    
         </nav>                
       </div>
       <div class="col-9">
