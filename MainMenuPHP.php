@@ -528,12 +528,13 @@ function Expire()
     $expiredate = $row["VerloopDatum"];   
     $datetime1 = new DateTime($expiredate);
     $interval = $datetime2->diff($datetime1);
-    if ($interval->format('%d') <= 7 && $interval->format('%d') > 0 && $interval->format('%Y') == 0 && $interval->format('%m') == 0){
-        echo $interval->format('<br><h3><strong>Deze licentie verloopt in %d dag(en):</h3></strong>'); 
-        echo "<h3><strong>".$row["LicentieNaam"]."</strong></h3>";  
-        $count =+ 1;
-    }
-  
+    if($datetime1 > $datetime2){
+      if ($interval->format('%d') <= 7 && $interval->format('%d') > 0 && $interval->format('%Y') == 0 && $interval->format('%m') == 0){
+          echo $interval->format('<br><h3><strong>Deze licentie verloopt in %d dag(en):</h3></strong>'); 
+          echo "<h3><strong>".$row["LicentieNaam"]."</strong></h3>";  
+          $count =+ 1;
+      }
+    } 
   }
   if($count === 0){
     echo "<h3><strong>Er verlopen binnenkort geen licenties</strong></h3>";
