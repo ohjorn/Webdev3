@@ -7,6 +7,7 @@ if (!(class_exists('connectDB')))
 if (session_status() == PHP_SESSION_NONE) 
 {
   session_start();
+  $_SESSION["home"] = true;
 }
 
 ////Clears the session when pressing the logout button.
@@ -109,22 +110,42 @@ function LoadLicense()
 {
   if (isset($_SESSION["LicenseNameShow"]))
   {
+    $_SESSION["home"] = false;
     $Licenseview = '';
     $Licenseview .= "
     <div class=\"col-7\">
       <h2><b>Licentie naam</b></h2>
       <p><td>".$_SESSION["LicenseNameShow"]."</td></p>
-      <h2><b>Doelgroep</b></h2>
-      <p><td>".$_SESSION["AudienceShow"]."</td></p>
-      <h2><b>Beschrijving</b></h2>
-      <p><td>".$_SESSION["DescriptionShow"]."</td></p>
-      <br>
-      <h2><b>Installatie omschrijving</b></h2>
-      <p><td>".$_SESSION["InstallDescShow"]."</td></p>
-      <br> 
-      <h2><b>Verloop datum</b></h2>
-      <p><td>".$_SESSION["ExpirationDateShow"]."</td></p>
-      <br> 
+      ";
+      if ($_SESSION["AudienceShow"] != null)
+      {
+        $Licenseview .= "
+          <h2><b>Doelgroep</b></h2>
+          <p><td>".$_SESSION["AudienceShow"]."</td></p>
+        ";
+      }
+      if ($_SESSION["DescriptionShow"] != null)
+      {
+        $Licenseview .= "
+          <h2><b>Beschrijving</b></h2>
+          <p><td>".$_SESSION["DescriptionShow"]."</td></p><br>
+        ";
+      }
+      if ($_SESSION["InstallDescShow"] != null)
+      {
+        $Licenseview .= "
+          <h2><b>Installatie omschrijving</b></h2>
+          <p><td>".$_SESSION["InstallDescShow"]."</td></p><br> 
+        ";
+      }
+      if ($_SESSION["ExpirationDateShow"] != null)
+      {
+        $Licenseview .= "
+          <h2><b>Verloop datum</b></h2>
+          <p><td>".$_SESSION["ExpirationDateShow"]."</td></p><br>
+        ";
+      }
+      $Licenseview .= "
       <h2><b>Laatst aangepast</b></h2>
       <p><td>".$_SESSION["LastChangedShow"].", Door: ".GetUserName($_SESSION["UserIDShow"])."</td></p>
       <br>
@@ -139,20 +160,14 @@ function LoadLicense()
     if(IsAdmin())
     {
     $Licenseview .= "
-    <form action=\"MainMenu.php\" method=\"post\">
+    <form action=\"MainMenu.php\" method=\"post\" style=\"padding-left: inherit;\">
     <input type=\"submit\" class=\"btn btn-success\" name=\"Edit-submit\" style= \"margin-bottom: 10px;\" value=\"Licentie bewerken\">
     <input type=\"button\"class=\"btn btn-danger\" name=\"Delete-submit\" onclick=\"document.getElementById('id01').style.display='block'\"  style= \"margin-bottom: 10px;\" value=\"Licentie Verwijderen\" >
     </form>
     ";
     }
-
     echo $Licenseview;
-
-        $_SESSION["tempLicenseName"] = $_SESSION["LicenseNameShow"];  
-  }
-  else
-  {
-    exit;
+    $_SESSION["tempLicenseName"] = $_SESSION["LicenseNameShow"];  
   }
 }
 
@@ -210,6 +225,7 @@ Function LoadComments()
 
 function AddLicenseForm()
 {
+  $_SESSION["home"] = false;
   echo "
     <div class=\"col-7\">
       <form action=\"MainMenuPHP.php\" method=\"post\">
@@ -223,7 +239,7 @@ function AddLicenseForm()
         <textarea name = \"InstallDesc\" rows = \"3\" cols = \"80\"></textarea><br>
         <label>Licentie verloop datum:</label><br>
         <input type=\"date\" name=\"ExpirationDate\"><br><br>
-        <input type=\"submit\" class=\"btn btn-primary\" name=\"AddLicense\" value=\"Licentie toevoegen\">
+        <input type=\"submit\" class=\"btn\" name=\"AddLicense\" value=\"Licentie toevoegen\" id=\"buttondesign\">
       </form>
     </div>
   ";
@@ -231,6 +247,7 @@ function AddLicenseForm()
 
 function EditLicenseForm()
 {
+  $_SESSION["home"] = false;
   $sql = "SELECT LicentieID, LicentieNaam, Beschrijving, InstallatieOmschrijving, VerloopDatum ,LaatstAangepast, Doelgroep FROM licentie WHERE LicentieID = :LicenseID"; 
  $conn = connectDB();
  $stmt = $conn->prepare($sql);
@@ -340,32 +357,40 @@ function AddLicense($LicenseName, $Description, $InstallDesc, $ExpirationDate, $
 
 if(isset($_POST["csv"]))
 {
-  ToCsv();
-}
+  $filename = "licenties.csv";
 
-function ToCsv()
-{
- $filename = "licenties.csv";
-
- header("Content-type: text/csv; charset=utf-8");
+  header("Content-type: text/csv; charset=utf-8");
+    
+  header("Content-Disposition: attachment; filename=$filename");
+  $fp = fopen('php://output', 'w');
+  fputcsv($fp, array('Licentienaam', 'Beschrijving', 'Installatie omschrijving'), ";");
+  $sql = "SELECT LicentieNaam, Beschrijving, InstallatieOmschrijving FROM licentie"; 
+  $conn = connectDB();
+  $stmt = $conn->prepare($sql);
+  $stmt->execute(); 
   
- header("Content-Disposition: attachment; filename=$filename");
- $fp = fopen('php://output', 'w');
- fputcsv($fp, array('Licentienaam', 'Beschrijving', 'Installatie omschrijving'), ";");
- $sql = "SELECT LicentieNaam, Beschrijving, InstallatieOmschrijving FROM licentie"; 
- $conn = connectDB();
- $stmt = $conn->prepare($sql);
- $stmt->execute(); 
- 
- while ($res = $stmt->fetch(PDO::FETCH_ASSOC))
- {
-   fputcsv($fp, $res, ';');
- }
- fclose($fp);
- exit();
-
+  while ($res = $stmt->fetch(PDO::FETCH_ASSOC))
+  {
+    fputcsv($fp, $res, ';');
+  }
+  fclose($fp);
+  exit();
 }
 
+if (isset($_POST["Home"]))
+{
+  unset($_SESSION["LicenseNameShow"]);
+  unset($_SESSION["DescriptionShow"]);
+  unset($_SESSION["InstallDescShow"]);
+  unset($_SESSION["LastChangedShow"]);
+  unset($_SESSION["ExpirationDateShow"]);
+  unset($_SESSION["UserIDShow"]);
+  unset($_SESSION["LicenseIDShow"]);
+  unset($_SESSION["AudienceShow"]);
+  $_SESSION["home"] = true;
+  header("Location: MainMenu.php");
+  exit;
+}
 
 if (isset($_POST["AddLicense"]))
 {
@@ -403,7 +428,9 @@ if (isset($_POST["AddLicense"]))
   }
   else
   {
-    echo "Fout";
+    $_SESSION["AddLicenseError"] = "De licentie moet een naam bevatten.";
+    $_POST["Add-submit"] = "test";
+    header("Location: MainMenu.php");
   }
 }
 
@@ -412,6 +439,7 @@ if (isset($_POST["EditLicense"]))
   if (!(empty($_POST["LicenseName"])))
   {
     $LicenseName = $_POST["LicenseName"];
+    unset($_SESSION["EditLicenseError"]);
     
 
     if (!(empty($_POST["Description"])))
@@ -440,12 +468,14 @@ if (isset($_POST["EditLicense"]))
     else
     {
       $ExpirationDate = null;
-      EditLicense($LicenseName, $Description, $InstallDesc, $ExpirationDate);
+      EditLicense($LicenseName, $Description, $InstallDesc, $ExpirationDate, $_SESSION["UserID"]);
     }
   }
-  else 
+  else
   {
-    echo "fout";
+    $_SESSION["EditLicenseError"] = "De licentie moet een naam bevatten.";
+    $_POST["Edit-submit"] = "test";
+    header("Location: MainMenu.php");
   }
 }
 
@@ -479,6 +509,34 @@ if (isset($_POST["LicenseNameLoad"]))
     {
       echo "$ex";
     }
+  }
+}
+
+function Expire()
+{
+  $count = 0;
+  $date_now = date('Y-m-d');
+  $datetime2 = new DateTime($date_now);
+  $conn = connectDB();
+  $sql = "SELECT LicentieNaam, VerloopDatum FROM licentie";
+  $stmt = $conn->prepare($sql);
+  $stmt->execute();
+ 
+  foreach ($stmt->fetchAll() as $row)
+  {
+    $expiredate = $row["VerloopDatum"];   
+    $datetime1 = new DateTime($expiredate);
+    $interval = $datetime2->diff($datetime1);
+    if($datetime1 > $datetime2){
+      if ($interval->format('%d') <= 7 && $interval->format('%d') > 0 && $interval->format('%Y') == 0 && $interval->format('%m') == 0){
+          echo $interval->format('<br><h3><strong>Deze licentie verloopt in %d dag(en):</h3></strong>'); 
+          echo "<h3><strong>".$row["LicentieNaam"]."</strong></h3>";  
+          $count =+ 1;
+      }
+    } 
+  }
+  if($count === 0){
+    echo "<h3><strong>Er verlopen binnenkort geen licenties</strong></h3>";
   }
 }
 
