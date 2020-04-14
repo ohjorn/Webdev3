@@ -25,26 +25,42 @@
     <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.min.js" integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
-    <link rel="stylesheet" href="stylesheet.css">
     <script src="script.js" type="text/javascript"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <title>Main menu</title>
+  <style>
+    .wrapper {
+      display: flex;
+      width: 100%;
+      align-items: stretch;
+    }
+    #sidebar {
+      padding-left: 10px;
+    }
+    .modalstyle {
+		  text-align: center;		
+		  border-radius: 5px;
+		  font-size: 13px;
+		  padding: 10px 5px 4px;
+      margin: 250px 10px 5px;
+    }
+  </style>
 </head>
 <body>
   <br>
   <main>
-    <div class="row justify-content-center" id="rowmargin">
-      <div class="col-2" id="sidebaredit">
+    <div class="row">
+      <div class="col-2">
         <nav id="sidebar">
-          <div class="sidebar-header form-group" id="sidebarheaderedit">
+          <div class="sidebar-header form-group">
             <input type="text" class="form-control" id="search_text" name="search_text" placeholder="Licentie naam zoeken">
           </div>
           <div class="row">
             <div class="col">
               <div class="form-group" id="submitbtns">   
                 <form method="POST">                     
-                  <button type="submit" class="btn" name="csv" id="buttondesign">Exporteer naar csv</button>
-                  <button type="submit" class="btn" name="Home" id="buttondesign"><i class="glyphicon glyphicon-home"></i></button>
+                  <button type="submit" class="btn btn-primary" name="csv">Exporteer naar csv</button>
+                  <button type="submit" class="btn btn-primary" name="Home"><i class="glyphicon glyphicon-home"></i></button>
                 </form>
               </div>
             </div>
@@ -72,7 +88,7 @@
                   echo "
                     <li style=margin-top:10px;>
                       <form action=\"\" method=\"post\">
-                        <input type=\"submit\" class=\"btn\" id=\"buttondesign\" name=\"Add-submit\" style= \"margin-bottom: 10px;\" value=\"Licentie toevoegen\">
+                        <input type=\"submit\" class=\"btn btn-primary\" name=\"Add-submit\" style= \"margin-bottom: 10px;\" value=\"Licentie toevoegen\">
                       </form>
                     </li>
                   ";
@@ -83,12 +99,12 @@
           <span class="ban alert alert-primary jummie3">Er zijn momenteel <?=$_SESSION["counter"]?> licenties</span>                    
         </nav>                
       </div>
-      <div class="col-9" id="mainmenu">
+      <div class="col-10">
         <!--Navigatie balk-->
-        <nav class="navbar navbar-expand-lg navbar-light" id="navbarmain">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
           <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-              <a class="navbar-brand" id="logo" href="MainMenu.php"><img src="nhl.png" width="50" height="50" alt="NHLStenden logo.png"></a>
+              <a class="navbar-brand" href="#">"Logo?"</a>
             </li>
           </ul>
           <ul class="navbar-nav ml-auto">
@@ -97,7 +113,7 @@
                 <?php
                   if (IsAdmin())
                   {
-                    echo "<input type=\"submit\" class=\"btn btn-primary\" id=\"buttondesign\" name=\"toggle-account-management\" value=\"Accounts beheren\">";
+                    echo "<input type=\"submit\" class=\"btn btn-primary\" name=\"toggle-account-management\" value=\"Accounts beheren\">";
                   }
                 ?>
                 <input type="submit" class="btn btn-primary" name="logout-submit" value="Uitloggen">
@@ -105,8 +121,8 @@
             </li>
           </ul>
         </nav>
-        <div class="row" id="mainmenuroundborder">
-          <div class="col-8">
+        <div class="row bg-light">
+          <div class="col-7">
             <?php 
               
               if(isset($_POST["Edit-submit"]) || isset($_SESSION["EditLicenseError"]) )
@@ -140,7 +156,7 @@
               }
             ?>
           </div>
-          <div class="col-4 bg-light" id="comments">
+          <div class="col-3">
             <?php
               if (!(isset($_POST["Edit-submit"])) && !(isset($_POST["Add-submit"])) && !(isset($_SESSION["AddLicenseError"])))
               {

@@ -153,7 +153,7 @@ function LoadLicense()
       <form action=\"MainMenuPHP.php\" method=\"post\">
         <label>Opmerking:</label><br>
         <textarea name = \"Comment\" rows = \"3\" cols = \"80\"></textarea><br>
-        <input type=\"submit\" class=\"btn \" id=\"buttondesign\" name=\"AddComment\" value=\"Opmerking plaatsen\">
+        <input type=\"submit\" class=\"btn btn-primary\" name=\"AddComment\" value=\"Opmerking plaatsen\">
       </form><br>
     </div>
     ";
@@ -476,9 +476,6 @@ if (isset($_POST["EditLicense"]))
     $_SESSION["EditLicenseError"] = "De licentie moet een naam bevatten.";
     $_POST["Edit-submit"] = "test";
     header("Location: MainMenu.php");
-  else 
-  {
-    echo "fout";
   }
 }
 
@@ -542,4 +539,5 @@ function Expire()
     echo "<h3><strong>Er verlopen binnenkort geen licenties</strong></h3>";
   }
 }
+
 ?>
