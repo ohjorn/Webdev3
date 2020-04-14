@@ -1,5 +1,4 @@
-
-<?php
+<?php 
 if (!class_exists('connectDB'))
 {
   include_once("Connect.php");
@@ -49,14 +48,14 @@ function loadAdmins()
         <input type=\"hidden\" name=\"RightsForm\" value=\"1\">
         <input type=\"hidden\" name=\"UniqueLoginNameForm\" value=\"".$UniqueLoginNameAdmin[$i]."\">
         <tr>
-          <td style=' font-weight: bold;'>
+          <td>
             ".$UniqueLoginNameAdmin[$i]."
           </td>
           <td>
-              <input type=\"submit\" class=\"btn btn1\" name=\"EditUser\"value=\"Aanpassen\">
+              <input type=\"submit\" class=\"btn btn-primary\" name=\"EditUser\"value=\"Aanpassen\">
           </td> 
           <td>
-              <input type=\"submit\" class=\"btn btn1\" name=\"DeleteUser\"value=\"Verwijderen\">
+              <input type=\"submit\" class=\"btn btn-primary\" name=\"DeleteUser\"value=\"Verwijderen\">
           </td>
         </tr>
       </form>
@@ -102,14 +101,14 @@ function LoadReaders()
         <input type=\"hidden\" name=\"RightsForm\" value=\"0\">
         <input type=\"hidden\" name=\"UniqueLoginNameForm\" value=\"".$UniqueLoginNameReader[$i]."\">
         <tr>
-          <td style='font-weight: bold;'>
+          <td>
             ".$UniqueLoginNameReader[$i]."
           </td>
           <td>
-            <input type=\"submit\" class=\"btn btn1\" name=\"EditUser\"value=\"Aanpassen\">
+            <input type=\"submit\" class=\"btn btn-primary\" name=\"EditUser\"value=\"Aanpassen\">
           </td> 
           <td>
-            <input type=\"submit\" class=\"btn btn1\" name=\"DeleteUser\"value=\"Verwijderen\">
+            <input type=\"submit\" class=\"btn btn-primary\" name=\"DeleteUser\"value=\"Verwijderen\">
           </td>
         </tr>
       </form>
@@ -186,15 +185,14 @@ if ((!empty($_POST["CreateAcc"])) && ($_POST["CreateAcc"] == "Aanmaken"))
 function EditUserInformationForm($UserID, $Rights, $Username)
 {
   echo "
-<br>
     <form action=\"UserAdministrationPHP.php\" method=\"post\">
       <input type=\"hidden\" name=\"id\" value=\"".$UserID."\">
-      <label>Nieuwe gebruikersnaam(minimaal 3 characters):</label>
-      <input type=\"text\" name=\"NewUsername\" placeholder=\"username\"value=\"".$Username."\"><br>
+      <label>Nieuwe gebruikersnaam (minimaal 3 characters):</label><br>
+      <input type=\"text\" name=\"NewUsername\" value=\"".$Username."\"><br>
       <label>Nieuwe wachtwoord(minimaal 5 characters):</label><br>
-      <input type=\"password\" placeholder=\"password\" name=\"NewPassword\"><br>
+      <input type=\"password\" name=\"NewPassword\"><br>
       <label>Wachtwoord hertypen:</label><br>
-      <input type=\"password\" placeholder=\"password(confirm)\" name=\"NewPassword2\"><br>
+      <input type=\"password\" name=\"NewPassword2\"><br>
   ";
   if ($Rights == 1)
   {
@@ -223,22 +221,21 @@ function EditUserInformationForm($UserID, $Rights, $Username)
 
 function CreateUserForm()
 {
-  echo "<br>
+  echo "
     <form action=\"UserAdministrationPHP.php\" method=\"post\">
-      <label>Gebruikersnaam: (Minimaal 3 characters):</label>
-      <input type=\"str\" placeholder=\"username\" class=\"searchbar\" name=\"Username\"><br><br>
-      <label>Wachtwoord(Minimaal 5 characters):</label>
-      <input type=\"password\" class=\"searchbar\" placeholder=\"password\"name=\"Password\"><br><br>
-      <label>Wachtwoord hertypen:</label>
-      <input type=\"password\" class=\"searchbar\" placeholder=\"password(confirm)\" name=\"Password2\"><br><br>
-      <input style='float: right'type=\"radio\" name=\"Rights\" value=\"1\">
-      <label style='float: right'for=\"Administrator\">Administrator</label>&nbsp&nbsp
-      <input style='float: right' type=\"radio\" name=\"Rights\" value=\"0\" checked>
-      <label style='float: right'for=\"Lezer\">Lezer</label><br><br>
-      <input style='float: right' type=\"submit\" class=\"btn btn1 btn-outline-dark\" name=\"CreateAcc\" value=\"Aanmaken\"><form action=\"MainMenu.php\"><button style='float: right' type=\"submit\"  class=\"btn btn1 btn-outline-dark\" name=\"BackToMainMenu\">Terug</button></form>
-      
-    </form>
-    
+      <label>Gebruikersnaam (Minimaal 3 characters):</label><br>
+      <input type=\"str\" name=\"Username\"><br>
+      <label>Wachtwoord(Minimaal 5 characters):</label><br>
+      <input type=\"password\" name=\"Password\"><br>
+      <label>Wachtwoord hertypen:</label><br>
+      <input type=\"password\" name=\"Password2\"><br>
+      <input type=\"radio\" name=\"Rights\" value=\"1\">
+      <label for=\"Administrator\">Administrator</label><br>
+      <input type=\"radio\" name=\"Rights\" value=\"0\" checked>
+      <label for=\"Lezer\">Lezer</label><br>
+      <input type=\"submit\" class=\"btn btn-primary\" name=\"CreateAcc\" value=\"Aanmaken\">
+    </form><br>
+    <button type=\"submit\" onclick=\"window.location.href = 'MainMenu.php';\" class=\"btn btn-primary\" name=\"BackToMainMenu\">Terug</button>
   ";
 }
 
