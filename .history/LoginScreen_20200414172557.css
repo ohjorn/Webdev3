@@ -46,7 +46,7 @@ body{
     content: "\f023";
    }
     
-   #btn-login{
+   .btn-login{
     padding: 15px 25px;
     border: none;
     background-color: #188487;
