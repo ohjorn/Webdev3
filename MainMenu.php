@@ -35,7 +35,7 @@
   <main>
     <div class="row justify-content-center" id="rowmargin">
       <div class="col-2" id="sidebaredit">
-        <nav id="sidebar">
+        <nav id="sidebar" style="margin-bottom: 30px;">
           <div class="sidebar-header form-group" id="sidebarheaderedit">
             <input type="text" class="form-control" id="search_text" name="search_text" placeholder="Licentie naam zoeken">
           </div>
@@ -72,7 +72,7 @@
                   echo "
                     <li style=margin-top:10px;>
                       <form action=\"\" method=\"post\">
-                        <input type=\"submit\" class=\"btn\" id=\"buttondesign\" name=\"Add-submit\" style= \"margin-bottom: 10px;\" value=\"Licentie toevoegen\">
+                        <input type=\"submit\" class=\"btn btn-primary\" name=\"Add-submit\" style= \"margin-bottom: 10px;\" value=\"Licentie toevoegen\">
                       </form>
                     </li>
                   ";
@@ -80,10 +80,10 @@
               ?>
             </ul>
           </div>
-          <span class="ban alert alert-primary jummie3">Er zijn momenteel <?=$_SESSION["counter"]?> licenties</span>                    
+          <span class="ban alert alert-primary">Er zijn momenteel <?=$_SESSION["counter"]?> licenties</span>                    
         </nav>                
       </div>
-      <div class="col-9" id="mainmenu">
+      <div class="col-9">
         <!--Navigatie balk-->
         <nav class="navbar navbar-expand-lg navbar-light" id="navbarmain">
           <ul class="navbar-nav mr-auto">
@@ -97,7 +97,7 @@
                 <?php
                   if (IsAdmin())
                   {
-                    echo "<input type=\"submit\" class=\"btn btn-primary\" id=\"buttondesign\" name=\"toggle-account-management\" value=\"Accounts beheren\">";
+                    echo "<input type=\"submit\" class=\"btn btn-primary\" name=\"toggle-account-management\" value=\"Accounts beheren\">";
                   }
                 ?>
                 <input type="submit" class="btn btn-primary" name="logout-submit" value="Uitloggen">

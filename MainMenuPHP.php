@@ -153,14 +153,14 @@ function LoadLicense()
       <form action=\"MainMenuPHP.php\" method=\"post\">
         <label>Opmerking:</label><br>
         <textarea name = \"Comment\" rows = \"3\" cols = \"80\"></textarea><br>
-        <input type=\"submit\" class=\"btn \" id=\"buttondesign\" name=\"AddComment\" value=\"Opmerking plaatsen\">
+        <input type=\"submit\" class=\"btn btn-primary\" name=\"AddComment\" value=\"Opmerking plaatsen\">
       </form><br>
     </div>
     ";
     if(IsAdmin())
     {
     $Licenseview .= "
-    <form action=\"MainMenu.php\" method=\"post\">
+    <form action=\"MainMenu.php\" method=\"post\" style=\"padding-left: inherit;\">
     <input type=\"submit\" class=\"btn btn-success\" name=\"Edit-submit\" style= \"margin-bottom: 10px;\" value=\"Licentie bewerken\">
     <input type=\"button\"class=\"btn btn-danger\" name=\"Delete-submit\" onclick=\"document.getElementById('id01').style.display='block'\"  style= \"margin-bottom: 10px;\" value=\"Licentie Verwijderen\" >
     </form>
@@ -239,7 +239,7 @@ function AddLicenseForm()
         <textarea name = \"InstallDesc\" rows = \"3\" cols = \"80\"></textarea><br>
         <label>Licentie verloop datum:</label><br>
         <input type=\"date\" name=\"ExpirationDate\"><br><br>
-        <input type=\"submit\" class=\"btn btn-primary\" name=\"AddLicense\" value=\"Licentie toevoegen\">
+        <input type=\"submit\" class=\"btn\" name=\"AddLicense\" value=\"Licentie toevoegen\" id=\"buttondesign\">
       </form>
     </div>
   ";
@@ -476,9 +476,6 @@ if (isset($_POST["EditLicense"]))
     $_SESSION["EditLicenseError"] = "De licentie moet een naam bevatten.";
     $_POST["Edit-submit"] = "test";
     header("Location: MainMenu.php");
-  else 
-  {
-    echo "fout";
   }
 }
 
@@ -542,4 +539,5 @@ function Expire()
     echo "<h3><strong>Er verlopen binnenkort geen licenties</strong></h3>";
   }
 }
+
 ?>

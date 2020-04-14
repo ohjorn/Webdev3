@@ -62,21 +62,16 @@ body
 
 #buttondesign
 {
-    font-family: inherit;
-    font-size: 100%;
-    padding: .5em 1em;
-    color: #444;
-    color: rgba(0,0,0,.8);
-    border: 1px solid #999;
-    border: none transparent;
-    background-color: lightskyblue;
-    text-decoration: none;
-    border-radius: 2px;
-}
-
-#useradministationdesign
-{
-    
+    font-family: inherit !important;
+    font-size: 100% !important;
+    padding: .5em 1em !important;
+    color: #444 !important;
+    color: rgba(0,0,0,.8) !important;
+    border: 1px solid #999 !important;
+    border: none transparent !important;
+    background-color: lightskyblue !important;
+    text-decoration: none !important;
+    border-radius: 2px !important;
 }
 
 input[type=submit] {
@@ -89,4 +84,16 @@ input[type=submit] {
     background-color: #cce5ff;
     text-decoration: none;
     border-radius: 2px; 
+}
+
+.rowedit
+{
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+#adminlezermain
+{
+    margin-bottom: 30px;
+    margin-top: 30px;
 }
