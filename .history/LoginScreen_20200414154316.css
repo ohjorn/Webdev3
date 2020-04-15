@@ -12,7 +12,7 @@ body{
     height: 450px;
     text-align: center;
     margin: 0 auto;
-    background-color: #DCDCDC !important;
+    background-color: rgba(44, 62, 80,0.7);
     margin-top: 160px;
    }
     
@@ -39,14 +39,14 @@ body{
     padding-top: 40px;
     position: absolute;
     font-size: 35px;
-    color: #188487; 
+    color: #2980b9; 
    }
     
    .form-input:nth-child(2)::before{
     content: "\f023";
    }
     
-   #btn-login{
+   .btn-login{
     padding: 15px 25px;
     border: none;
     background-color: #188487;

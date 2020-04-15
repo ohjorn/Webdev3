@@ -363,8 +363,8 @@ if(isset($_POST["csv"]))
     
   header("Content-Disposition: attachment; filename=$filename");
   $fp = fopen('php://output', 'w');
-  fputcsv($fp, array('Licentienaam', 'Beschrijving', 'Installatie omschrijving', 'Verloop datum', 'Laatst aangepast', 'Doelgroep'), ";");
-  $sql = "SELECT LicentieNaam, Beschrijving, InstallatieOmschrijving, VerloopDatum, LaatstAangepast, Doelgroep FROM licentie";
+  fputcsv($fp, array('Licentienaam', 'Beschrijving', 'Installatie omschrijving'), ";");
+  $sql = "SELECT LicentieNaam, Beschrijving, InstallatieOmschrijving FROM licentie"; 
   $conn = connectDB();
   $stmt = $conn->prepare($sql);
   $stmt->execute(); 

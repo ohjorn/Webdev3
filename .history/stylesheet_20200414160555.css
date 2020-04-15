@@ -1,0 +1,99 @@
+body
+{
+    background-color: #F5F5F5;
+}
+
+#rowmargin
+{
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+#logo
+{
+    padding-top: 0px;
+    padding: 0px;
+}
+
+#mainmenuroundborder
+{
+    width: 1113px;
+    border-radius: 25px;
+    background-color: #DCDCDC;
+    margin-left: 0px;
+}
+
+.wrapper 
+{
+    display: flex;
+    width: 100%;
+    align-items: stretch;
+}
+
+#sidebarheaderedit
+{
+    padding-top: 15px;
+}
+
+#sidebaredit
+{
+    border-radius: 25px;
+    background-color:#DCDCDC;
+}
+.modalstyle 
+{
+    text-align: center;		
+    border-radius: 5px;
+    font-size: 13px;
+    padding: 10px 5px 4px;
+    margin: 250px 10px 5px;
+}
+
+#navbarmain
+{
+    background-color: #DCDCDC;
+}
+
+#comments
+{
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+}
+
+#buttondesign
+{
+    font-family: inherit !important;
+    font-size: 100% !important;
+    padding: .5em 1em !important;
+    color: #444 !important;
+    color: rgba(0,0,0,.8) !important;
+    border: 1px solid #999 !important;
+    border: none transparent !important;
+    background-color: #188487 !important;
+    text-decoration: none !important;
+    border-radius: 2px !important;
+}
+
+input[type=submit] {
+    font-family: inherit;
+    font-size: 100%;
+    padding: .5em 1em;
+    color: #004085;
+    border: 1px solid #999;
+    border: none transparent;
+    background-color: #f2f2f2;
+    text-decoration: none;
+    border-radius: 2px; 
+}
+
+.rowedit
+{
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+#adminlezermain
+{
+    margin-bottom: 30px;
+    margin-top: 30px;
+}

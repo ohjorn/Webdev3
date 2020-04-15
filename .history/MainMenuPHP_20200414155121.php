@@ -161,7 +161,7 @@ function LoadLicense()
     {
     $Licenseview .= "
     <form action=\"MainMenu.php\" method=\"post\" style=\"padding-left: inherit;\">
-    <input type=\"submit\" class=\"btn btn-success\" name=\"Edit-submit\"  id=\"buttondesign\" style= \"margin-bottom: 10px;\" value=\"Licentie bewerken\">
+    <input type=\"submit\" class=\"btn btn-success\" name=\"Edit-submit\" style= \"margin-bottom: 10px;\" value=\"Licentie bewerken\">
     <input type=\"button\"class=\"btn btn-danger\" name=\"Delete-submit\" onclick=\"document.getElementById('id01').style.display='block'\"  style= \"margin-bottom: 10px;\" value=\"Licentie Verwijderen\" >
     </form>
     ";
@@ -269,7 +269,7 @@ function EditLicenseForm()
     <textarea name = \"InstallDesc\" rows = \"3\" cols = \"80\">".$result["InstallatieOmschrijving"]."</textarea><br>
     <label>Licentie verloop datum:</label><br>
     <input type=\"date\" name=\"ExpirationDate\" value=" .$result["VerloopDatum"]. "><br><br>
-    <input type=\"submit\" class=\"btn btn-success\"  id=\"buttondesign\" name=\"EditLicense\" value=\"Licentie bewerken\">
+    <input type=\"submit\" class=\"btn btn-success\" name=\"EditLicense\" value=\"Licentie bewerken\">
     <br>
   </form>
 </div>
@@ -363,8 +363,8 @@ if(isset($_POST["csv"]))
     
   header("Content-Disposition: attachment; filename=$filename");
   $fp = fopen('php://output', 'w');
-  fputcsv($fp, array('Licentienaam', 'Beschrijving', 'Installatie omschrijving', 'Verloop datum', 'Laatst aangepast', 'Doelgroep'), ";");
-  $sql = "SELECT LicentieNaam, Beschrijving, InstallatieOmschrijving, VerloopDatum, LaatstAangepast, Doelgroep FROM licentie";
+  fputcsv($fp, array('Licentienaam', 'Beschrijving', 'Installatie omschrijving'), ";");
+  $sql = "SELECT LicentieNaam, Beschrijving, InstallatieOmschrijving FROM licentie"; 
   $conn = connectDB();
   $stmt = $conn->prepare($sql);
   $stmt->execute(); 

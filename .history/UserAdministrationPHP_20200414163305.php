@@ -47,7 +47,7 @@ function loadAdmins()
         <input type=\"hidden\" name=\"UserIDForm\" value=\"".$UserIDAdmin[$i]."\">
         <input type=\"hidden\" name=\"RightsForm\" value=\"1\">
         <input type=\"hidden\" name=\"UniqueLoginNameForm\" value=\"".$UniqueLoginNameAdmin[$i]."\">
-        <tr id=\"formdesign\">
+        <tr>
           <td>
             ".$UniqueLoginNameAdmin[$i]."
           </td>
@@ -100,7 +100,7 @@ function LoadReaders()
         <input type=\"hidden\" name=\"UserIDForm\" value=\"".$UserIDReader[$i]."\">
         <input type=\"hidden\" name=\"RightsForm\" value=\"0\">
         <input type=\"hidden\" name=\"UniqueLoginNameForm\" value=\"".$UniqueLoginNameReader[$i]."\">
-        <tr id=\"formdesign\">
+        <tr>
           <td>
             ".$UniqueLoginNameReader[$i]."
           </td>
@@ -185,10 +185,6 @@ if ((!empty($_POST["CreateAcc"])) && ($_POST["CreateAcc"] == "Aanmaken"))
 function EditUserInformationForm($UserID, $Rights, $Username)
 {
   echo "
-  <h3>Gebruiker toevoegen</h3>
-  <table style=\"margin: auto;\">
-  ";
-  echo "
     <form action=\"UserAdministrationPHP.php\" method=\"post\">
       <input type=\"hidden\" name=\"id\" value=\"".$UserID."\">
       <label>Nieuwe gebruikersnaam (minimaal 3 characters):</label><br>
@@ -217,9 +213,9 @@ function EditUserInformationForm($UserID, $Rights, $Username)
     ";
   }
   echo "
-      <input type=\"submit\" id=\"buttondesigning\" class=\"btn btn-primary\" name=\"EditUserConfirmation\" value=\"Gegevens aanpassen\">
+      <input type=\"submit\" class=\"btn btn-primary\" name=\"EditUserConfirmation\" value=\"Gegevens aanpassen\">
     </form><br>
-    <button type=\"submit\" id=\"buttondesigning\" onclick=\"window.location.href = 'UserAdministration.php';\" class=\"btn btn-primary\" name=\"Cancel\">Annuleren</button>
+    <button type=\"submit\" onclick=\"window.location.href = 'UserAdministration.php';\" class=\"btn btn-primary\" name=\"Cancel\">Annuleren</button>
   ";
 }
 
@@ -237,9 +233,9 @@ function CreateUserForm()
       <label for=\"Administrator\">Administrator</label><br>
       <input type=\"radio\" name=\"Rights\" value=\"0\" checked>
       <label for=\"Lezer\">Lezer</label><br>
-      <input type=\"submit\" id=\"buttondesigning\" class=\"btn btn-primary\" name=\"CreateAcc\" value=\"Aanmaken\">
+      <input type=\"submit\" class=\"btn btn-primary\" name=\"CreateAcc\" value=\"Aanmaken\">
     </form><br>
-    <button type=\"submit\" id=\"buttondesigning\" onclick=\"window.location.href = 'MainMenu.php';\" class=\"btn btn-primary\" name=\"BackToMainMenu\">Terug</button>
+    <button type=\"submit\" onclick=\"window.location.href = 'MainMenu.php';\" class=\"btn btn-primary\" name=\"BackToMainMenu\">Terug</button>
   ";
 }
 
@@ -315,9 +311,9 @@ function DeleteUserConfirmation($UserID)
       <form action=\"UserAdministrationPHP.php\" method=\"post\">
         <input type=\"hidden\" name=\"UserID\" value=\"".$UserID."\">
         <label>Weet u zeker dat u deze gebruiker wilt verwijderen?</label><br>
-        <input type=\"submit\" id=\"buttondesigning\" class=\"btn btn-primary\" name=\"DeleteUserPerm\" value=\"Gebruiker verwijderen\">
+        <input type=\"submit\" class=\"btn btn-primary\" name=\"DeleteUserPerm\" value=\"Gebruiker verwijderen\">
       </form><br>
-      <button type=\"submit\" id=\"buttondesigning\" onclick=\"window.location.href = 'UserAdministration.php';\" class=\"btn btn-primary\" name=\"KeepUser\">Gebruiker behouden</button>
+      <button type=\"submit\" onclick=\"window.location.href = 'UserAdministration.php';\" class=\"btn btn-primary\" name=\"KeepUser\">Gebruiker behouden</button>
     </div>
   "; 
 }

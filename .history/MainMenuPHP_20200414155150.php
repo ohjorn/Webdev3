@@ -269,7 +269,7 @@ function EditLicenseForm()
     <textarea name = \"InstallDesc\" rows = \"3\" cols = \"80\">".$result["InstallatieOmschrijving"]."</textarea><br>
     <label>Licentie verloop datum:</label><br>
     <input type=\"date\" name=\"ExpirationDate\" value=" .$result["VerloopDatum"]. "><br><br>
-    <input type=\"submit\" class=\"btn btn-success\"  id=\"buttondesign\" name=\"EditLicense\" value=\"Licentie bewerken\">
+    <input type=\"submit\" class=\"btn btn-success\" name=\"EditLicense\" value=\"Licentie bewerken\">
     <br>
   </form>
 </div>
@@ -363,8 +363,8 @@ if(isset($_POST["csv"]))
     
   header("Content-Disposition: attachment; filename=$filename");
   $fp = fopen('php://output', 'w');
-  fputcsv($fp, array('Licentienaam', 'Beschrijving', 'Installatie omschrijving', 'Verloop datum', 'Laatst aangepast', 'Doelgroep'), ";");
-  $sql = "SELECT LicentieNaam, Beschrijving, InstallatieOmschrijving, VerloopDatum, LaatstAangepast, Doelgroep FROM licentie";
+  fputcsv($fp, array('Licentienaam', 'Beschrijving', 'Installatie omschrijving'), ";");
+  $sql = "SELECT LicentieNaam, Beschrijving, InstallatieOmschrijving FROM licentie"; 
   $conn = connectDB();
   $stmt = $conn->prepare($sql);
   $stmt->execute(); 

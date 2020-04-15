@@ -80,7 +80,7 @@
               ?>
             </ul>
           </div>
-          <span  id="TotalLicenceCount" class="ban alert alert-primary">Er zijn momenteel <?=$_SESSION["counter"]?> licenties</span>                    
+          <span class="ban alert alert-primary">Er zijn momenteel <?=$_SESSION["counter"]?> licenties</span>                    
         </nav>                
       </div>
       <div class="col-9">
@@ -97,10 +97,10 @@
                 <?php
                   if (IsAdmin())
                   {
-                    echo "<input type=\"submit\" id=\"buttondesign\" class=\"btn btn-primary\" name=\"toggle-account-management\" value=\"Accounts beheren\">";
+                    echo "<input type=\"submit\" class=\"btn btn-primary\" name=\"toggle-account-management\" value=\"Accounts beheren\">";
                   }
                 ?>
-                <input type="submit" class="btn btn-primary" name="logout-submit" id="buttondesign" value="Uitloggen">
+                <input type="submit" class="btn btn-primary" name="logout-submit" value="Uitloggen">
               </form>
             </li>
           </ul>
@@ -140,7 +140,7 @@
               }
             ?>
           </div>
-          <div class="col-4" id="comments">
+          <div class="col-4 bg-light" id="comments">
             <?php
               if (!(isset($_POST["Edit-submit"])) && !(isset($_POST["Add-submit"])) && !(isset($_SESSION["AddLicenseError"])))
               {
@@ -160,12 +160,13 @@
   <div id="id01" class="modal modalstyle">
     <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">×</span>
     <form class="modal-content" method="POST">
-    <h1>Licentie verwijderen</h1>
-        <p>Wilt u deze licentie verwijderen?</p>
       <div class="container">
+        <h1>Licentie verwijderen</h1>
+        <p>Wilt u deze licentie verwijderen?</p>
+      
         <div class="clearfix">
-          <button type="button" onclick="document.getElementById('id01').style.display='none'" class="button12 cancelbtn">Annuleer</button>
-          <button type="submit" name="Delete-submit" class="button12 deletebtn">Verwijderen</button>
+          <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Annuleer</button>
+          <button type="submit" name="Delete-submit" class="deletebtn">Verwijderen</button>
         </div>
       </div>
     </form>
